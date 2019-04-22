@@ -4,13 +4,18 @@ import router from '@/router'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
+
+
 import { asyncRouterMap } from '@/router/router.config'
 router.addRoutes(asyncRouterMap)
+
+import {setDocumentTitle,domTitle} from '@/utils/domUtil'
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
   // let token = store.getters.getToken
   let token = '123456true'
+  to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (token) {
     next()
     NProgress.done()
