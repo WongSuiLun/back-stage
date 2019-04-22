@@ -29,8 +29,9 @@
       </a-layout-sider>
       <a-layout>
         <global-header :collapsed="collapsed" @toggle="toggle"></global-header>
+        <multi-tab></multi-tab>
         <a-layout-content :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }">
-          Content
+          <router-view></router-view>
         </a-layout-content>
         <a-layout-footer>
           <global-footer />
@@ -40,11 +41,12 @@
   </a-layout>
 </template>
 <script>
-import { GlobalHeader, GlobalFooter } from '@/components'
+import { GlobalHeader, GlobalFooter,MultiTab } from '@/components'
 export default {
   components: {
     GlobalHeader,
-    GlobalFooter
+    GlobalFooter,
+    MultiTab
   },
   data () {
     return {

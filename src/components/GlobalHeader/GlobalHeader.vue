@@ -1,17 +1,22 @@
 <template>
-  <a-layout-header style="background: #fff; padding: 0">
+  <a-layout-header style="background: #fff; padding: 0;border-bottom:2px solid #eee">
     <a-icon
       class="trigger"
       :type="collapsed ? 'menu-unfold' : 'menu-fold'"
       @click="toggle"
     />
+    <div class="user-menu">
+      <user-menu></user-menu>
+    </div>
   </a-layout-header>
 </template>
 
 <script>
+import UserMenu from '@/components/UserMenu/UserMenu'
 export default {
   name: 'GlobalHeader',
   components: {
+    UserMenu
   },
   props: {
     collapsed: {
@@ -27,7 +32,6 @@ export default {
     }
   },
   methods: {
-
     toggle () {
       this.$emit('toggle')
     }
@@ -69,5 +73,8 @@ export default {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
+}
+.user-menu{
+  float:right;
 }
 </style>

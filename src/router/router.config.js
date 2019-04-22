@@ -20,7 +20,27 @@ export const constantRouterMap = [
   },
   {
     path: '/dashboard',
-    component: BasicLayout
+    component: BasicLayout,
+    children: [
+      {
+        path: '/dashboard/403',
+        name: 'Exception403',
+        component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
+        meta: { title: '403', permission: ['exception'] }
+      },
+      {
+        path: '/dashboard/404',
+        name: 'Exception404',
+        component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
+        meta: { title: '404', permission: ['exception'] }
+      },
+      {
+        path: '/dashboard/500',
+        name: 'Exception500',
+        component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/500'),
+        meta: { title: '500', permission: ['exception'] }
+      }
+    ]
   },
   // Exception
   {

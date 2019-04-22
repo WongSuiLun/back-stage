@@ -1,4 +1,5 @@
 import ExceptionPage from './Exception'
 import GlobalHeader from './GlobalHeader'
 import GlobalFooter from './GlobalFooter'
-export {ExceptionPage, GlobalHeader, GlobalFooter}
+import MultiTab from './MultiTab'
+export {ExceptionPage, GlobalHeader, GlobalFooter,MultiTab}
