@@ -19,4 +19,10 @@ Compiles and minifies for production
     
 Run your tests
     npm run test
+
+Compiles electron for development
+    npm run electron-start
+    
+Compiles electron for production
+    npm run electron-build
 ```
