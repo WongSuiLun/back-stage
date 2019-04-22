@@ -1,0 +1,73 @@
+<template>
+  <a-layout-header style="background: #fff; padding: 0">
+    <a-icon
+      class="trigger"
+      :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+      @click="toggle"
+    />
+  </a-layout-header>
+</template>
+
+<script>
+export default {
+  name: 'GlobalHeader',
+  components: {
+  },
+  props: {
+    collapsed: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  data () {
+    return {
+      visible: true,
+      oldScrollTop: 0
+    }
+  },
+  methods: {
+
+    toggle () {
+      this.$emit('toggle')
+    }
+  },
+  beforeDestroy () {
+    document.body.removeEventListener('scroll', this.handleScroll, true)
+  }
+}
+</script>
+
+<style lang="less">
+.header-animat {
+  position: relative;
+  z-index: 999;
+}
+.showHeader-enter-active {
+  transition: all 0.25s ease;
+}
+.showHeader-leave-active {
+  transition: all 0.5s ease;
+}
+.showHeader-enter,
+.showHeader-leave-to {
+  opacity: 0;
+}
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+</style>

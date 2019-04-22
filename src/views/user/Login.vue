@@ -1,0 +1,192 @@
+<template>
+  <div class="main">
+    <a-form
+      id="components-form-demo-normal-login"
+      :form="form"
+      class="user-layout-login"
+      @submit="handleSubmit"
+      v-show="toggleFormVisible"
+    >
+      <a-form-item>
+        <a-input
+          size="large"
+          v-decorator="[
+          'userName',
+          { rules: [{ required: true, message: '请输入您的用户名!' }] }
+        ]"
+          placeholder="用户名"
+        >
+          <a-icon
+            slot="prefix"
+            type="user"
+            style="color: rgba(0,0,0,.25)"
+          />
+        </a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-input
+          size="large"
+          v-decorator="[
+          'password',
+          { rules: [{ required: true, message: '请输入您的密码！' }] }
+        ]"
+          type="password"
+          placeholder="密码"
+        >
+          <a-icon
+            slot="prefix"
+            type="lock"
+            style="color: rgba(0,0,0,.25)"
+          />
+        </a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-button
+          type="primary"
+          html-type="submit"
+          class="login-button"
+        >
+          进入
+        </a-button>
+      </a-form-item>
+      <a-form-item>
+        <a-button
+          type="primary"
+          class="login-button"
+          v-on:click="toggleForm"
+        >
+          切换账号
+        </a-button>
+      </a-form-item>
+    </a-form>
+    <a-form
+      v-show="!toggleFormVisible"
+      class="user-layout-login"
+    >
+      <a-form-item>
+        <a-input
+          size="large"
+          type="text"
+          placeholder="手机号"
+          v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]"
+        >
+          <a-icon
+            slot="prefix"
+            type="mobile"
+            :style="{ color: 'rgba(0,0,0,.25)' }"
+          />
+        </a-input>
+      </a-form-item>
+
+      <a-row :gutter="16">
+        <a-col
+          class="gutter-row"
+          :span="16"
+        >
+          <a-form-item>
+            <a-input
+              size="large"
+              type="text"
+              placeholder="验证码"
+              v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]"
+            >
+              <a-icon
+                slot="prefix"
+                type="mail"
+                :style="{ color: 'rgba(0,0,0,.25)' }"
+              />
+            </a-input>
+          </a-form-item>
+        </a-col>
+        <a-col
+          class="gutter-row"
+          :span="8"
+        >
+          <a-button
+            class="getCaptcha"
+            tabindex="-1"
+            v-text=" '获取验证码' "
+          ></a-button>
+        </a-col>
+      </a-row>
+      <a-form-item>
+        <a-button
+          type="primary"
+          html-type="submit"
+          class="login-button"
+        >
+          进入
+        </a-button>
+      </a-form-item>
+      <a-form-item>
+        <a-button
+          type="primary"
+          html-type="submit"
+          class="login-button"
+          v-on:click="toggleForm"
+        >
+          切换账号
+        </a-button>
+      </a-form-item>
+    </a-form>
+  </div>
+</template>
+<script>
+
+export default {
+  data () {
+    return {
+      toggleFormVisible: true
+    }
+  },
+  beforeCreate () {
+    this.form = this.$form.createForm(this)
+  },
+  methods: {
+    handleSubmit (e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+
+          this.$router.push('/dashboard')
+        }
+      })
+    },
+    toggleForm () {
+      this.toggleFormVisible = !this.toggleFormVisible
+    }
+  }
+}
+</script>
+
+<style>
+#components-form-demo-normal-login .login-form {
+  max-width: 300px;
+}
+#components-form-demo-normal-login .login-form-forgot {
+  float: right;
+}
+#components-form-demo-normal-login .login-form-button {
+  width: 100%;
+}
+</style>
+<style lang="less" scoped>
+.user-layout-login {
+  label {
+    font-size: 14px;
+  }
+  .getCaptcha {
+    display: block;
+    width: 100%;
+    height: 40px;
+  }
+
+  button.login-button {
+    padding: 0 15px;
+    font-size: 16px;
+    height: 40px;
+    width: 100%;
+  }
+}
+</style>
