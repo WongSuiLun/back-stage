@@ -1,12 +1,12 @@
 # back-stage
 
-#Introduce
+# Introduce
 ```
 温泉标准后台管理系统
 Electron + vue
 ```
 
-#Script
+# Script
 ```
 Project setup
     npm install
