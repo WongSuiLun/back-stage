@@ -8,7 +8,7 @@ import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 
 import '@/styles/index.less'
-// import './permission'
+import './permission'
 
 Vue.config.productionTip = false
 

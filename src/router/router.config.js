@@ -1,6 +1,34 @@
 // eslint-disable-next-line
 import { LoginLayout,BasicLayout, RouteView } from '@/layouts'
 
+export const asyncRouterMap = [
+  {
+    path:'/',
+    name:'index',
+    component:BasicLayout,
+    meta:{title:'首页'},
+    redirect:'/dashboard/statistics',
+    children:[
+      {
+        path:'/dashboard',
+        name:'dashboard',
+        redirect:'/dashboard/statistics',
+        component:RouteView,
+        meta:{title:'仪表盘'},
+        children:[
+          {
+            path:'/dashboard/statistics',
+            name:'Statistics',
+            component:() => import('@/views/home/DataStatistics'),
+            meta:{title:'数据统计'},
+          }
+        ]
+      }
+    ]
+  }
+]
+
+
 /**
  * 基础路由
  * @type { *[] }
