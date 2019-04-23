@@ -1,29 +1,28 @@
 # back-stage
 
-## Project setup
+# Introduce
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+温泉标准后台管理系统
+Electron + vue
 ```
 
-### Compiles and minifies for production
+# Script
 ```
-npm run build
-```
+Project setup
+    npm install
 
-### Run your tests
-```
-npm run test
-```
+Compiles and hot-reloads for development
+    npm run serve
 
-### Lints and fixes files
-```
-npm run lint
-```
+Compiles and minifies for production
+    npm run build
+    
+Run your tests
+    npm run test
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Compiles electron for development
+    npm run electron-start
+    
+Compiles electron for production
+    npm run electron-build
+```

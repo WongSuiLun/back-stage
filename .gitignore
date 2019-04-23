@@ -2,8 +2,9 @@
 node_modules
 dist-web
 dist-electron
-.package-lock.json
+package-lock.json
 yarn.lock
+*.gitkeep
 
 # local env files
 .env.local
