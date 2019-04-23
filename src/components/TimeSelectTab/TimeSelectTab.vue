@@ -42,10 +42,6 @@
 export default {
   name: "time-select-tab",
   props: {
-    tabList: {
-      type: Array,
-      required: true
-    },
     defaultActiveKey: {
       type: String || Number,
       required: true
@@ -109,7 +105,7 @@ export default {
   opacity: 0;
 }
 .time-tab-warp {
-  border: 1px solid #eee;
+  border: 1px solid #ccc;
   border-radius: 3px;
   width: 100%;
   display: flex;

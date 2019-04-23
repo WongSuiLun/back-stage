@@ -1,37 +1,44 @@
 <template>
-  <div v-show="isActive">
+  <div
+    v-show="isActive"
+    class="default-pane"
+  >
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
-  props:{
-    tab:{
-      type:String,
-      required:false
+  props: {
+    tab: {
+      type: String,
+      required: false
     }
   },
-  data(){
+  data() {
     return {
-      key:this.$vnode.key
-    }
+      key: this.$vnode.key
+    };
   },
-  computed:{
-    isActive(){
+  computed: {
+    isActive() {
       // console.log(this.$parent.$vnode)
-      return this.$parent.activeKey == this.key
+      return this.$parent.activeKey == this.key;
     }
-    
   },
-  created(){
-    if(this.$parent.$vnode.componentOptions.tag ==='time-select-tab'){
-      console.warn('time-select-tab-pane的父组件不是time-select-tab,请正确使用。')
+  created() {
+    if (this.$parent.$vnode.componentOptions.tag !== "time-select-tab") {
+      console.warn(
+        "time-select-tab-pane的父组件不是time-select-tab,请正确使用。"
+      );
     }
   }
-}
+};
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.default-pane {
+  background: #fff;
+}
 </style>
+
