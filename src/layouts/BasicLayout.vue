@@ -30,9 +30,9 @@
       <a-layout>
         <global-header :collapsed="collapsed" @toggle="toggle"></global-header>
         <multi-tab></multi-tab>
-        <a-layout-content :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }">
+        <div class="layout-content">
           <router-view></router-view>
-        </a-layout-content>
+        </div>
         <a-layout-footer>
           <global-footer />
         </a-layout-footer>
@@ -64,5 +64,8 @@ export default {
   @import "../styles/themeMenu.less";
   .layout {
     height: 100%;
+    .layout-content{
+      padding: 10px 20px;
+    }
   }
 </style>

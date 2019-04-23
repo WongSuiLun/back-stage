@@ -4,5 +4,6 @@ import GlobalFooter from './GlobalFooter'
 import MultiTab from './MultiTab'
 import TimeSelectTab from './TimeSelectTab'
 import {TimeSelectTabPane} from './TimeSelectTab'
+import NumberInfo from './NumberInfo'
 // import ChartCard from './Charts/ChartCard'
-export {ExceptionPage, GlobalHeader, GlobalFooter,MultiTab,TimeSelectTab,TimeSelectTabPane}
+export {ExceptionPage, GlobalHeader, GlobalFooter,MultiTab,TimeSelectTab,TimeSelectTabPane,NumberInfo}
