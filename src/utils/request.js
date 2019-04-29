@@ -1,10 +1,10 @@
 import axios from 'axios'
 import router from '@/router'
 import store from '@/store'
-import sysConfig from '@/utils/sysConfig'
+// import sysConfig from '@/utils/sysConfig'
 
 const service = axios.create({
-  baseURL: sysConfig.BASE_API,
+  // baseURL: sysConfig.BASE_API,
   timeout: 30 * 1000
 })
 
@@ -13,7 +13,7 @@ service.interceptors.request.use(config => {
     const TIME_OFFSET = 0.1
     if (+new Date().getTime() - +store.getters.getLoginTime >= +store.getters.getExpiresIn * 1000) {
       store.dispatch('logout')
-      router.push('/login')
+      // router.push('/login')
     } else {
       if (+new Date().getTime() - +store.getters.getLoginTime > +store.getters.getExpiresIn * 1000 * TIME_OFFSET) {
         // refresh token
@@ -22,7 +22,7 @@ service.interceptors.request.use(config => {
     config.headers['Authorization'] = store.getters.getToken
   } else {
     store.dispatch('logout')
-    router.push('/login')
+    // router.push('/login')
   }
   return config
 }, error => {

@@ -2,7 +2,8 @@
 const app = {
   state: {
     sidebar: true,
-    device: 'desktop'
+    device: 'desktop',
+    token:'',
     // theme: '',
     // layout: '',
     // contentWidth: '',
@@ -14,6 +15,9 @@ const app = {
     // multiTab: true,
     // sidebarModule: 'home'
   },
+  getters:{
+    getToken: state => state.token,
+  },
   mutations: {
     SET_SIDEBAR_TYPE: (state, type) => {
       state.sidebar = type
@@ -23,6 +27,9 @@ const app = {
     },
     TOGGLE_DEVICE: (state, device) => {
       state.device = device
+    },
+    SET_TOKEN:(state,token) =>{
+      state.token = token
     }
   },
   actions: {
@@ -34,6 +41,9 @@ const app = {
     },
     ToggleDevice ({ commit }, device) {
       commit('TOGGLE_DEVICE', device)
+    },
+    logout(){
+      
     }
   }
 }

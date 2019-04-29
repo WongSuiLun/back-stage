@@ -1,5 +1,5 @@
 import router from '@/router'
-// import store from '@/store'
+import store from '@/store'
 
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
@@ -13,8 +13,7 @@ import {setDocumentTitle,domTitle} from '@/utils/domUtil'
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  // let token = store.getters.getToken
-  let token = '123456true'
+  let token = store.getters.getToken
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (token) {
     next()

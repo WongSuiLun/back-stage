@@ -11,7 +11,7 @@
         <a-input
           size="large"
           v-decorator="[
-          'userName',
+          'username',
           { rules: [{ required: true, message: '请输入您的用户名!' }] }
         ]"
           placeholder="用户名"
@@ -132,32 +132,42 @@
   </div>
 </template>
 <script>
-
+import { login } from "@/api/auth";
 export default {
-  data () {
+  data() {
     return {
       toggleFormVisible: true
-    }
+    };
   },
-  beforeCreate () {
-    this.form = this.$form.createForm(this)
+  beforeCreate() {
+    this.form = this.$form.createForm(this);
   },
   methods: {
-    handleSubmit (e) {
-      e.preventDefault()
+    handleSubmit(e) {
+      e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-
-          this.$router.push('/dashboard')
+          console.log("Received values of form: ", values);
+          login(values)
+            .then(res => {
+              this.$store.commit('SET_TOKEN',res.data.result.token)
+              this.$router.push({ name: 'dashboard' })
+            })
+            .catch((err) => {
+              console.log(err)
+              this.$notification["error"]({
+                message: "登陆失败",
+                description:err
+              });
+            });
         }
-      })
+      });
     },
-    toggleForm () {
-      this.toggleFormVisible = !this.toggleFormVisible
+    toggleForm() {
+      this.toggleFormVisible = !this.toggleFormVisible;
     }
   }
-}
+};
 </script>
 
 <style>
