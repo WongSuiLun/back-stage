@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <div class="data-box">
-      <!-- 数据1 -->
-      <time-select-tab
+  <time-select-tab
         defaultActiveKey="1"
         @timeSelectOnChange="timeChange"
       >
@@ -57,51 +54,16 @@
           2
         </time-select-tab-pane>
       </time-select-tab>
-    </div>
-    <!-- 数据2 -->
-    <div class="data-box">
-      <time-select-tab
-        defaultActiveKey="1"
-        @timeSelectOnChange="timeChange"
-      >
-        <time-select-tab-pane
-          tab="今天"
-          key="1"
-        >
-        1
-        </time-select-tab-pane>
-        <time-select-tab-pane
-          tab="本周"
-          key="2"
-        >
-          2
-        </time-select-tab-pane>
-        <time-select-tab-pane
-          tab="本月"
-          key="3"
-        >
-          2
-        </time-select-tab-pane>
-        <time-select-tab-pane
-          tab="季度"
-          key="4"
-        >
-          2
-        </time-select-tab-pane>
-      </time-select-tab>
-    </div>
-  </div>
 </template>
 
 <script>
 import { TimeSelectTab, TimeSelectTabPane, NumberInfo } from "@/components";
 import { getAllStatisticsData } from "@/api/statistics";
-import { setTimeout } from "timers";
 export default {
-  components: {
+ components: {
     TimeSelectTab,
     TimeSelectTabPane,
-    NumberInfo
+    NumberInfo,
   },
   data() {
     return {
@@ -130,7 +92,7 @@ export default {
       console.log(dateString);
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

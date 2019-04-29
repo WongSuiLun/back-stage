@@ -6,3 +6,10 @@ export function getAllStatisticsData(){
     method:'get'
   })
 }
+
+export function getWeekDaCanData(){
+  return request({
+    url:'/api/chart/dacan',
+    method:'get'
+  })
+}

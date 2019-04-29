@@ -19,7 +19,7 @@ export const asyncRouterMap = [
           {
             path:'/dashboard/statistics',
             name:'Statistics',
-            component:() => import('@/views/home/DataStatistics'),
+            component:() => import('@/views/dashboard/data_statistics/DataStatistics'),
             meta:{title:'数据统计'},
           }
         ]
