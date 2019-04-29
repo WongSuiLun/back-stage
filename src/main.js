@@ -9,6 +9,7 @@ import 'ant-design-vue/dist/antd.css'
 
 import '@/styles/index.less'
 import './permission'
+import './mock'
 
 Vue.config.productionTip = false
 

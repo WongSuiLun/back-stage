@@ -2,7 +2,6 @@
   <div class="number-info-warp">
     <a-card
       :loading="loading"
-      @click="loading=!loading"
       :bodyStyle="bodyStyle"
     >
       <div style="display:flex;" >
@@ -10,9 +9,9 @@
           <a-icon :type="icon" style="font-size:50px;color:#f1f1f1"/>
         </div>
         <div class="number-content" style="flex-grow:1;color:#fff;margin-left:20px;font-size:18px;">
-          <p v-for="msg in msgList" :key="msg">
+          <div v-for="msg in msgList" :key="msg">
             {{msg}}
-          </p>
+          </div>
         </div>
       </div>
     </a-card>
@@ -33,11 +32,14 @@ export default {
     msgList:{
       type:Array,
       required:true
+    },
+    loading:{
+      type:Boolean,
+      required:true
     }
   },
   data() {
     return {
-      loading: true,
       bodyStyle:{
         height:'180px',
         background:'#fff'
