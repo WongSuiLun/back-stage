@@ -8,7 +8,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 import { asyncRouterMap } from '@/router/router.config'
 router.addRoutes(asyncRouterMap)
-
+store.dispatch('GenerateRoutes')
 import {setDocumentTitle,domTitle} from '@/utils/domUtil'
 
 router.beforeEach((to, from, next) => {

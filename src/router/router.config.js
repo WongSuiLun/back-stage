@@ -1,30 +1,53 @@
 // eslint-disable-next-line
-import { LoginLayout,BasicLayout, RouteView } from '@/layouts'
+import { LoginLayout, BasicLayout, RouteView } from '@/layouts'
 
 export const asyncRouterMap = [
   {
-    path:'/',
-    name:'index',
-    component:BasicLayout,
-    meta:{title:'首页'},
-    redirect:'/dashboard',
-    children:[
+    path: '/',
+    name: 'index',
+    component: BasicLayout,
+    meta: { title: '首页' },
+    redirect: '/dashboard',
+    children: [
       {
-        path:'/dashboard',
-        name:'dashboard',
-        redirect:'/dashboard/statistics',
-        component:RouteView,
-        meta:{title:'仪表盘'},
-        children:[
+        path: '/dashboard',
+        name: 'dashboard',
+        redirect: '/dashboard/statistics',
+        component: RouteView,
+        meta: { title: '仪表盘',icon:'form'},
+        children: [
           {
-            path:'/dashboard/statistics',
-            name:'Statistics',
-            component:() => import('@/views/dashboard/data_statistics/DataStatistics'),
-            meta:{title:'数据统计'},
+            path: '/dashboard/statistics',
+            name: 'statistics',
+            component: () => import('@/views/dashboard/data_statistics/DataStatistics'),
+            meta: { title: '数据统计' },
+          },
+          {
+            path: '/dashboard/admin-log',
+            name: 'admin-log',
+            component: () => import('@/views/dashboard/AdminLog'),
+            meta: { title: '系统日志' },
           }
         ]
+      },
+      {
+        path: '/company',
+        name: 'company',
+        redirect: '/company/staff-management',
+        component: RouteView,
+        meta: { title:'公司' },
+        children: [
+        {
+          path: '/company/staff-management',
+          name:'staff-management',
+          component: () => import('@/views/company/StaffManagement'),
+          meta: { title: '员工管理' }
+        }]
       }
     ]
+  },
+  {
+    path: '*', redirect: '/404', hidden: true
   }
 ]
 
