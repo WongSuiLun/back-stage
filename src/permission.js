@@ -20,19 +20,11 @@ router.beforeEach((to, from, next) => {
     // has token
     if(to.path == '/login'){
       next('/dashboard/statistics')
-      NProgress.done()
     }else{
       next()
-      NProgress.done()
     }
   } else {
-    if (to.path === '/login') {
-      next()
-      NProgress.done()
-    } else {
-      next('/login')
-      NProgress.done()
-    }
+    next()
   }
 })
 

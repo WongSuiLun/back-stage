@@ -1,10 +1,10 @@
 import axios from 'axios'
-import router from '@/router'
+// import router from '@/router'
 import store from '@/store'
 // import sysConfig from '@/utils/sysConfig'
 
 const service = axios.create({
-  // baseURL: sysConfig.BASE_API,
+  baseURL: 'http://192.168.101.115:8089/api',
   timeout: 30 * 1000
 })
 

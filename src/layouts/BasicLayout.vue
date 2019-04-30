@@ -7,8 +7,8 @@
         width="240"
         v-model="collapsed"
       >
-        <div class="logo" />
-        <Menu></Menu>
+        <global-logo/>
+        <global-menu/>
       </a-layout-sider>
       <a-layout>
         <global-header :collapsed="collapsed" @toggle="toggle"></global-header>
@@ -24,14 +24,14 @@
   </a-layout>
 </template>
 <script>
-import { GlobalHeader, GlobalFooter,MultiTab } from '@/components'
-import Menu from './Menu.vue'
+import { GlobalHeader,GlobalFooter,GlobalMenu,GlobalLogo,MultiTab } from '@/components'
 export default {
   components: {
     GlobalHeader,
     GlobalFooter,
-    MultiTab,
-    Menu
+    GlobalMenu,
+    GlobalLogo,
+    MultiTab
   },
   data () {
     return {
