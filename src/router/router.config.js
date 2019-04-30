@@ -26,7 +26,7 @@ export const asyncRouterMap = [
             path: '/dashboard/admin-log',
             name: 'admin-log',
             component: () => import('@/views/dashboard/AdminLog'),
-            meta: { title: '系统日志' },
+            meta: { title: '系统日志'},
           }
         ]
       },
@@ -35,7 +35,7 @@ export const asyncRouterMap = [
         name: 'company',
         redirect: '/company/staff-management',
         component: RouteView,
-        meta: { title:'公司' },
+        meta: { title:'公司',icon:'deployment-unit' },
         children: [
         {
           path: '/company/staff-management',

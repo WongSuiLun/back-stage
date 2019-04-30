@@ -151,6 +151,7 @@ export default {
           login(values)
             .then(res => {
               this.$store.commit('SET_TOKEN',res.data.result.token)
+              this.$ls.set('Access-Token','123','1000')
               this.$router.push({ name: 'dashboard' })
             })
             .catch((err) => {

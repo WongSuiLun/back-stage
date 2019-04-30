@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import router from '@/router'
 import store from '@/store'
 
@@ -13,11 +14,17 @@ import {setDocumentTitle,domTitle} from '@/utils/domUtil'
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  let token = store.getters.getToken
+  let token =  Vue.ls.get('Access-Token')
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (token) {
-    next()
-    NProgress.done()
+    // has token
+    if(to.path == '/login'){
+      next('/dashboard/statistics')
+      NProgress.done()
+    }else{
+      next()
+      NProgress.done()
+    }
   } else {
     if (to.path === '/login') {
       next()
