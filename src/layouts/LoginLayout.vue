@@ -1,5 +1,5 @@
 <template>
-  <div id="userLayout" :class="['user-layout-wrapper']">
+  <div id="userLayout" :class="['user-layout-wrapper',device]">
     <div class="container">
       <div class="top">
         <div class="header">
@@ -32,12 +32,12 @@
 
 <script>
 // import RouteView from './RouteView'
-// import { mixinDevice } from '@/utils/mixin'
+import { mixinDevice } from '@/utils/mixin'
 
 export default {
   name: 'UserLayout',
   // components: { RouteView },
-  // mixins: [mixinDevice],
+  mixins: [mixinDevice],
   data () {
     return {}
   },
@@ -56,6 +56,18 @@ export default {
 
     &.mobile {
       .container {
+        .top{
+          min-width: 100vw;
+          max-width: 368px;
+          width: 98%;
+          margin: 0 auto;
+          .header{
+            max-width: 368px;
+            .title{
+              font-size: 24px;
+            }
+          }
+        }
         .main {
           max-width: 368px;
           width: 98%;

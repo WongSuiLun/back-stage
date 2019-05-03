@@ -5,8 +5,10 @@
 </template>
 
 <script>
+import { AppDeviceEnquire } from '@/utils/mixin'
 export default {
-  name: 'app'
+  name: 'app',
+  mixins: [AppDeviceEnquire],
 }
 </script>
 <style>
