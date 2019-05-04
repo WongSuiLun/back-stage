@@ -82,6 +82,12 @@ export const constantRouterMap = [
         name: 'login',
         component: () => import('@/views/user/Login'),
         meta:{title:'登录'}
+      },
+      {
+        path:'/company-choose',
+        name:'company-choose',
+        component:()=>import('@/views/user/CompanyChoose'),
+        meta:{title:'切换公司'}
       }
     ]
   },

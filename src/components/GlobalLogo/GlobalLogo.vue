@@ -1,8 +1,7 @@
 <template>
   <div class="logo">
     御温泉度假村
-    <a-tag color="#87d068" style="margin-left:8px;">切换
-    </a-tag>
+    
     <!-- <a-dropdown>
       <a-menu slot="overlay">
         <a-menu-item key="1">

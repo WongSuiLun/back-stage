@@ -213,7 +213,7 @@ export default {
                 this.$store.commit("SET_TOKEN", token);
                 this.$ls.set("Access-Token", token, expires_in*1000);
               }
-              this.$router.push({ name: "dashboard" });
+              this.$router.push({ name: "company-choose" });
             })
             .catch(err => {
               console.log(err.response);
