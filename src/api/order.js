@@ -4,7 +4,11 @@ export function getOrders (params) {
   return request({
     url: '/orders',
     method: 'get',
-    params
+    params,
+    headers:{
+      company:60,
+      shop:51
+    }
   })
 }
 
