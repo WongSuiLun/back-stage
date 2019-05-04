@@ -205,8 +205,14 @@ export default {
           authorizations(values)
             .then(res => {
               this.saveAcount(values);
-              // this.$store.commit("SET_TOKEN", res.data.result.token);
-              this.$ls.set("Access-Token", "123", "1000");
+              if(res.data){
+                console.log(res.data)
+                let token = `${res.data.token_type} ${res.data.access_token}`
+                let expires_in = res.data.expires_in
+                console.log(token)
+                this.$store.commit("SET_TOKEN", token);
+                this.$ls.set("Access-Token", token, expires_in*1000);
+              }
               this.$router.push({ name: "dashboard" });
             })
             .catch(err => {
