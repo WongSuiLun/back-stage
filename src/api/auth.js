@@ -22,3 +22,10 @@ export function authorizations(data){
     data
   })
 }
+
+export function getCompany(){
+  return request({
+    url:'/api/auth/getCompany',
+    method:'get'
+  })
+}
