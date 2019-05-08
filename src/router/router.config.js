@@ -56,6 +56,12 @@ export const asyncRouterMap = [
             name:'order-index',
             component: () => import('@/views/order/AllOrder'),
             meta: { title: '全部订单'}
+          },
+          {
+            path:'/order/placeOrder',
+            name:'place-order',
+            component: () => import('@/views/order/placeOrder/PlaceOrder'),
+            meta:{title:'快速下单'}
           }
         ]
       }
