@@ -32,7 +32,7 @@ const AppDeviceEnquire = {
           break
         case DEVICE_TYPE.TABLET:
           $store.commit('TOGGLE_DEVICE', 'tablet')
-          $store.dispatch('setSidebar', false)
+          $store.dispatch('setSidebar', true)
           break
         case DEVICE_TYPE.MOBILE:
         default:

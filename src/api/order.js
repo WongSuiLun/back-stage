@@ -2,9 +2,13 @@ import request from '@/utils/request'
 
 export function getOrders (params) {
   return request({
-    url: '/orders',
+    url: 'http://192.168.101.115:8089/api/orders',
     method: 'get',
-    params
+    params,
+    headers:{
+      company:60,
+      shop:51
+    }
   })
 }
 

@@ -20,7 +20,6 @@
 </template>
 <script>
 import { getOrders } from '@/api/order'
-import {dateStringToDateNum,getNowFormatDate} from '@/utils/date'
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
@@ -58,6 +57,7 @@ export default {
   },
   created(){
     this.initData()
+   
   },
   methods: {
     initData(){

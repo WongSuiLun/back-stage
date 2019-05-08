@@ -5,6 +5,12 @@
       :type="collapsed ? 'menu-unfold' : 'menu-fold'"
       @click="toggle"
     />
+    <a-tag
+      color="#87d068"
+      style="margin-left:8px;"
+      @click="jumpToCompanyChoose"
+    >切换
+    </a-tag>
     <div class="user-menu">
       <user-menu></user-menu>
     </div>
@@ -12,9 +18,9 @@
 </template>
 
 <script>
-import UserMenu from '@/components/UserMenu/UserMenu'
+import UserMenu from "@/components/UserMenu/UserMenu";
 export default {
-  name: 'GlobalHeader',
+  name: "GlobalHeader",
   components: {
     UserMenu
   },
@@ -25,21 +31,24 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       visible: true,
       oldScrollTop: 0
-    }
+    };
   },
   methods: {
-    toggle () {
-      this.$emit('toggle')
+    toggle() {
+      this.$emit("toggle");
+    },
+    jumpToCompanyChoose(){
+      this.$router.push('/company-choose')
     }
   },
-  beforeDestroy () {
-    document.body.removeEventListener('scroll', this.handleScroll, true)
+  beforeDestroy() {
+    document.body.removeEventListener("scroll", this.handleScroll, true);
   }
-}
+};
 </script>
 
 <style lang="less">
@@ -74,7 +83,7 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
 }
-.user-menu{
-  float:right;
+.user-menu {
+  float: right;
 }
 </style>

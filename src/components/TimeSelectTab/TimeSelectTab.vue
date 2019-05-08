@@ -15,7 +15,9 @@
             {{tab.name}}
           </span>
         </div>
-        <a-range-picker @change="onChange" />
+        <div class="time-range">
+          <a-range-picker @change="onChange" />
+        </div>
       </div>
       <div class="header-setting">
         <a-icon
@@ -122,8 +124,12 @@ export default {
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      .time-range{
+        min-width: 250px;
+      }
       .header-tab {
         height: 50px;
+        overflow: hidden;
         .tab-item {
           cursor: pointer;
           line-height: 50px;

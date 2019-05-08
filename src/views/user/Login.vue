@@ -40,6 +40,42 @@
           />
         </a-input>
       </a-form-item>
+      <a-row :gutter="16">
+        <a-col
+          class="gutter-row"
+          :span="14"
+        >
+          <a-form-item style="margin:5px 0">
+            <a-input
+              size="large"
+              type="text"
+              placeholder="验证码"
+              v-decorator="['captcha_code', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]"
+            >
+              <a-icon
+                slot="prefix"
+                type="mail"
+                :style="{ color: 'rgba(0,0,0,.25)' }"
+              />
+            </a-input>
+          </a-form-item>
+        </a-col>
+        <a-col
+          class="gutter-row"
+          :span="10"
+        >
+          <img
+            :src="captchaImg"
+            class="img-captcha"
+            title="点击切换"
+            alt="暂无图片"
+            @click="getCaptch"
+          >
+        </a-col>
+      </a-row>
+      <a-form-item style="margin:0">
+        <a-checkbox v-decorator="['rememberMe']" :defaultChecked="rememberMeDefaultChecked">自动登录</a-checkbox>
+      </a-form-item>
       <a-form-item>
         <a-button
           type="primary"
@@ -88,7 +124,7 @@
               size="large"
               type="text"
               placeholder="验证码"
-              v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]"
+              v-decorator="['captcha_code', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]"
             >
               <a-icon
                 slot="prefix"
@@ -132,33 +168,58 @@
   </div>
 </template>
 <script>
-import { login } from "@/api/auth";
+import { authorizations, captchas } from "@/api/auth";
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
-      toggleFormVisible: true
+      toggleFormVisible: true,
+      captchaImg: "",
+      captcha_key: "",
+      rememberMeDefaultChecked:true
     };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this);
   },
+  created() {
+    this.getCaptch();
+  },
+  mounted() {
+    this.setCookieAccount();
+  },
   methods: {
+    getCaptch() {
+      captchas().then(res => {
+        console.log(res);
+        this.captchaImg = res.data.captcha_image_content;
+        this.captcha_key = res.data.captcha_key;
+      });
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
-          login(values)
+          values.captcha_key = this.captcha_key;
+          authorizations(values)
             .then(res => {
-              this.$store.commit('SET_TOKEN',res.data.result.token)
-              this.$ls.set('Access-Token','123','1000')
-              this.$router.push({ name: 'dashboard' })
+              this.saveAcount(values);
+              if(res.data){
+                console.log(res.data)
+                let token = `${res.data.token_type} ${res.data.access_token}`
+                let expires_in = res.data.expires_in
+                console.log(token)
+                this.$store.commit("SET_TOKEN", token);
+                this.$ls.set("Access-Token", token, expires_in*1000);
+              }
+              this.$router.push({ name: "company-choose" });
             })
-            .catch((err) => {
-              console.log(err)
+            .catch(err => {
+              console.log(err.response);
               this.$notification["error"]({
                 message: "登陆失败",
-                description:err
+                description: err.response ? err.response.data.message : ""
               });
             });
         }
@@ -166,6 +227,30 @@ export default {
     },
     toggleForm() {
       this.toggleFormVisible = !this.toggleFormVisible;
+    },
+    setCookieAccount() {
+      console.log(document.cookie);
+      if (Cookies.get("rememberMe")) {
+        this.form.setFieldsValue({
+          username: Cookies.get("username"),
+          password: Cookies.get("password"),
+          rememberMe: true
+        });
+        this.rememberMeDefaultChecked = true
+      }else{
+        this.rememberMeDefaultChecked = false
+      }
+    },
+    saveAcount(values) {
+      if (values.rememberMe) {
+        Cookies.set("username", values.username, { expires: 7 });
+        Cookies.set("password", values.password, { expires: 7 });
+        Cookies.set("rememberMe", values.rememberMe, { expires: 7 });
+      } else {
+        Cookies.remove("username");
+        Cookies.remove("password");
+        Cookies.remove("rememberMe");
+      }
     }
   }
 };
@@ -184,6 +269,10 @@ export default {
 </style>
 <style lang="less" scoped>
 .user-layout-login {
+  .img-captcha {
+    cursor: pointer;
+  }
+  overflow: hidden;
   label {
     font-size: 14px;
   }

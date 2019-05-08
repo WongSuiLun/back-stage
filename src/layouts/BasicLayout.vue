@@ -5,7 +5,7 @@
         v-if="isMobile()"
         :wrapClassName="`drawer-sider`"
         placement="left"
-        :closable="false"
+        :closable="true"
         @close="onClose"
         width="240"
         :visible="!collapsed"
@@ -30,7 +30,7 @@
       >
         <global-logo />
 
-        <global-menu />
+        <global-menu/>
       </a-layout-sider>
       <a-layout>
         <global-header
@@ -42,7 +42,6 @@
           <router-view></router-view>
         </div>
         <a-layout-footer>
-          {{sidebar}}
           <global-footer />
         </a-layout-footer>
       </a-layout>

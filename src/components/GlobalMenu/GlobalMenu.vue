@@ -24,15 +24,20 @@
 
 <script>
 import { mapState } from "vuex";
+import { mixinDevice } from "@/utils/mixin";
 export default {
   data() {
     return {
-      openKeys: [this.$router.currentRoute.matched[this.$router.currentRoute.matched.length-2].path],
-      currentPath:[this.$router.currentRoute.path]
+      openKeys: [
+        this.$router.currentRoute.matched[
+          this.$router.currentRoute.matched.length - 2
+        ].path
+      ],
+      currentPath: [this.$router.currentRoute.path]
     };
   },
-  created() {
-  },
+  mixins: [mixinDevice],
+  created() {},
   computed: {
     ...mapState({
       addRouters: state => state.permissinon.addRouters
@@ -62,8 +67,10 @@ export default {
     $route: function(newVal) {
       this.currentPath = [];
       this.currentPath.push(newVal.path);
-      this.openKeys = []
-      this.openKeys.push(newVal.matched[newVal.matched.length-2].path);
+      if (!this.isMobile()) {
+        this.openKeys = [];
+        this.openKeys.push(newVal.matched[newVal.matched.length - 2].path);
+      }
     }
   }
 };

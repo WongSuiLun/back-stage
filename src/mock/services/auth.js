@@ -34,5 +34,22 @@ const logout = () => {
   return builder({}, '[测试接口] 注销成功')
 }
 
+const getAccountCompany = (options)=>{
+  const body = getBody(options)
+  console.log('mock: body', body)
+  let AllCompany = []
+  const status = ['success','fail']
+  for(let i = 0; i < 500 ; i++){
+    AllCompany.push({
+      'company_title':Mock.Random.cword(5,15),
+      'main_info':Mock.Random.cword(10,25),
+      'status':status[Math.floor(Math.random()*2)],
+      'indate':Mock.mock('@datetime')
+    })
+  }
+  return builder(AllCompany)
+}
+
 Mock.mock(/\/auth\/login/, 'post', login)
 Mock.mock(/\/auth\/logout/, 'post', logout)
+Mock.mock(/\/auth\/getCompany/, 'get', getAccountCompany)
