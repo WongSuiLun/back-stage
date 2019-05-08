@@ -9,6 +9,7 @@ import {TimeSelectTabPane} from './TimeSelectTab'
 import NumberInfo from './NumberInfo'
 import RadioBtn from './RadioBtn'
 import UnderLine from './UnderLine'
+import DatePicker from './DatePicker'
 // import ChartCard from './Charts/ChartCard'
 export {
   ExceptionPage, 
@@ -21,5 +22,6 @@ export {
   TimeSelectTabPane,
   NumberInfo,
   RadioBtn,
-  UnderLine
+  UnderLine,
+  DatePicker
 }

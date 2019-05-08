@@ -2,14 +2,16 @@
   <div>
     <radio-btn :items="item" v-model="roomType"></radio-btn>
     <radio-btn :items="goodList" v-model="activeGood"></radio-btn>
+    <date-picker></date-picker>
   </div>
 </template>
 
 <script>
-import {RadioBtn} from '@/components'
+import {RadioBtn,DatePicker} from '@/components'
 export default {
   components:{
-    RadioBtn
+    RadioBtn,
+    DatePicker
   },
   data(){
     return {
