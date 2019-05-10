@@ -2,12 +2,7 @@
   <div class="my—date-picker">
     <div class="month-choose">
       <div>
-        <div class="btn" @click="preMouth" title="上个月">
-          <font-awesome-icon
-            :style="styleObject"
-            icon="chevron-left"
-          />
-        </div>
+        <a-button icon="left"  @click="preMouth" title="上个月"></a-button>
       </div>
       <div
         class="month-item"
@@ -22,12 +17,7 @@
         class="month-item"
         @click="changeMonth(2)"
       >{{offsetMonth(2).year}}年{{offsetMonth(2).month}}月</div>
-      <div class="btn" @click="preMouth" title="下个月">
-        <font-awesome-icon
-          :style="styleObject"
-          icon="chevron-right"
-        />
-      </div>
+      <a-button icon="right"  @click="nextMouth" title="下个月"></a-button>
     </div>
     <div class="date-week">
       <div class="week-header">
@@ -230,6 +220,7 @@ export default {
       flex-grow: 1;
       line-height: 40px;
       font-size: 16px;
+      text-align: center;
       cursor: pointer;
       &.active {
         color: #fff;

@@ -55,6 +55,7 @@ export default {
     border:1px solid #ddd;
     .date-style{
       font-size: 16px;
+      text-align: center;
     }
   }
   .active{

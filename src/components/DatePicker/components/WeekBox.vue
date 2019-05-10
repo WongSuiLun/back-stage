@@ -27,6 +27,7 @@ export default {
   .week-box{
     font-size: 16px;
     line-height: 30px;
+    text-align: center;
     height:30px;
   }
 </style>
