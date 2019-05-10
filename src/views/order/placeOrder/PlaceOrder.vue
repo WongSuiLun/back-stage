@@ -5,9 +5,18 @@
     <a-row>
       <a-col
         :sm="24"
-        :md="16"
+        :md="10"
+        :lg="14"
       >
         <good-select></good-select>
+      </a-col>
+      <a-col
+        :sm="24"
+        :md="24"
+        :lg="10"
+        
+      >
+        <date-price></date-price>
       </a-col>
     </a-row>
     <order-detail></order-detail>
@@ -57,6 +66,7 @@ import GoodSelect from "./GoodSelect";
 import OrderDetail from "./OrderDetail";
 import CustomerInfo from "./CustomerInfo";
 import BusOrder from "./BusOrder";
+import DatePrice from "./DatePrice";
 export default {
   components: {
     UserSearch,
@@ -64,7 +74,8 @@ export default {
     GoodSelect,
     OrderDetail,
     CustomerInfo,
-    BusOrder
+    BusOrder,
+    DatePrice
   },
   data() {
     return {
