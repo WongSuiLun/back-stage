@@ -1,6 +1,7 @@
 <template>
   <div class="logo">
-    御温泉度假村
+    <img src="./logo.png" width="35" height="60"/>
+    <span v-if="isDesktop()">御温泉度假村</span>
     
     <!-- <a-dropdown>
       <a-menu slot="overlay">
@@ -19,7 +20,10 @@
 </template>
 
 <script>
-export default {};
+import { mixinDevice } from "@/utils/mixin";
+export default {
+  mixins: [mixinDevice],
+};
 </script>
 <style lang="less" scoped>
 .logo {
