@@ -64,6 +64,21 @@ export const asyncRouterMap = [
             meta:{title:'快速下单'}
           }
         ]
+      },
+      {
+        path:'/good',
+        name:'good',
+        redirect:'/good/add',
+        meta:{title:'商品',icon:'shop'},
+        component:RouteView,
+        children:[
+          {
+            path:'/good/add',
+            name:'add-good',
+            component:() => import('@/views/good/AddGood'),
+            meta:{title:'添加商品'}
+          }
+        ]
       }
     ]
   },
