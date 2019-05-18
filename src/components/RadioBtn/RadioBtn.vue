@@ -1,5 +1,5 @@
 <template>
-  <div class="radio-button">
+  <div class="radio-button" ref="bar">
     <base-button
       v-for="(item,index) in items"
       :type="index==activeIndex?'red':'default'"
@@ -31,6 +31,9 @@ export default {
     }else{
       this.activeIndex = this.items.indexOf(this.radioValue)
     }
+  },
+  mounted(){
+    console.log(this.$refs)
   },
   computed: {
     radioValue: {

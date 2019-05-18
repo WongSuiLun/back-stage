@@ -202,6 +202,7 @@ export default {
         if (!err) {
           console.log("Received values of form: ", values);
           values.captcha_key = this.captcha_key;
+           this.$router.push({ name: "company-choose" });
           authorizations(values)
             .then(res => {
               this.saveAcount(values);

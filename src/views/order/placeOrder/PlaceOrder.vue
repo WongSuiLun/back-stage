@@ -5,7 +5,7 @@
     <a-row>
       <a-col
         :sm="24"
-        :md="10"
+        :md="24"
         :lg="14"
       >
         <good-select></good-select>

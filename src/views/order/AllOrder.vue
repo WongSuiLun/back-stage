@@ -1,5 +1,13 @@
 <template>
   <div class="warp">
+    <div class="btn-control">
+      <a-button type="primary" class="btn">搜索</a-button>
+      <a-button type="primary" class="btn">核销选中订单</a-button>
+      <a-button type="primary" class="btn">撤销核销记录</a-button>
+      <a-button type="primary" class="btn">导出订单</a-button>
+      <a-button type="primary" class="btn">酒店前台输出接口文档</a-button>
+      <a-checkbox>不显示已取消订单</a-checkbox>
+    </div>
     <a-table
       bordered
       size="middle"
@@ -7,6 +15,7 @@
       @change="handleTableChange"
       :columns="columns"
       :dataSource="dataSource"
+      :pagination="paginationConfig"
     >
       <div
         slot="filterDropdown"
@@ -15,7 +24,7 @@
       >
         <a-input
           v-ant-ref="c => searchInput = c"
-          :placeholder="`Search ${column.dataIndex}`"
+          :placeholder="`查询 ${column.title}`"
           :value="selectedKeys[0]"
           @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
           @pressEnter="() => handleSearch(selectedKeys, confirm)"
@@ -27,8 +36,8 @@
           icon="search"
           size="small"
           style="width: 90px; margin-right: 8px"
-        >Search</a-button>
-        <a-button @click="() => handleReset(clearFilters)" size="small" style="width: 90px">Reset</a-button>
+        >查询</a-button>
+        <a-button @click="() => handleReset(clearFilters)" size="small" style="width: 90px">重置</a-button>
       </div>
       <a-icon
         slot="filterIcon"
@@ -38,25 +47,25 @@
       />
 
       <span slot="order_type" slot-scope="order_type">
-        <a-tag color="blue">{{order_type.substring(0,2)}}</a-tag>
+        <a-tag :color="setTagColorByOrderType(order_type.substring(0,2))">{{order_type.substring(0,2)}}</a-tag>
       </span>
       <span slot="shop_name" slot-scope="detail">{{getGoodName(detail)}}</span>
       <span slot="unpaid" slot-scope="order">{{order.total-order.payed_sum}}</span>
       <span slot="people" slot-scope="order">
         <p style="margin:0">
-          <a-tag color="blue">普通</a-tag>
+          <a-tag :color="setTagColorByCustomerType('普通')">普通</a-tag>
           {{order}}
         </p>
         <p style="margin:0">
-          <a-tag color="blue">普通</a-tag>
+          <a-tag :color="setTagColorByCustomerType('白银')">普通</a-tag>
           {{order}}
         </p>
         <p style="margin:0">
-          <a-tag color="blue">普通</a-tag>
+          <a-tag :color="setTagColorByCustomerType('黄金')">普通</a-tag>
           {{order}}
         </p>
         <p style="margin:0">
-          <a-tag color="blue">普通</a-tag>
+          <a-tag :color="setTagColorByCustomerType('铂金')">普通</a-tag>
           {{order}}
         </p>
       </span>
@@ -66,7 +75,6 @@
         <a href="javascript:;">核销</a>
         <a-divider type="vertical"/>
         <a href="javascript:;">更多</a>
-        <a-divider type="vertical"/>
         <!-- <a href="javascript:;">详情</a>
         <a-divider type="vertical"/>
         <a href="javascript:;">退款</a> 
@@ -78,6 +86,11 @@
 </template>
 <script>
 import { getOrders } from "@/api/order";
+// 表格分页配置
+const paginationConfig = {
+  showQuickJumper: true,
+  defaultCurrent: 1
+};
 // 表格配置项
 const columns = [
   {
@@ -184,15 +197,28 @@ const columns = [
   }
 ];
 
+const orderTypeConfig = {
+  '官网':'orange',
+  '保留':'blue',
+  '积分':'purple'
+}
+
+const customerVipConfig = {
+  '普通':'#2db7f5',
+  '白银':'#c0c0c0',
+  '黄金':'#CC9900',
+  '铂金':'#8886dc'
+}
+
 export default {
   data() {
     return {
       columns,
       selectedRowKeys: [], // Check here to configure the default column
       loading: false,
-
       dataSource: [],
-      goodSource: []
+      goodSource: [],
+      paginationConfig
     };
   },
   computed: {
@@ -244,6 +270,12 @@ export default {
     onSelectChange(selectedRowKeys) {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
+    },
+    setTagColorByOrderType(order_type){
+      return orderTypeConfig[order_type]
+    },
+    setTagColorByCustomerType(customer_type){
+      return customerVipConfig[customer_type]
     }
   }
 };
@@ -252,9 +284,13 @@ export default {
 .warp {
   background: #fff;
   padding: 15px 25px;
+  .btn-control {
+    padding: 5px 0 15px 0;
+    .btn {
+      margin-right: 8px;
+    }
+  }
 }
-</style>
-<style scoped>
 .custom-filter-dropdown {
   padding: 8px;
   border-radius: 4px;

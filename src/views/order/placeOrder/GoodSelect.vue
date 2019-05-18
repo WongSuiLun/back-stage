@@ -41,7 +41,19 @@ export default {
   }
 }
 </script>
-
-<style>
-
+<style lang="less" scoped>
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+::-webkit-scrollbar  
+{  
+    width: 16px;  /*滚动条宽度*/
+    height: 8px;  /*滚动条高度*/
+}  
+  
+  
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+    border-radius: 8px;  /*滚动条的圆角*/
+    background-color: #ddd;  /*滚动条的背景颜色*/
+}
 </style>
