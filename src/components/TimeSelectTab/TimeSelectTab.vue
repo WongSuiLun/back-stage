@@ -21,7 +21,7 @@
       </div>
       <div class="header-setting">
         <a-icon
-          type="up"
+          :type="showContent?'up':'down'"
           class="action"
           style="font-size:20px;line-height:50px;"
           @click.native="toggleShowContent"

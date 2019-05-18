@@ -67,10 +67,10 @@ export default {
     $route: function(newVal) {
       this.currentPath = [];
       this.currentPath.push(newVal.path);
-      if (!this.isMobile()) {
-        this.openKeys = [];
-        this.openKeys.push(newVal.matched[newVal.matched.length - 2].path);
-      }
+      // if (!this.isMobile()) {
+      //   this.openKeys = [];
+      //   this.openKeys.push(newVal.matched[newVal.matched.length - 2].path);
+      // }
     }
   }
 };

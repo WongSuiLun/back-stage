@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
     <img src="./logo.png" width="35" height="60"/>
-    <span v-if="isDesktop()">御温泉度假村</span>
+    <span v-if="isDesktop()&&!sidebar">御温泉度假村</span>
     
     <!-- <a-dropdown>
       <a-menu slot="overlay">
@@ -20,9 +20,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { mixinDevice } from "@/utils/mixin";
 export default {
   mixins: [mixinDevice],
+  computed:{
+     ...mapState({
+      sidebar: state => state.app.sidebar
+    })
+  }
 };
 </script>
 <style lang="less" scoped>
