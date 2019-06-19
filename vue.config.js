@@ -7,7 +7,7 @@ module.exports = {
     hotOnly:false,
     proxy:{
       '/chpc':{
-        target:'http://192.168.108.125/',
+        target:'http://192.168.119.102/',
         changeOrigin:true,
         ws:true,
         pathRewrite:{"^/chpc":""}

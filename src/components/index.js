@@ -10,6 +10,8 @@ import NumberInfo from './NumberInfo'
 import RadioBtn from './RadioBtn'
 import UnderLine from './UnderLine'
 import DatePicker from './DatePicker'
+import PicUpload from './PicUpload'
+import UploadBaseButton from './UploadBaseButton'
 // import ChartCard from './Charts/ChartCard'
 export {
   ExceptionPage, 
@@ -23,5 +25,7 @@ export {
   NumberInfo,
   RadioBtn,
   UnderLine,
-  DatePicker
+  DatePicker,
+  PicUpload,
+  UploadBaseButton
 }

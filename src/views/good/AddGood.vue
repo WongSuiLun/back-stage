@@ -55,29 +55,10 @@
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享描述">
             <a-input id="validating" placeholder="I'm the content is being validated"/>
           </a-form-item>
-
           <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品图片">
-            <!-- <div class="upload-img"></div>
-            <img style="width: 104px;height:104px" :src="img.thumbUrl" v-for="img in fileList" :key="img"/> -->
-            <div class="clearfix" >
-              <a-upload
-                action="//jsonplaceholder.typicode.com/posts/"
-                listType="picture-card"
-                :fileList="fileList"
-                @preview="handlePreview"
-                @change="handleChange"
-              >
-                <div v-if="fileList.length < 10">
-                  <a-icon type="plus"/>
-                  <div class="ant-upload-text">上传图片</div>
-                </div>
-              </a-upload>
-              <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel"  draggable="true" >
-                <img style="width: 100%" :src="previewImage">
-              </a-modal>
-            </div>
-          </a-form-item>
-
+            <!-- <under-line></under-line> -->
+            <PicUpload v-model="imgList" :max="8"></PicUpload>
+          </a-form-item>  
         </a-form>
       </div>
     </div>
@@ -85,7 +66,11 @@
 </template>
 
 <script>
+import { PicUpload } from "@/components";
 export default {
+  components: {
+    PicUpload
+  },
   data() {
     return {
       labelCol: {
@@ -99,6 +84,7 @@ export default {
       },
       previewVisible: false,
       previewImage: "",
+      imgList:[],
       fileList: [
         {
           uid: "-1",
@@ -109,6 +95,11 @@ export default {
         }
       ]
     };
+  },
+  watch:{
+    imgList(val){
+      console.log(val)
+    }
   },
   methods: {
     handleCancel() {

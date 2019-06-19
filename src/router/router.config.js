@@ -79,6 +79,21 @@ export const asyncRouterMap = [
             meta:{title:'添加商品'}
           }
         ]
+      },
+      {
+        path:'/wechat',
+        name:'wechat',
+        redirect:'/wechat/AutoResponse',
+        meta:{title:'微信设置',icon:'wechat'},
+        component:RouteView,
+        children:[
+          {
+            path:'/wechat/AutoResponse',
+            name:'auto-response',
+            component:() => import('@/views/wechat/autoResponse/index'),
+            meta:{title:'自动回复'}
+          }
+        ]
       }
     ]
   },
