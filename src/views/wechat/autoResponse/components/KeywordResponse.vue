@@ -47,7 +47,7 @@
                 >
                   <mark
                     v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-                    :key="i"
+                    :key="i+'1'"
                     class="highlight"
                   >{{fragment}}</mark>
                   <template v-else>{{fragment}}</template>
@@ -89,30 +89,6 @@ const data = [
     age: 32,
     address: "London No. 2 Lake Park"
   },
-  {
-    key: "1",
-    name: "儿童票",
-    age: 32,
-    address: "New York No. 1 Lake Park"
-  },
-  {
-    key: "2",
-    name: "Joe Black",
-    age: 42,
-    address: "London No. 1 Lake Park"
-  },
-  {
-    key: "3",
-    name: "Jim Green",
-    age: 32,
-    address: "Sidney No. 1 Lake Park"
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park"
-  }
 ];
 
 export default {
@@ -189,6 +165,7 @@ export default {
         },
         {
           title: "操作",
+          rowKey:"213",
           scopedSlots: {
             filterDropdown: "filterDropdown",
             filterIcon: "filterIcon",

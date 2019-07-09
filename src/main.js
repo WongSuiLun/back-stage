@@ -25,7 +25,6 @@ Vue.use(Antd)
 Vue.use(Viser)
 Vue.use(Storage,options)
 
-
 new Vue({
   router,
   store,

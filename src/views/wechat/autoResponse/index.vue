@@ -10,7 +10,7 @@
           <a-tab-pane tab="收到消息回复" key="2" forceRender>
             <message-response></message-response>
           </a-tab-pane>
-          <a-tab-pane tab="收到关注回复" key="3">
+          <a-tab-pane tab="被关注回复" key="3">
             <attention-response></attention-response>
           </a-tab-pane>
         </a-tabs>

@@ -3,7 +3,7 @@
     <div class="upload-action">
       <input
         type="file"
-        v-show="false"
+        v-show="inputVisible"
         @change="imgInputChange"
         ref="input-img"
         multiple
@@ -25,7 +25,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      inputVisible:false
+    };
   },
   props: {
     icon: {
@@ -41,7 +43,27 @@ export default {
       default: "上传图片"
     }
   },
-  methods: {}
+  methods: {
+    imgInputChange(e) {
+      let _this = this;
+      var files = e.target.files[0];
+      this.$refs["input-img"].value = null;
+      if (!e || !window.FileReader) return; // 看支持不支持FileReader
+      let reader = new FileReader();
+      reader.readAsDataURL(files); // 这里是最关键的一步，转换就在这里
+      reader.onloadend = function() {
+        _this.imgList.push({
+          src: this.result,
+          hover: false,
+          leftShow: false,
+          rightShow: false
+        });
+      };
+    },
+    clickUpload(e){
+      
+    }
+  }
 };
 </script>
 

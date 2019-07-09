@@ -92,6 +92,12 @@ export const asyncRouterMap = [
             name:'auto-response',
             component:() => import('@/views/wechat/autoResponse/index'),
             meta:{title:'自动回复'}
+          },
+          {
+            path:'/wechat/customizeMenu',
+            name:'auto-response',
+            component:() => import('@/views/wechat/customizeMenu/index'),
+            meta:{title:'自定义菜单'}
           }
         ]
       }

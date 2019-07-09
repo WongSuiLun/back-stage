@@ -12,6 +12,7 @@ import UnderLine from './UnderLine'
 import DatePicker from './DatePicker'
 import PicUpload from './PicUpload'
 import UploadBaseButton from './UploadBaseButton'
+import WechatContentTab from './WechatContentTab'
 // import ChartCard from './Charts/ChartCard'
 export {
   ExceptionPage, 
@@ -27,5 +28,6 @@ export {
   UnderLine,
   DatePicker,
   PicUpload,
-  UploadBaseButton
+  UploadBaseButton,
+  WechatContentTab
 }

@@ -1,14 +1,20 @@
 <template>
     <div>
-        <content-warp></content-warp>
+        <content-warp>
+            <div>
+                 <wechat-content-tab></wechat-content-tab>
+            </div>
+        </content-warp>
     </div>
 </template>
 
 <script>
 import ContentWarp from './ContentWarp'
+import { WechatContentTab } from "@/components";
 export default {
     components:{
-        ContentWarp
+        ContentWarp,
+        WechatContentTab
     }
 
 }
