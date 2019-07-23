@@ -100,6 +100,45 @@ export const asyncRouterMap = [
             meta:{title:'自定义菜单'}
           }
         ]
+      },
+      {
+        path:'/linen',
+        name:'linen',
+        redirect:'/linen/linenManagement',
+        meta:{title:'布草管理',icon:'wechat'},
+        component:RouteView,
+        children:[
+          {
+            path:'/linen/linenManagement',
+            name:'linen-management',
+            component:() => import('@/views/linen/linenManagement/linenManagement'),
+            meta:{title:'布草类型'}
+          },
+          {
+            path:'/linen/linenStorage',
+            name:'linen-Storage',
+            component:() => import('@/views/linen/linenManagement/linenManagement'),
+            meta:{title:'布草入库'}
+          },
+          {
+            path:'/linen/linenScan',
+            name:'linen-scan',
+            component:() => import('@/views/linen/linenManagement/linenManagement'),
+            meta:{title:'布草扫描'}
+          },
+          {
+            path:'/linen/linenSetting',
+            name:'linen-setting',
+            component:() => import('@/views/linen/linenManagement/linenManagement'),
+            meta:{title:'仓库设置'}
+          },
+          {
+            path:'/linen/linenRoomType',
+            name:'linen-roomType',
+            component:() => import('@/views/linen/linenManagement/linenManagement'),
+            meta:{title:'房型布草'}
+          }
+        ]
       }
     ]
   },

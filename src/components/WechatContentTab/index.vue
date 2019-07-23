@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="weui-desktop-reply-content">
-      <a-tabs defaultActiveKey="0" @change="handleTabChange">
-          <a-tab-pane key="0">
+      <a-tabs :defaultActiveKey="data.dataType" @change="handleTabChange">
+        <a-tab-pane :key="typeEnum.media">
           <span slot="tab">
             <my-icon type="icon-weixintuwenxiaoxi"></my-icon>图文消息
           </span>
           <div style="display: block;">
-            <pic-text-message></pic-text-message>
+            <pic-text-message :data="picTextMessageData"></pic-text-message>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="1">
+        <a-tab-pane :key="typeEnum.text">
           <span slot="tab">
             <a-icon type="font-size" />文字
           </span>
@@ -32,7 +32,7 @@
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="2">
+        <a-tab-pane :key="typeEnum.pic">
           <span slot="tab">
             <a-icon type="picture" />图片
           </span>
@@ -47,19 +47,19 @@
             </a-row>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="3">
+        <a-tab-pane :key="typeEnum.voice">
           <span slot="tab">
             <a-icon type="sound" />语音
           </span>
           功能未开发
         </a-tab-pane>
-        <a-tab-pane key="4">
+        <a-tab-pane :key="typeEnum.video">
           <span slot="tab">
             <a-icon type="camera" />视频
           </span>
           功能未开发
         </a-tab-pane>
-        <a-tab-pane key="5">
+        <a-tab-pane :key="typeEnum.coupon">
           <span slot="tab">
             <a-icon type="credit-card" />卡券
           </span>
@@ -68,19 +68,19 @@
       </a-tabs>
     </div>
     <picker set="emojione" class="emoji_picker" @select="addEmoji" v-show="visible" />
-    
   </div>
 </template>
 
 <script>
-import { Icon } from 'ant-design-vue'
+import { Icon } from "ant-design-vue";
 const MyIcon = Icon.createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_799157_trqlwrrcap.js', // 在 iconfont.cn 上生成
+  scriptUrl: "//at.alicdn.com/t/font_799157_trqlwrrcap.js" // 在 iconfont.cn 上生成
 });
 
 import { Picker } from "emoji-mart-vue";
-import {UploadBaseButton} from '@/components'
-import PicTextMessage from './components/PicTextMessage'
+import { UploadBaseButton } from "@/components";
+import PicTextMessage from "./components/PicTextMessage";
+import { mkdir } from "fs";
 export default {
   components: {
     Picker,
@@ -88,12 +88,36 @@ export default {
     MyIcon,
     PicTextMessage
   },
+  props: {
+    data: {
+    
+    }
+  },
   data() {
     return {
       innerText: "123123",
       visible: false,
-      lastEditRange: null
+      lastEditRange: null,
+      typeEnum: {
+        media: "media",
+        text: "text",
+        pic: "pic",
+        voice: "voice",
+        video: "video",
+        coupon: "coupon"
+      }
     };
+  },
+  computed:{
+    picTextMessageData(){
+      if(this.data.type == this.typeEnum.media){
+        return this.data.contentData
+      }
+      return null
+    }
+  },
+  created(){
+    
   },
   methods: {
     changeText(e) {

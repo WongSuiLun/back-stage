@@ -13,6 +13,7 @@ import './permission'
 import './mock'
 import Storage from 'vue-ls';
 
+
 const options = {
   namespace: 'ywq__', // key prefix
   name: 'ls', // name variable Vue.[ls] or this.[$ls],
@@ -24,6 +25,7 @@ Vue.config.productionTip = false
 Vue.use(Antd)
 Vue.use(Viser)
 Vue.use(Storage,options)
+
 
 new Vue({
   router,
