@@ -134,7 +134,7 @@ export default {
         return 
       }
       if (this.getActiveMenuItemSetting.hasOwnProperty("sub_button")) {
-        return this.getActiveMenuItemSetting.sub_button.list.length || -1;
+        // return this.getActiveMenuItemSetting.sub_button.list.length || -1;
       }
       return length;
     },

@@ -47,7 +47,8 @@
         </div>
       </div>
     </div>
-    <a-button style="width:100px;margin-top:20px;" @click="sortMenu">{{isOnSort?"完成":"菜单排序"}}</a-button>
+    <a-button style="width:100px;margin-top:20px;" @click="finishSortMenu" v-show="isOnSort">完成</a-button>
+    <a-button style="width:100px;margin-top:20px;" @click="sortMenu" v-show="!isOnSort">菜单排序</a-button>
   </div>
 </template>
 
@@ -63,21 +64,11 @@ export default {
   data() {
     return {
       maxSubMenuLength: 5,
-      items: [
-        { name: "Item 4" },
-        { name: "Item 5" },
-        { name: "Item 1" },
-        { name: "Item 2" },
-        { name: "Item 3" }
-      ],
       sortMenuList: []
     };
   },
   created() {
     this.init();
-    this.sortMenuList.push(this.sortItemsOne);
-    this.sortMenuList.push(this.sortItemsTwo);
-    this.sortMenuList.push(this.sortItemsThree);
   },
   computed: {
     ...mapState({
@@ -106,13 +97,15 @@ export default {
     },
     getSubMenuList(subMenu) {
       if (subMenu.hasOwnProperty("sub_button")) {
-        return subMenu.sub_button.list;
+        if (subMenu.sub_button.hasOwnProperty("list"))
+          return subMenu.sub_button.list;
       }
       return null;
     },
     getSubMenuListLength(subMenu) {
       if (subMenu.hasOwnProperty("sub_button")) {
-        return subMenu.sub_button.list.length;
+        if (subMenu.sub_button.hasOwnProperty("list"))
+          return subMenu.sub_button.list.length;
       }
       return 0;
     },
@@ -138,8 +131,23 @@ export default {
       console.log(menuIndex);
     },
     sortMenu() {
-      this.$store.commit("SET_IS_ON_SORT", !this.isOnSort);
+      this.$store.commit("SET_IS_ON_SORT", true);
     },
+    finishSortMenu() {
+      // this.$store.commit("SET_IS_ON_SORT", false);
+      let menuData = [];
+      this.menu.forEach((ele, index) => {
+        let menuItem = {};
+        menuItem = ele;
+        // console.log(menuItem.hasOwnProperty('sub_button'))
+        // console.log(this.sortMenuList[index]);
+        if(menuItem.hasOwnProperty('sub_button')){
+          menuItem.sub_button = this.sortMenuList[index]
+        }
+        menuData.push(menuItem);
+      });
+      console.log(JSON.stringify(menuData))
+    }
   },
   watch: {
     menu: {
@@ -155,8 +163,9 @@ export default {
           if (val[1].hasOwnProperty("sub_button")) {
             this.sortMenuList[1] = val[1].sub_button.list;
             this.$set(this.sortMenuList, 1, val[1].sub_button.list);
+          } else {
+            this.$set(this.sortMenuList, 1, []);
           }
-           this.$set(this.sortMenuList, 1, []);
         }
         if (val.length > 2) {
           if (val[2].hasOwnProperty("sub_button")) {

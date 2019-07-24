@@ -22,6 +22,7 @@ const customizeMenuState = {
     menuActiveIndex: 0,
     subMenuActiveIndex: -1,
     isOnSort:false,//是否处于排序状态
+    sortMenuList:[]
   },
   getters: {
     getActiveMenuItemSetting: (state) => {
@@ -47,6 +48,9 @@ const customizeMenuState = {
     },
     SET_IS_ON_SORT:(state,isOnSort)=>{
       state.isOnSort = isOnSort
+    },
+    SET_SORT_MENU_LIST:(state,sortMenuList)=>{
+      state.sortMenuList = sortMenuList
     }
   },
   actions: {
