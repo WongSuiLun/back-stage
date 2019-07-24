@@ -21,6 +21,7 @@ const customizeMenuState = {
     menuEditorData: {},//右侧编辑数据
     menuActiveIndex: 0,
     subMenuActiveIndex: -1,
+    isOnSort:false,//是否处于排序状态
   },
   getters: {
     getActiveMenuItemSetting: (state) => {
@@ -44,20 +45,11 @@ const customizeMenuState = {
     SET_SUB_MENU_ACTIVE_INDEX: (state, subMenuActiveIndex) => {
       state.subMenuActiveIndex = subMenuActiveIndex
     },
+    SET_IS_ON_SORT:(state,isOnSort)=>{
+      state.isOnSort = isOnSort
+    }
   },
   actions: {
-    setSidebar({ commit }, type) {
-      commit('SET_SIDEBAR_TYPE', type)
-    },
-    CloseSidebar({ commit }) {
-      commit('CLOSE_SIDEBAR')
-    },
-    ToggleDevice({ commit }, device) {
-      commit('TOGGLE_DEVICE', device)
-    },
-    logout() {
-
-    }
   }
 }
 

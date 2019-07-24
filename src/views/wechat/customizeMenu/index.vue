@@ -9,15 +9,14 @@
             <div class="menu-setting-area">
               <mobile-preview></mobile-preview>
               <div class="menu_setting_editor">
-                <menu-editor></menu-editor>
+                <menu-editor v-show="!isOnSort"></menu-editor>
+                <div class="sort-message" v-show="isOnSort">请通过拖拽左边的菜单进行排序</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <SlickList lockAxis="y" v-model="items">
-        <SlickItem v-for="(item, index) in items" :index="index" :key="index">{{ item }}</SlickItem>
-      </SlickList>
+  
     </div>
   </div>
 </template>
@@ -62,7 +61,8 @@ export default {
       menu: state => state.customizeMenu.menu,
       isMenuActive: state => state.customizeMenu.isMenuActive,
       subMenuActiveIndex: state => state.customizeMenu.subMenuActiveIndex,
-      menuActiveIndex: state => state.customizeMenu.menuActiveIndex
+      menuActiveIndex: state => state.customizeMenu.menuActiveIndex,
+      isOnSort: state => state.customizeMenu.isOnSort
     }),
     isArrowActive() {
       if (this.isMenuActive) {
@@ -147,6 +147,11 @@ ul {
       }
     }
   }
+}
+.sort-message{
+  text-align: center;
+  height: 100%;
+  line-height: 580px;
 }
 </style>
 

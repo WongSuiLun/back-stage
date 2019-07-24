@@ -2,7 +2,7 @@
   <div>
     <div class="portable_editor">
       <div class="global_info">
-        <h4>{{getActiveMenuItemSetting.name}}</h4>
+        <h4>{{getActiveMenuItemSetting?getActiveMenuItemSetting.name:"菜单名"}}</h4>
         <a v-show="isMenuActive">删除菜单</a>
         <a v-show="!isMenuActive">删除子菜单</a>
       </div>
@@ -41,7 +41,7 @@
       <div v-show="isMenuActive">
         <p
           v-show="isActiveHasSubMenu"
-        >已为“{{getActiveMenuItemSetting.name}}”添加了{{activeMenuSubMenuLength}}个子菜单，无法设置其他内容</p>
+        >已为“{{getActiveMenuItemSetting?getActiveMenuItemSetting.name:"菜单名"}}”添加了{{activeMenuSubMenuLength}}个子菜单，无法设置其他内容</p>
         <a-form layout="horizontal" class="ant-menu_form" v-model="menuForm">
           <a-form-item label="菜单名称" help="仅支持中英文和数字，字数不超过4个汉字或8个字母">
             <a-input id="error" v-model="menuForm.name" />
@@ -126,10 +126,13 @@ export default {
       menu: state => state.customizeMenu.menu,
       isMenuActive: state => state.customizeMenu.isMenuActive,
       subMenuActiveIndex: state => state.customizeMenu.subMenuActiveIndex,
-      menuActiveIndex: state => state.customizeMenu.menuActiveIndex
+      menuActiveIndex: state => state.customizeMenu.menuActiveIndex,
     }),
     activeMenuSubMenuLength() {
       let length = -1;
+      if(!this.getActiveMenuItemSetting){
+        return 
+      }
       if (this.getActiveMenuItemSetting.hasOwnProperty("sub_button")) {
         return this.getActiveMenuItemSetting.sub_button.list.length || -1;
       }

@@ -16,35 +16,37 @@
           <span class="msg-btn-select-text">转载文章</span>
         </div>
       </div>
-      <div class="msg-item-card-media single" v-if="isSingleType">
-        <div class="msg-info">{{changeSecondLevelToTime(data.update_time)}}</div>
-        <div class="msg-media-card">
-          <div>
-            <img :src="data.news_contents[0].thumb_url" style="width:100%;" />
-          </div>
-          <div class="msg-media-card-title">
-            <span>{{data.news_contents[0].title}}</span>
-          </div>
-        </div>
-        <a class="delete-btn">删除</a>
-      </div>
-      <div class="msg-item-card-media more" v-else>
-        <div class="msg-info">{{changeSecondLevelToTime(data.update_time)}}</div>
-        <div class="msg-media-card">
-          <div class="cover">
-            <img :src="data.news_contents[0].thumb_url" style="width:100%;" />
+      <template v-else>
+        <div class="msg-item-card-media single" v-if="isSingleType">
+          <div class="msg-info">{{changeSecondLevelToTime(data.update_time)}}</div>
+          <div class="msg-media-card">
+            <div>
+              <img :src="data.news_contents[0].thumb_url" style="width:100%;" />
+            </div>
             <div class="msg-media-card-title">
               <span>{{data.news_contents[0].title}}</span>
             </div>
           </div>
-          <template v-for="(item,index) in data.news_contents">
-            <div :key="index" v-if="index>0">
-              <media-card-item :itemData="item"></media-card-item>
-            </div>
-          </template>
+          <a class="delete-btn">删除</a>
         </div>
-        <a class="delete-btn">删除</a>
-      </div>
+        <div class="msg-item-card-media more" v-else>
+          <div class="msg-info">{{changeSecondLevelToTime(data.update_time)}}</div>
+          <div class="msg-media-card">
+            <div class="cover">
+              <img :src="data.news_contents[0].thumb_url" style="width:100%;" />
+              <div class="msg-media-card-title">
+                <span>{{data.news_contents[0].title}}</span>
+              </div>
+            </div>
+            <template v-for="(item,index) in data.news_contents">
+              <div :key="index" v-if="index>0">
+                <media-card-item :itemData="item"></media-card-item>
+              </div>
+            </template>
+          </div>
+          <a class="delete-btn">删除</a>
+        </div>
+      </template>
     </div>
   </div>
 </template>

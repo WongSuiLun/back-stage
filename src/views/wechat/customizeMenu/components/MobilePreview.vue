@@ -13,15 +13,13 @@
           >
             {{menuItem.name}}
             <div class="sub_menu">
-              <ul>
+              <ul v-show="!isOnSort">
                 <li
                   v-for="(subMenuItem,subMenuIndex) in getSubMenuList(menuItem)"
                   @click.stop="handleSubMenuItemClick(subMenuIndex)"
                   :class="{select:isSubMenuBtnSelect(menuIndex,subMenuIndex)}"
                   :key="`subMenuItem${subMenuIndex}`"
-                >
-                   <a-icon type="ordered-list" /> {{subMenuItem.name}}
-                </li>
+                >{{subMenuItem.name}}</li>
                 <li
                   v-if="maxSubMenuLength>getSubMenuListLength(menuItem)"
                   @click="handleAddSubMenu(menuIndex)"
@@ -29,6 +27,17 @@
                   <a-icon type="plus" style="color:#777" />
                 </li>
               </ul>
+              <SlickList lockAxis="y" v-model="sortMenuList[menuIndex]" v-show="isOnSort">
+                <SlickItem
+                  v-for="(item, index) in sortMenuList[menuIndex]"
+                  class="sort-li"
+                  :index="index"
+                  :key="index"
+                >
+                  <a-icon type="ordered-list" />
+                  {{ item.name }}
+                </SlickItem>
+              </SlickList>
               <div class="arrow" :class="{select:isArrowActive}">
                 <i class="arrow arrow_out"></i>
                 <i class="arrow arrow_in"></i>
@@ -37,31 +46,46 @@
           </div>
         </div>
       </div>
-   
     </div>
-    <a-button type="" style="width:100px;margin-top:20px;">菜单排序</a-button>
+    <a-button style="width:100px;margin-top:20px;" @click="sortMenu">{{isOnSort?"完成":"菜单排序"}}</a-button>
   </div>
 </template>
 
 <script>
-
+import { SlickList, SlickItem } from "vue-slicksort";
 import { getWechatMenus } from "@/api/wechat";
 import { mapState } from "vuex";
 export default {
+  components: {
+    SlickList,
+    SlickItem
+  },
   data() {
     return {
-      maxSubMenuLength: 5
+      maxSubMenuLength: 5,
+      items: [
+        { name: "Item 4" },
+        { name: "Item 5" },
+        { name: "Item 1" },
+        { name: "Item 2" },
+        { name: "Item 3" }
+      ],
+      sortMenuList: []
     };
   },
   created() {
     this.init();
+    this.sortMenuList.push(this.sortItemsOne);
+    this.sortMenuList.push(this.sortItemsTwo);
+    this.sortMenuList.push(this.sortItemsThree);
   },
   computed: {
     ...mapState({
       menu: state => state.customizeMenu.menu,
       isMenuActive: state => state.customizeMenu.isMenuActive,
       subMenuActiveIndex: state => state.customizeMenu.subMenuActiveIndex,
-      menuActiveIndex: state => state.customizeMenu.menuActiveIndex
+      menuActiveIndex: state => state.customizeMenu.menuActiveIndex,
+      isOnSort: state => state.customizeMenu.isOnSort
     }),
     isArrowActive() {
       if (this.isMenuActive) {
@@ -112,6 +136,35 @@ export default {
     },
     handleAddSubMenu(menuIndex) {
       console.log(menuIndex);
+    },
+    sortMenu() {
+      this.$store.commit("SET_IS_ON_SORT", !this.isOnSort);
+    },
+  },
+  watch: {
+    menu: {
+      handler: function(val, oldVal) {
+        console.log(val);
+        if (val.length > 0) {
+          if (val[0].hasOwnProperty("sub_button")) {
+            this.sortMenuList[0] = val[0].sub_button.list;
+            this.$set(this.sortMenuList, 0, val[0].sub_button.list);
+          }
+        }
+        if (val.length > 1) {
+          if (val[1].hasOwnProperty("sub_button")) {
+            this.sortMenuList[1] = val[1].sub_button.list;
+            this.$set(this.sortMenuList, 1, val[1].sub_button.list);
+          }
+           this.$set(this.sortMenuList, 1, []);
+        }
+        if (val.length > 2) {
+          if (val[2].hasOwnProperty("sub_button")) {
+            this.sortMenuList[2] = val[2].sub_button.list;
+            this.$set(this.sortMenuList, 2, val[2].sub_button.list);
+          }
+        }
+      }
     }
   }
 };
@@ -146,11 +199,11 @@ ul {
   padding: 0;
   list-style: none;
 }
-.warp{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+.warp {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 .mobile_menu_preview {
   -webkit-background-size: contain;
@@ -193,7 +246,8 @@ ul {
         right: 0px;
         bottom: 60px;
         display: none;
-        li {
+        li,
+        .sort-li {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -206,8 +260,12 @@ ul {
             color: #44b549;
           }
         }
-        li:last-child {
+        li:last-child,
+        .sort-li:last-child {
           border-bottom: 1px solid #e7e7eb;
+        }
+        .sort-li {
+          border: 1px solid #e7e7eb;
         }
       }
       &.active {
