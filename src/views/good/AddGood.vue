@@ -1,6 +1,9 @@
 <template>
   <div class="add-good">
-    <a-steps>
+    <div class="step">
+      <wq-step :step-names="stepNames" v-model="step"></wq-step>
+    </div>
+    <!-- <a-steps>
       <a-step status="finish" title="编辑基础信息">
         <a-icon type="user" slot="icon"/>
       </a-step>
@@ -13,105 +16,39 @@
       <a-step status="wait" title="完成">
         <a-icon type="smile-o" slot="icon"/>
       </a-step>
-    </a-steps>
-    <div class="content">
-      <div class="content-item">商品类型</div>
-      <div class="content-item">产品基本信息</div>
-      <div>
-        <a-form>
-          <a-form-item
-            :label-col="labelCol"
-            :wrapper-col="wrapperCol"
-            label="编号"
-            validate-status="error"
-            help="Should be combination of numbers & alphabets"
-          >
-            <a-input id="error" placeholder="unavailable choice"/>
-          </a-form-item>
-
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="部门">
-            <a-select defaultValue="a1" style="width: 200px">
-              <a-select-option
-                v-for="i in 25"
-                :key="(i + 9).toString(36) + i"
-              >{{(i + 9).toString(36) + i}}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="房间类型">
-            <a-select defaultValue="a1" style="width: 200px">
-              <a-select-option
-                v-for="i in 25"
-                :key="(i + 9).toString(36) + i"
-              >{{(i + 9).toString(36) + i}}</a-select-option>
-            </a-select>
-          </a-form-item>
-
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品名称">
-            <a-input id="validating" placeholder="I'm the content is being validated"/>
-          </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品副标题">
-            <a-input id="validating" placeholder="I'm the content is being validated"/>
-          </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享描述">
-            <a-input id="validating" placeholder="I'm the content is being validated"/>
-          </a-form-item>
-          <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品图片">
-            <!-- <under-line></under-line> -->
-            <PicUpload v-model="imgList" :max="8"></PicUpload>
-          </a-form-item>  
-        </a-form>
-      </div>
-    </div>
+    </a-steps> -->
+    <base-info-form/>
+    <preview-good></preview-good>
   </div>
 </template>
 
 <script>
-import { PicUpload } from "@/components";
+import PreviewGood from './components/PreviewGood'
+import BaseInfoForm from './components/BaseInfoForm'
+import { WqStep } from "@/components";
 export default {
   components: {
-    PicUpload
+    PreviewGood,
+    BaseInfoForm,
+    WqStep
   },
   data() {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 },
-        md: { span: 2 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 }
-      },
-      previewVisible: false,
-      previewImage: "",
-      imgList:[],
-      fileList: [
-        {
-          uid: "-1",
-          name: "xxx.png",
-          status: "done",
-          url:
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        }
-      ]
+      stepNames:[
+        {name:"编辑基础信息",finish:true},
+        {name:"编辑价格日历",finish:false},
+        {name:"编辑详情页面",finish:false},
+        {name:"完成",finish:false},
+      ],
+      step:1
     };
   },
-  watch:{
-    imgList(val){
-      console.log(val)
-    }
+  created(){
+
+   
   },
   methods: {
-    handleCancel() {
-      this.previewVisible = false;
-    },
-    handlePreview(file) {
-      this.previewImage = file.url || file.thumbUrl;
-      this.previewVisible = true;
-    },
-    handleChange({ fileList }) {
-      this.fileList = fileList;
-    }
+    
   }
 };
 </script>
@@ -124,11 +61,15 @@ export default {
   .content {
     .content-item {
       padding: 5px 8px;
-      font-size: 18px;
-      font-weight: 700;
-      background: #eee;
+      font-size: 16px;
+      font-weight: 500;
+      color:#000;
+      background: #f6f6f6;
       margin: 8px 0;
     }
+  }
+  .step{
+    margin-bottom: 15px;
   }
 }
 </style>

@@ -11,8 +11,12 @@ import RadioBtn from './RadioBtn'
 import UnderLine from './UnderLine'
 import DatePicker from './DatePicker'
 import PicUpload from './PicUpload'
+import BaseButton from './BaseButton'
 import UploadBaseButton from './UploadBaseButton'
 import WechatContentTab from './WechatContentTab'
+import RadioBox from './RadioBox'
+import DropFixedBox from './DropFixedBox'
+import WqStep from './WqStep'
 // import ChartCard from './Charts/ChartCard'
 export {
   ExceptionPage, 
@@ -28,6 +32,10 @@ export {
   UnderLine,
   DatePicker,
   PicUpload,
+  BaseButton,
   UploadBaseButton,
-  WechatContentTab
+  WechatContentTab,
+  RadioBox,
+  DropFixedBox,
+  WqStep
 }
