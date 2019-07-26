@@ -117,19 +117,14 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品标签">
           <a-row>
-            <a-col :span="18">
-              <a-tag v-for="tag in tags" :key="`tag${tag.name}`">{{tag.name}}</a-tag>
-            </a-col>
-            <a-col :span="6">
-              <a-row>
-                <a-col :span="12">
-                  <a-input></a-input>
-                </a-col>
-                <a-col :span="12">
-                  <a-button type="primary">添加标签</a-button>
-                </a-col>
-              </a-row>
-            </a-col>
+            <a-tag
+              v-for="tag in tags"
+              :key="`tag${tag.name}`"
+              :checked="false"
+              closable="true"
+              color="#f50"
+            >{{tag.name}}</a-tag>
+            <a-button type="primary">添加标签</a-button>
           </a-row>
         </a-form-item>
 
@@ -335,6 +330,7 @@
 import { PicUpload, RadioBox } from "@/components";
 import { mapGetters, mapState } from "vuex";
 import { mixinGobalState } from "@/utils/mixin";
+import { mixinAddGoodState } from "../mixin";
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
 require("vue-video-player/src/custom-theme.css");
@@ -344,7 +340,7 @@ export default {
     RadioBox,
     videoPlayer
   },
-  mixins: [mixinGobalState],
+  mixins: [mixinGobalState, mixinAddGoodState],
   data() {
     return {
       items: [
@@ -408,6 +404,13 @@ export default {
       }
     };
   },
+  computed: {
+    uploadHeader() {
+      return {
+        company: this.company
+      };
+    }
+  },
   created() {
     this.form = this.$form.createForm(this, {
       onFieldsChange: (_, changedFields) => {
@@ -436,19 +439,7 @@ export default {
       }
     });
   },
-  computed: {
-    ...mapState({
-      storeNo: state => state.addGood.storeNo,
-      name: state => state.addGood.name,
-      name1: state => state.addGood.name1,
-      tags: state => state.addGood.tags
-    }),
-    uploadHeader() {
-      return {
-        company: this.company
-      };
-    }
-  },
+
   watch: {
     imgList(val) {
       console.log(val);

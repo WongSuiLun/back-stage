@@ -75,7 +75,7 @@ export const asyncRouterMap = [
           {
             path:'/good/add',
             name:'add-good',
-            component:() => import('@/views/good/AddGood'),
+            component:() => import('@/views/good/addGood/AddGood'),
             meta:{title:'添加商品'}
           }
         ]

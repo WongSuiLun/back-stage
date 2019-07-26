@@ -116,6 +116,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import { BaseButton, DropFixedBox } from "@/components";
+import { mixinAddGoodState } from "../mixin";
 export default {
   components: {
     BaseButton,
@@ -124,12 +125,8 @@ export default {
   data() {
     return {};
   },
+  mixins:[mixinAddGoodState],
   computed: {
-    ...mapState({
-      storeNo: state => state.addGood.storeNo,
-      name: state => state.addGood.name,
-      name1: state => state.addGood.name1
-    })
   },
 
   methods: {}
