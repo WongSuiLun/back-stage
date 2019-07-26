@@ -32,7 +32,7 @@ export default {
   align-items: center;
   color: #434343;
   font-weight: 600;
-  min-height: 40px;
+  min-height: 60px;
   position: relative;
   cursor: pointer;
   &.active {

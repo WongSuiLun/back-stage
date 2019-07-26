@@ -4,6 +4,7 @@ const app = {
     sidebar: true,
     device: 'desktop',
     token:'',
+    company:66
     // theme: '',
     // layout: '',
     // contentWidth: '',

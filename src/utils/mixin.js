@@ -44,4 +44,12 @@ const AppDeviceEnquire = {
   }
 }
 
-export { AppDeviceEnquire,mixinDevice }
+const mixinGobalState = {
+  computed: {
+    ...mapState({
+      company: state => state.app.company
+    })
+  },
+}
+
+export { AppDeviceEnquire,mixinDevice ,mixinGobalState}
