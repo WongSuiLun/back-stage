@@ -172,6 +172,19 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path:'/apply',
+    component:LoginLayout,
+    redirect:'/appaly/company',
+    children: [
+      {
+        path: '/appaly/company',
+        name: 'appaly-company',
+        component: () => import(/* webpackChunkName: "fail" */ '@/views/public/ApplyCompany'),
+        meta: { title: '申请公司',}
+      }
+    ]
+  },
   // Exception
   {
     path: '/exception',
