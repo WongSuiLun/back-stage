@@ -27,7 +27,6 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="部门">
           <a-select
-            defaultValue="a1"
             v-decorator="[
             'storeNo',
             {
@@ -41,7 +40,6 @@
             >{{(i + 9).toString(36) + i}}</a-select-option>
           </a-select>
           <a-select
-            defaultValue="a1"
             v-decorator="[
             'storeNo',
             {
@@ -58,7 +56,6 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品类目">
           <a-select
-            defaultValue="a1"
             v-decorator="[
             'storeType',
             {
@@ -75,7 +72,6 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="房间类型">
           <a-select
-            defaultValue="a1"
             v-decorator="[
             'type_id',
             {
@@ -121,7 +117,6 @@
               v-for="tag in tags"
               :key="`tag${tag.name}`"
               :checked="false"
-              closable="true"
               color="#f50"
             >{{tag.name}}</a-tag>
             <a-button type="primary">添加标签</a-button>
@@ -139,11 +134,9 @@
           </a-row>
         </a-form-item>
 
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享描述">
-          <a-input id="validating" placeholder="I'm the content is being validated" />
-        </a-form-item>
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品图片">
-          <PicUpload v-model="imgList" :max="8"></PicUpload>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品图片" 
+          help="建议尺寸：360*270像素，你可以拖拽图片调整顺序，为提升买家的购物体验，图片建议小于500K，最多上传10张">
+          <PicUpload v-model="imgList" :max="8" @swap="handleGoodImgListSwap" @change="handleGoodImgListChange" @create="handleGoodImgListCreate"  @delete="handleGoodImgListDelete"></PicUpload>
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="主图视频">
@@ -176,13 +169,13 @@
               <!-- <video :src="shopVideoPreview" controls="controls">您的浏览器不支持 video 标签。</video> -->
               <video-player
                 class="video-player-box video-style"
-                style="max-height: 500px;"
+                style="max-height: 400px;"
                 ref="videoPlayer"
                 :options="mainPlayerOptions"
                 :playsinline="true"
                 customEventName="customstatechangedeventname"
               ></video-player>
-              <a-button type="danger">删除视频</a-button>
+              <a-button type="danger" @click="deleteMainVideo">删除视频</a-button>
             </div>
           </a-row>
         </a-form-item>
@@ -246,7 +239,6 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="转增">
           <a-select
-            defaultValue="a1"
             v-decorator="[
             'storeType',
             {
@@ -262,7 +254,6 @@
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="允许评论">
           <a-select
-            defaultValue="a1"
             v-decorator="[
             'storeType',
             {
@@ -278,7 +269,6 @@
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="销售渠道">
           <a-select
-            defaultValue="a1"
             v-decorator="[
             'storeType',
             {
@@ -299,7 +289,7 @@
     <div>
       <a-form :form="wechatShareForm">
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享标题">
-          <a-input id="validating" placeholder />
+          <a-input id placeholder />
           <slot name="help">
             <span style="clolr:#ccc">
               微信分享给好友时显示，建议38个字以内
@@ -309,7 +299,7 @@
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享描述">
-          <a-input id="validating" placeholder="I'm the content is being validated" />
+          <a-input id placeholder="I'm the content is being validated" />
           <slot name="help">
             <span style="clolr:#ccc">
               微信分享给好友时显示，建议38个字以内
@@ -331,6 +321,7 @@ import { PicUpload, RadioBox } from "@/components";
 import { mapGetters, mapState } from "vuex";
 import { mixinGobalState } from "@/utils/mixin";
 import { mixinAddGoodState } from "../mixin";
+import {deleteAttach,addAttach} from '@/api/addGood/'
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
 require("vue-video-player/src/custom-theme.css");
@@ -357,22 +348,11 @@ export default {
         xs: { span: 24 },
         sm: { span: 12 }
       },
-      previewVisible: false,
-      previewImage: "",
       imgList: [],
-      fileList: [
-        {
-          uid: "-1",
-          name: "xxx.png",
-          status: "done",
-          url:
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        }
-      ],
-      btnItems: ["1", "2", "3"],
+      imgListData:[],
       activeGoodType: "",
-      form: "",
-      wechatShareForm: "",
+      form: {},
+      wechatShareForm: {},
       uploadUrl: "http://192.168.101.115:8089/api/attach",
       isMainVideoUpload: false, //商品视频是否上传
       mainPlayerOptions: {
@@ -412,38 +392,10 @@ export default {
     }
   },
   created() {
-    this.form = this.$form.createForm(this, {
-      onFieldsChange: (_, changedFields) => {
-        this.$emit("change", changedFields);
-      },
-      mapPropsToFields: () => {
-        return {
-          storeNo: this.$form.createFormField({
-            value: this.storeNo
-          }),
-          name: this.$form.createFormField({
-            value: this.name
-          }),
-          name1: this.$form.createFormField({
-            value: this.name1
-          }),
-          tags: this.$form.createFormField({
-            value: this.tags
-          })
-        };
-      },
-      onValuesChange: (_, values) => {
-        console.log(values);
-        // Synchronize to vuex store in real time
-        this.$store.commit("SET_FORM", values);
-      }
-    });
+    this.initForm();
   },
 
   watch: {
-    imgList(val) {
-      console.log(val);
-    },
     storeNo(val) {
       console.log("this.$store.state.storeNo: ", val);
       this.form.setFieldsValue({ storeNo: val });
@@ -451,9 +403,95 @@ export default {
     name(val) {
       console.log("this.$store.state.storeNo: ", val);
       this.form.setFieldsValue({ name: val });
+    },
+    imgList(val){
+      console.log(val)
+    },
+    imgListData(){
+       this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
     }
   },
   methods: {
+    initForm() {
+      this.form = this.$form.createForm(this, {
+        onFieldsChange: (_, changedFields) => {
+          this.$emit("change", changedFields);
+        },
+        mapPropsToFields: () => {
+          return {
+            storeNo: this.$form.createFormField({
+              value: this.storeNo
+            }),
+            name: this.$form.createFormField({
+              value: this.name
+            }),
+            name1: this.$form.createFormField({
+              value: this.name1
+            }),
+            tags: this.$form.createFormField({
+              value: this.tags
+            }),
+            lightspots: this.$form.createFormField({
+              value: this.lightspots
+            }),
+            goodImgList: this.$form.createFormField({
+              value: this.goodImgList
+            }),
+            goodMainVideo: this.$form.createFormField({
+              value: this.goodMainVideo
+            }),
+            goodShopVideo: this.$form.createFormField({
+              value: this.goodShopVideo
+            }),
+            bookingInfo: this.$form.createFormField({
+              value: this.bookingInfo
+            }),
+            transfer: this.$form.createFormField({
+              value: this.transfer
+            }),
+            comment: this.$form.createFormField({
+              value: this.comment
+            }),
+            place: this.$form.createFormField({
+              value: this.place
+            })
+          };
+        },
+        onValuesChange: (_, values) => {
+          console.log(values);
+          // Synchronize to vuex store in real time
+          this.$store.commit("SET_FORM", values);
+        }
+      });
+    },
+
+    handleGoodImgListChange(val) {
+      this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
+    },
+    handleGoodImgListCreate(index,file) {
+      let data = new FormData()
+      data.append('module','goods');
+      data.append('file',file)
+      addAttach(data).then(res=>{
+        this.imgListData.push(res.data.data)
+        this.$message.success('上传成功');
+      }).catch(err=>{
+        console.log('上传失败')
+        this.handleGoodImgListDelete(index)
+      })
+      // this.$store.commit("SET_FORM", { goodImgList: val });
+    },
+    handleGoodImgListSwap(index,index2){
+      let temp = this.imgListData[index];
+      this.$set(this.imgListData,index,this.imgListData[index2])
+      this.$set(this.imgListData,index2,temp)
+      this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
+    },
+    handleGoodImgListDelete(index){
+      deleteAttach(this.imgListData[index].attach_id).then(res=>{
+        this.$delete(this.imgListData,index)
+      })
+    },
     handleCancel() {
       this.previewVisible = false;
     },
@@ -477,7 +515,22 @@ export default {
             src: info.file.response.data.file_url
           }
         ];
+        this.$store.commit("SET_FORM", {
+          goodMainVideo: {
+            id: info.file.response.data.attach_id,
+            src: info.file.response.data.file_url,
+            info: info
+          }
+        });
       }
+    },
+    deleteMainVideo(){
+      deleteAttach(this.goodMainVideo.id).then(res=>{
+        this.isMainVideoUpload = false;
+        this.$store.commit("SET_FORM", {
+          goodMainVideo: null
+        });
+      })
     },
     handleShopUploadChange(info) {
       if (info.file.status === "uploading") {
@@ -493,6 +546,13 @@ export default {
             src: info.file.response.data.file_url
           }
         ];
+        this.$store.commit("SET_FORM", {
+          goodShopVideo: {
+            id: info.file.response.data.attach_id,
+            src: info.file.response.data.file_url,
+            info: info
+          }
+        });
       }
     },
     beforeUpload(file) {
@@ -539,7 +599,8 @@ export default {
 </script>
 <style lang="less">
 .video-js {
-  max-height: 500px;
+  max-width: 360px;
+  max-height: 270px;
   display: block;
 }
 </style>

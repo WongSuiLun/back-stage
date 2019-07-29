@@ -18,6 +18,7 @@ const app = {
   },
   getters:{
     getToken: state => state.token,
+    getCompany:state=>state.company
   },
   mutations: {
     SET_SIDEBAR_TYPE: (state, type) => {

@@ -1,5 +1,6 @@
 import axios from 'axios'
 // import router from '@/router'
+import Vue from 'vue'
 import store from '@/store'
 // import sysConfig from '@/utils/sysConfig'
 
@@ -10,7 +11,8 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config => {
-  if (store.getters.getToken) {
+  let token =  Vue.ls.get('Access-Token')
+  if (token) {
     const TIME_OFFSET = 0.1
     if (+new Date().getTime() - +store.getters.getLoginTime >= +store.getters.getExpiresIn * 1000) {
       store.dispatch('logout')
@@ -20,11 +22,14 @@ service.interceptors.request.use(config => {
         // refresh token
       }
     }
+
     config.headers['Authorization'] = store.getters.getToken
+    
   } else {
     store.dispatch('logout')
     // router.push('/login')
   }
+  config.headers['company'] = store.getters.getCompany
   return config
 }, error => {
   return Promise.reject(error)

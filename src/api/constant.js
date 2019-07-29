@@ -1,0 +1,2 @@
+const GOOD_BASE_URL = 'http://192.168.101.115:8089'
+export {GOOD_BASE_URL}

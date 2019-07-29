@@ -12,9 +12,6 @@ module.exports = {
         ws:true,
         pathRewrite:{"^/chpc":""}
       },
-      '/csjpc':{
-        
-      }
     }
   },
   css: {

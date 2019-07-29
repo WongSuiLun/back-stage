@@ -79,9 +79,10 @@ export default {
   watch: {
     imgList(val) {
       let imgValue = val.map(element => {
-        return element.src;
+        return element.file;
       });
       this.$emit("input", imgValue);
+      this.$emit("change",imgValue)
     }
   },
   methods: {
@@ -93,11 +94,13 @@ export default {
       let temp = this.imgList[this.onDrapIndex];
       this.$set(this.imgList, this.onDrapIndex, this.imgList[index]);
       this.$set(this.imgList, index, temp);
+      this.$emit('swap',index,this.onDrapIndex)
     },
     rightDrop(index) {
       let temp = this.imgList[this.onDrapIndex];
       this.$set(this.imgList, this.onDrapIndex, this.imgList[index]);
       this.$set(this.imgList, index, temp);
+      this.$emit('swap',index,this.onDrapIndex)
     },
     allowDrop(event, img, index) {
       event.preventDefault();
@@ -126,12 +129,13 @@ export default {
       this.handleMouseLeave(img);
     },
     preview(src) {
-      console.log(src);
       this.previewVisible = true;
       this.previewSrc = src;
     },
     deleteImg(index) {
       this.imgList.splice(index, 1);
+
+      this.$emit('delete',index,this.imgList)
     },
     handleCancel() {
       this.previewVisible = false;
@@ -150,10 +154,12 @@ export default {
       reader.onloadend = function() {
         _this.imgList.push({
           src: this.result,
+          file:files,
           hover: false,
           leftShow: false,
           rightShow: false
         });
+        _this.$emit('create',_this.imgList.length-1,files,_this.imgList)
       };
     }
   }

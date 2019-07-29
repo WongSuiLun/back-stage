@@ -5,19 +5,19 @@
       <div>
         <a-carousel autoplay>
           <div>
-            <img
-              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564057842089&di=7110070472dadb9528ab0da8ce17f2c6&imgtype=0&src=http%3A%2F%2Fimg.redocn.com%2Fsheying%2F20140731%2Fqinghaihuyuanjing_2820969.jpg"
-              style="height:270px;"
-            />
+            <video-player
+              class="video-player-box video-style"
+              ref="videoPlayer"
+              :options="mainPlayerOptions"
+              :playsinline="true"
+              customEventName="customstatechangedeventname"
+            ></video-player>
           </div>
-          <div>
-            <h3>2</h3>
+          <div v-for="(img,index) in goodImgList" :key="index">
+            <img :src="img" style="height:270px;width:100%" />
           </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
+          <div v-show="goodImgList.length==0">
+            <h3>上传图片</h3>
           </div>
         </a-carousel>
       </div>
@@ -63,52 +63,6 @@
           <a-tag color="#f1ad33">点评送积分</a-tag>
         </div>
       </div>
-      <div class="module">
-        <div class="tip-row">
-          <span class="tip-text">领券：</span>
-          <a-tag color="#ff3d3d">400元</a-tag>
-          <a-tag color="#ff3d3d">200元</a-tag>
-          <a-tag color="#ff3d3d">100元</a-tag>
-          <a>去领券>></a>
-        </div>
-        <div class="tip-row">
-          <span class="tip-text">优惠：</span>
-          <a-tag color="#ff3d3d">立减</a-tag>
-          <span class="tip-text">满1500立减300元，不与其它优惠同享</span>
-        </div>
-        <div class="tip-row">
-          <span class="tip-text">积分：</span>
-          <span class="tip-text">购买产品，最少可得1250积分</span>
-        </div>
-        <div class="tip-row">
-          <span class="tip-text">特色：</span>
-          <a-tag color="#f1ad33">游记有奖</a-tag>
-          <a-tag color="#f1ad33">点评送积分</a-tag>
-        </div>
-      </div>
-      <div class="module">
-        <div class="tip-row">
-          <span class="tip-text">领券：</span>
-          <a-tag color="#ff3d3d">400元</a-tag>
-          <a-tag color="#ff3d3d">200元</a-tag>
-          <a-tag color="#ff3d3d">100元</a-tag>
-          <a>去领券>></a>
-        </div>
-        <div class="tip-row">
-          <span class="tip-text">优惠：</span>
-          <a-tag color="#ff3d3d">立减</a-tag>
-          <span class="tip-text">满1500立减300元，不与其它优惠同享</span>
-        </div>
-        <div class="tip-row">
-          <span class="tip-text">积分：</span>
-          <span class="tip-text">购买产品，最少可得1250积分</span>
-        </div>
-        <div class="tip-row">
-          <span class="tip-text">特色：</span>
-          <a-tag color="#f1ad33">游记有奖</a-tag>
-          <a-tag color="#f1ad33">点评送积分</a-tag>
-        </div>
-      </div>
     </div>
   </drop-fixed-box>
 </template>
@@ -117,19 +71,59 @@
 import { mapGetters, mapState } from "vuex";
 import { BaseButton, DropFixedBox } from "@/components";
 import { mixinAddGoodState } from "../mixin";
+import { videoPlayer } from "vue-video-player";
+require("video.js/dist/video-js.css");
+require("vue-video-player/src/custom-theme.css");
 export default {
   components: {
     BaseButton,
-    DropFixedBox
+    DropFixedBox,
+    videoPlayer
   },
+  mixins: [mixinAddGoodState],
   data() {
-    return {};
+    return {
+      mainPlayerOptions: {
+        // videojs options
+        muted: true,
+        language: "cn",
+        language: "zh-CN",
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [
+          {
+            type: "video/mp4",
+            src: ""
+          }
+        ]
+      },
+      isShopVideoUpload: false, //商品视频是否上传
+      shopPlayerOptions: {
+        // videojs options
+        muted: true,
+        language: "cn",
+        language: "zh-CN",
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [
+          {
+            type: "video/mp4",
+            src: ""
+          }
+        ]
+      }
+    };
   },
-  mixins:[mixinAddGoodState],
-  computed: {
-  },
-
-  methods: {}
+  computed: {},
+  methods: {},
+  watch: {
+    goodMainVideo(val) {
+      this.mainPlayerOptions.sources = [
+        {
+          type: "video/mp4",
+          src: val.src
+        }
+      ];
+    }
+  }
 };
 </script>
 <style scoped>
