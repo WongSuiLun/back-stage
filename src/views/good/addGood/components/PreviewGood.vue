@@ -14,7 +14,7 @@
             ></video-player>
           </div>
           <div v-for="(img,index) in goodImgList" :key="index">
-            <img :src="img" style="height:270px;width:100%" />
+            <img :src="img.file_url" style="height:270px;width:100%" />
           </div>
           <div v-show="goodImgList.length==0">
             <h3>上传图片</h3>
