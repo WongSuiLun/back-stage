@@ -83,6 +83,9 @@ export default {
       });
       this.$emit("input", imgValue);
       this.$emit("change",imgValue)
+    },
+    value(val){
+      // console.log(val)
     }
   },
   methods: {
@@ -121,7 +124,6 @@ export default {
     },
     handleDragStart($event, img, index) {
       this.onDrapIndex = index;
-      console.log(img);
       // img.leftShow = true
       // this.imgList.splice(index,1)
     },
@@ -134,7 +136,6 @@ export default {
     },
     deleteImg(index) {
       this.imgList.splice(index, 1);
-
       this.$emit('delete',index,this.imgList)
     },
     handleCancel() {

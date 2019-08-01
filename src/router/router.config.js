@@ -139,7 +139,47 @@ export const asyncRouterMap = [
             meta:{title:'房型布草'}
           }
         ]
-      }
+      },
+      {
+        path:'/reception',
+        name:'reception',
+        redirect: '/reception/roomstate',
+        meta:{title:'前台',icon:'shop'},
+        component:RouteView,
+        children: [
+          {
+            path: '/reception/roomstate',
+            component: () => import('@/views/reception/roomManagement/RoomManagement'),
+            meta: { title: '房态管理', icon: 'menu', module: 1 }
+          },
+          // {
+          //   path: 'checkin',
+          //   component: () => import('@/views/errpage/err404'),
+          //   meta: { title: '预定分房入住', icon: 'menu', module: 1 }
+          // },
+          // {
+          //   path: 'chooseroom',
+          //   component: () => import('@/views/chooseRoom/ChooseRoom'),
+          //   meta: { title: '房态分房', icon: 'menu', module: 1 }
+          // },
+          // {
+          //   path: 'order',
+          //   component: () => import('@/views/orderPage/OrderPage'),
+          //   meta: { title: '订单管理', icon: 'menu', module: 1 }
+          // },
+          // {
+          //   path: 'lock',
+          //   component: () => import('@/views/doorLock/index'),
+          //   meta: { title: '门锁管理', icon: 'menu', module: 1 }
+          // }
+        ]
+      },
+      {
+        path: '/account/center',
+        name: 'center',
+        component: () => import('@/views/account/center/Center'),
+        meta: { title: '个人中心',icon:'wechat'}
+      },
     ]
   },
   {
@@ -175,11 +215,11 @@ export const constantRouterMap = [
   {
     path:'/apply',
     component:LoginLayout,
-    redirect:'/appaly/company',
+    redirect:'/apply/company',
     children: [
       {
-        path: '/appaly/company',
-        name: 'appaly-company',
+        path: '/apply/company',
+        name: 'apply-company',
         component: () => import(/* webpackChunkName: "fail" */ '@/views/public/ApplyCompany'),
         meta: { title: '申请公司',}
       }

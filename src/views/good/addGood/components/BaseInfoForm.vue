@@ -114,12 +114,26 @@
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品标签">
           <a-row>
             <a-tag
-              v-for="tag in tags"
-              :key="`tag${tag.name}`"
-              :checked="false"
+              v-for="(tag,index) in tags"
+              :key="`tag${tag.name}${index}`"
+              closable 
+              @close="handleTagClose(tag,index)"
               color="#f50"
             >{{tag.name}}</a-tag>
-            <a-button type="primary">添加标签</a-button>
+            <a-input
+              v-if="tagInputVisible"
+              ref="tagInput"
+              type="text"
+              size="small"
+              :style="{ width: '78px' }"
+              :value="tagInputValue"
+              @change="handleTagInputChange"
+              @blur="handleTagInputConfirm"
+              @keyup.enter="handleTagInputConfirm"
+            />
+            <a-tag v-else @click="showTagInput" style="background: #fff; borderStyle: dashed;">
+              <a-icon type="plus" />新标签
+            </a-tag>
           </a-row>
         </a-form-item>
 
@@ -134,9 +148,21 @@
           </a-row>
         </a-form-item>
 
-        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品图片" 
-          help="建议尺寸：360*270像素，你可以拖拽图片调整顺序，为提升买家的购物体验，图片建议小于500K，最多上传10张">
-          <PicUpload v-model="imgList" :max="8" @swap="handleGoodImgListSwap" @change="handleGoodImgListChange" @create="handleGoodImgListCreate"  @delete="handleGoodImgListDelete"></PicUpload>
+        <a-form-item
+          :label-col="labelCol"
+          :wrapper-col="wrapperCol"
+          label="商品图片"
+          help="建议尺寸：360*270像素，你可以拖拽图片调整顺序，为提升买家的购物体验，图片建议小于500K，最多上传10张"
+        >
+          <PicUpload
+            v-model="imgList"
+            :max="8"
+            ref="picUpload"
+            @swap="handleGoodImgListSwap"
+            @change="handleGoodImgListChange"
+            @create="handleGoodImgListCreate"
+            @delete="handleGoodImgListDelete"
+          ></PicUpload>
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="主图视频">
@@ -321,7 +347,7 @@ import { PicUpload, RadioBox } from "@/components";
 import { mapGetters, mapState } from "vuex";
 import { mixinGobalState } from "@/utils/mixin";
 import { mixinAddGoodState } from "../mixin";
-import {deleteAttach,addAttach} from '@/api/addGood/'
+import { deleteAttach, addAttach } from "@/api/addGood/";
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
 require("vue-video-player/src/custom-theme.css");
@@ -349,7 +375,7 @@ export default {
         sm: { span: 12 }
       },
       imgList: [],
-      imgListData:[],
+      imgListData: [],
       activeGoodType: "",
       form: {},
       wechatShareForm: {},
@@ -381,7 +407,9 @@ export default {
             src: ""
           }
         ]
-      }
+      },
+      tagInputVisible: false,
+      tagInputValue: '',
     };
   },
   computed: {
@@ -397,18 +425,14 @@ export default {
 
   watch: {
     storeNo(val) {
-      console.log("this.$store.state.storeNo: ", val);
       this.form.setFieldsValue({ storeNo: val });
     },
     name(val) {
-      console.log("this.$store.state.storeNo: ", val);
       this.form.setFieldsValue({ name: val });
     },
-    imgList(val){
-      console.log(val)
-    },
-    imgListData(){
-       this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
+    imgList(val) {},
+    imgListData() {
+      this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
     }
   },
   methods: {
@@ -458,7 +482,6 @@ export default {
           };
         },
         onValuesChange: (_, values) => {
-          console.log(values);
           // Synchronize to vuex store in real time
           this.$store.commit("SET_FORM", values);
         }
@@ -468,29 +491,39 @@ export default {
     handleGoodImgListChange(val) {
       this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
     },
-    handleGoodImgListCreate(index,file) {
-      let data = new FormData()
-      data.append('module','goods');
-      data.append('file',file)
-      addAttach(data).then(res=>{
-        this.imgListData.push(res.data.data)
-        this.$message.success('上传成功');
-      }).catch(err=>{
-        console.log('上传失败')
-        this.handleGoodImgListDelete(index)
-      })
+    handleGoodImgListCreate(index, file) {
+      let data = new FormData();
+      data.append("module", "goods");
+      data.append("file", file);
+      addAttach(data)
+        .then(res => {
+          this.imgListData.push(res.data.data);
+          this.$message.success("上传成功");
+        })
+        .catch(err => {
+          this.$message.error("上传失败");
+          this.$refs.picUpload.deleteImg(index);
+          this.$delete(this.imgList, index);
+          this.$delete(this.imgListData, index);
+        });
       // this.$store.commit("SET_FORM", { goodImgList: val });
     },
-    handleGoodImgListSwap(index,index2){
+    handleGoodImgListSwap(index, index2) {
       let temp = this.imgListData[index];
-      this.$set(this.imgListData,index,this.imgListData[index2])
-      this.$set(this.imgListData,index2,temp)
+      this.$set(this.imgListData, index, this.imgListData[index2]);
+      this.$set(this.imgListData, index2, temp);
       this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
     },
-    handleGoodImgListDelete(index){
-      deleteAttach(this.imgListData[index].attach_id).then(res=>{
-        this.$delete(this.imgListData,index)
-      })
+    handleGoodImgListDelete(index) {
+      console.log(this.imgListData);
+      if (
+        this.imgListData[index] &&
+        this.imgListData[index].hasOwnProperty("attach_id")
+      ) {
+        deleteAttach(this.imgListData[index].attach_id).then(res => {
+          this.$delete(this.imgListData, index);
+        });
+      }
     },
     handleCancel() {
       this.previewVisible = false;
@@ -524,19 +557,18 @@ export default {
         });
       }
     },
-    deleteMainVideo(){
-      deleteAttach(this.goodMainVideo.id).then(res=>{
+    deleteMainVideo() {
+      deleteAttach(this.goodMainVideo.id).then(res => {
         this.isMainVideoUpload = false;
         this.$store.commit("SET_FORM", {
           goodMainVideo: null
         });
-      })
+      });
     },
     handleShopUploadChange(info) {
       if (info.file.status === "uploading") {
         return;
       }
-      console.log(info);
       if (info.file.status === "done") {
         // Get this url from response in real world.
         this.isShopVideoUpload = true;
@@ -593,7 +625,42 @@ export default {
       return {
         module: "goods"
       };
-    }
+    },
+    handleClose (removedTag) {
+      const tags = this.tags.filter(tag => tag !== removedTag)
+      console.log(tags)
+      this.tags = tags
+    },
+
+    showTagInput () {
+      this.tagInputVisible = true
+      this.$nextTick(function () {
+        this.$refs.tagInput.focus()
+      })
+    },
+
+    handleTagInputChange (e) {
+      this.tagInputValue = e.target.value
+    },
+
+    handleTagClose(tag,index){
+      let tags = this.tags
+      console.log(tags)
+      tags.splice(index,1)
+      
+      this.$store.commit('SET_FORM',{tags:tags})
+    },
+
+    handleTagInputConfirm () {
+      const inputValue = this.tagInputValue
+      let tags = this.tags
+      if (inputValue && tags.indexOf(inputValue) === -1) {
+        this.$store.commit('SET_FORM',{tags:[...tags, {name:inputValue}]})
+      }
+      console.log(tags)
+      this.tagInputVisible = false
+      this.tagInputValue = ''
+    },
   }
 };
 </script>

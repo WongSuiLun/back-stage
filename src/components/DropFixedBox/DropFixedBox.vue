@@ -39,8 +39,8 @@ export default {
   methods: {
     move(e) {
       event.preventDefault();
-      console.log(e);
-      console.log(this.top);
+      // console.log(e);
+      // console.log(this.top);
       let odiv = e.target; //获取目标元素
       let that = this;
       //算出鼠标相对元素的位置

@@ -17,7 +17,7 @@
         <a-icon type="smile-o" slot="icon"/>
       </a-step>
     </a-steps> -->
-    <base-info-form/>
+    <base-info-form v-show="step==0"/>
     <preview-good></preview-good>
   </div>
 </template>
@@ -36,6 +36,7 @@ export default {
     return {
       stepNames:[
         {name:"编辑基础信息",finish:true},
+        {name:"编辑上架信息",finish:true},
         {name:"编辑价格日历",finish:false},
         {name:"编辑详情页面",finish:false},
         {name:"完成",finish:false},

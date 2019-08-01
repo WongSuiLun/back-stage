@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { GOOD_BASE_URL } from './constant'
+import { GOOD_BASE_URL } from '../constant'
 
 export function deleteAttach(id) {
   return request({
@@ -13,5 +13,11 @@ export function addAttach(data){
     url: `${GOOD_BASE_URL}/api/attach`,
     method: 'post',
     data,
+  })
+}
+export function getDistrict(){
+  return request({
+    url: `${GOOD_BASE_URL}/api/tengxun`,
+    method: 'get',
   })
 }

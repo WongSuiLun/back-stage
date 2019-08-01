@@ -2,6 +2,7 @@
   <div
     :class="type"
     class="btn md-accent"
+    :style="{'background-color':color}"
   >
     <slot></slot>
   </div>
@@ -13,6 +14,9 @@ export default {
     type: {
       type: String,
       default: "default"
+    },
+    color: {
+      type: String,
     }
   },
   methods: {
