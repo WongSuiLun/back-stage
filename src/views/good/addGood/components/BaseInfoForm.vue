@@ -347,7 +347,7 @@ import { PicUpload, RadioBox } from "@/components";
 import { mapGetters, mapState } from "vuex";
 import { mixinGobalState } from "@/utils/mixin";
 import { mixinAddGoodState } from "../mixin";
-import { deleteAttach, addAttach } from "@/api/addGood/";
+import { deleteAttach, addAttach ,getTags , addTag} from "@/api/addGood";
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
 require("vue-video-player/src/custom-theme.css");
@@ -410,6 +410,7 @@ export default {
       },
       tagInputVisible: false,
       tagInputValue: '',
+      tagSet:'', //存储已有的tag列表
     };
   },
   computed: {
@@ -421,6 +422,7 @@ export default {
   },
   created() {
     this.initForm();
+    this.initTagData();
   },
 
   watch: {
@@ -654,13 +656,37 @@ export default {
     handleTagInputConfirm () {
       const inputValue = this.tagInputValue
       let tags = this.tags
-      if (inputValue && tags.indexOf(inputValue) === -1) {
-        this.$store.commit('SET_FORM',{tags:[...tags, {name:inputValue}]})
+      let tagNames = this.tags.map(ele=>ele.name);
+
+      console.log(tagNames)
+      console.log(inputValue)
+      console.log(tagNames.indexOf(inputValue))
+      if (inputValue && tagNames.indexOf(inputValue) === -1) {
+        let id = undefined;
+        this.tagSet.forEach(ele=>{
+          if(ele.name == inputValue){
+            id = ele.id
+          }
+        })
+       
+        if(!id){
+          //还没有这个标签
+          addTag({tag_name:inputValue}).then(res=>{
+            console.log(res)
+          })
+        }
+        this.$store.commit('SET_FORM',{tags:[...tags, {id,name:inputValue}]})
       }
       console.log(tags)
       this.tagInputVisible = false
       this.tagInputValue = ''
     },
+
+    initTagData(){
+      getTags().then(res=>{
+        this.tagSet = res.data.data
+      })
+    }
   }
 };
 </script>

@@ -29,7 +29,9 @@ service.interceptors.request.use(config => {
     store.dispatch('logout')
     // router.push('/login')
   }
+  config.headers['Authorization'] = 'token'
   config.headers['company'] = store.getters.getCompany
+  config.headers['shop'] = store.getters.getShop
   return config
 }, error => {
   return Promise.reject(error)

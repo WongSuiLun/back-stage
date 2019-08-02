@@ -2,14 +2,14 @@ import request from '@/utils/request'
 import axios from 'axios'
 import store from '@/store'
 
-let COMPANY_ID = store.getters.getCompanyId
-let SHOP_ID = store.getters.getShopId
-let tempBaseApi = 'http://192.168.101.115/oqc/index.php/' + COMPANY_ID + '/'
-
+let COMPANY_ID = store.getters.getCompany
+let SHOP_ID = 49
+let tempBaseApi = 'http://192.168.101.115:8080/oqc/index.php/' + COMPANY_ID + '/'
+import { GOOD_BASE_URL } from '../constant'
 // 获取房态列表
 export function getRoomSurplus (query) {
   return request({
-    url: '/roomsurplus',
+    url: `${GOOD_BASE_URL}/api/roomsurplus`,
     method: 'get',
     params: query
   })
@@ -18,7 +18,7 @@ export function getRoomSurplus (query) {
 // 获取房间日预定状态
 export function roomDayStatus (query) {
   return request({
-    url: '/roomdaystatus',
+    url: `${GOOD_BASE_URL}/api/roomdaystatus`,
     method: 'get',
     params: query
   })
@@ -27,7 +27,7 @@ export function roomDayStatus (query) {
 // 获取店内房间信息（带缓存）
 export function hrooms (query) {
   return request({
-    url: '/shops/hrooms',
+    url: `${GOOD_BASE_URL}/api/shops/hrooms`,
     method: 'get',
     params: query
   })
@@ -36,7 +36,7 @@ export function hrooms (query) {
 // 获取线上店内房间信息
 export function getShopsRooms (query) {
   return request({
-    url: '/shops/rooms',
+    url: `${GOOD_BASE_URL}/api/shops/rooms`,
     method: 'get',
     params: query
   })
@@ -45,7 +45,7 @@ export function getShopsRooms (query) {
 // 房间入住业务
 export function checkIn (query) {
   return request({
-    url: '/checkIn',
+    url: `${GOOD_BASE_URL}/api/checkIn`,
     method: 'POST',
     data: query
   })
@@ -54,7 +54,7 @@ export function checkIn (query) {
 // 根据shop Id 获取房型
 export function roomtypes (id) {
   return request({
-    url: `/roomtypes/${id}`,
+    url: `${GOOD_BASE_URL}/api/roomtypes/${id}`,
     method: 'get'
   })
 }
@@ -62,7 +62,7 @@ export function roomtypes (id) {
 // 清除缓存
 export function cleanRoomsCache () {
   return request({
-    url: '/cleanRoomsCache',
+    url: `${GOOD_BASE_URL}/api/cleanRoomsCache`,
     method: 'POST'
   })
 }
@@ -148,7 +148,7 @@ export function getRoomLog () {
 // 系统排房
 export function autoArrangeRooms (data) {
   return request({
-    url: '/autoArrangeRooms',
+    url: `${GOOD_BASE_URL}/api/autoArrangeRooms`,
     method: 'POST',
     data
   })
@@ -157,7 +157,7 @@ export function autoArrangeRooms (data) {
 // 业务--排房
 export function arrangeRooms (data) {
   return request({
-    url: '/arrangeRooms',
+    url: `${GOOD_BASE_URL}/api/arrangeRooms`,
     method: 'POST',
     data
   })

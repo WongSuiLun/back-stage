@@ -1,5 +1,5 @@
 <template>
-  <div class="room-detail" v-show="roomDetailVisibility">
+  <!-- <div class="room-detail" v-show="roomDetailVisibility">
     <div class="fiexd-left" @click="closeDetail" title="关闭房间信息"></div>
     <transition name="fade" >
       <div v-show="roomDetailVisibility" class="fiexd-right">
@@ -13,7 +13,25 @@
         </el-card>
       </div>
     </transition>
-  </div>
+  </div> -->
+   <a-drawer
+      title="Basic Drawer"
+      placement="right"
+      :closable="false"
+      @close="closeDetail"
+      :visible="roomDetailVisibility"
+    >
+      <div v-show="roomDetailVisibility" class="fiexd-right">
+        <el-card style="height:100%">
+          {{roomDetail}}
+          <div>
+            客人资料
+            <p>姓名：xxxxxxxx</p>
+            <p>身份证:xxxxxxxxxxxx</p>
+          </div>
+        </el-card>
+      </div>
+    </a-drawer>
 </template>
 <script>
 export default {

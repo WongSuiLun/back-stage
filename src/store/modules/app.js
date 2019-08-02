@@ -4,7 +4,8 @@ const app = {
     sidebar: true,
     device: 'desktop',
     token:'',
-    company:66
+    company:66,
+    shop:49,
     // theme: '',
     // layout: '',
     // contentWidth: '',
@@ -18,7 +19,8 @@ const app = {
   },
   getters:{
     getToken: state => state.token,
-    getCompany:state=>state.company
+    getCompany:state=>state.company,
+    getShop:state=>state.shop,
   },
   mutations: {
     SET_SIDEBAR_TYPE: (state, type) => {

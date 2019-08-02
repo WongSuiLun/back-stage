@@ -1,18 +1,17 @@
 <template>
   <div class="room-order">
-    <el-tabs
-      type="border-card"
+    <a-tabs
       id="room-order-base-tabs"
     >
-      <el-tab-pane :label="`客房服务 (房间:${getRoomInfo.room_num})`">
+      <a-tab-pane :tab="`客房服务 (房间:${getRoomInfo.room_num})`" key="0">
         <place-order
           :goodsType="goods_type"
           :goodsData="goods_data"
           @refreshData="refreshData"
         ></place-order>
-      </el-tab-pane>
-      <el-tab-pane label="订单">
-        <el-table
+      </a-tab-pane>
+      <a-tab-pane tab="订单" key="1">
+        <!-- <a-table
           :data="getOrderListByRoomId"
           border
           stripe
@@ -20,50 +19,50 @@
           style="width: 100%"
           :default-sort="{prop: 'date', order: 'descending'}"
         >
-          <el-table-column
+          <a-table-column
             prop="warehouse_no"
             label="订单号"
             sortable
             width="180"
-          ></el-table-column>
-          <el-table-column
+          ></a-table-column>
+          <a-table-column
             prop="state"
             label="状态"
             sortable
             width="180"
-          ></el-table-column>
-          <el-table-column
+          ></a-table-column>
+          <a-table-column
             prop="phone"
             label="手机"
-          ></el-table-column>
-          <el-table-column
+          ></a-table-column>
+          <a-table-column
             prop="total"
             label="总价"
-          ></el-table-column>
-          <el-table-column
+          ></a-table-column>
+          <a-table-column
             prop="ctime"
             label="创建时间"
-          ></el-table-column>
-          <el-table-column
+          ></a-table-column>
+          <a-table-column
             fixed="right"
             label="操作"
             width="200"
           >
             <template slot-scope="scope">
-              <el-button
+              <a-button
                 @click="showDetail(scope.row)"
                 size="small"
-              >查看</el-button>
-              <el-button
+              >查看</a-button>
+              <a-button
                 type="primary"
                 size="small"
                 @click="cancelRoomOrder(scope.row)"
-              >取消订单</el-button>
+              >取消订单</a-button>
             </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane label="日志">
+          </a-table-column>
+        </a-table> -->
+      </a-tab-pane>
+      <a-tab-pane tab="日志" key="2">
         <table class="room-detail-table table table-bordered table-hover" style="margin-top:20px">
           <tbody>
             <tr class="active">
@@ -79,11 +78,11 @@
             </tr>
           </tbody>
         </table>
-      </el-tab-pane>
-    </el-tabs>
-    <el-dialog
+      </a-tab-pane>
+    </a-tabs>
+    <a-modal
       title="订单详情"
-      :visible.sync="orderDetailDialogVisible"
+      :visible="orderDetailDialogVisible"
       width="50%"
       append-to-body
     >
@@ -109,7 +108,7 @@
           </tr>
         </tbody>
       </table>
-    </el-dialog>
+    </a-modal>
   </div>
 </template>
 <script>

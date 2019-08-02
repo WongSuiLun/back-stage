@@ -6,18 +6,17 @@
         <a-input
           placeholder="请输入内容"
           prefix-icon="el-icon-search"
-          size="mini"
           v-model="searchKey"
           @keydown.native="searchGood"
         ></a-input>
       </span>
     </under-line>
     <div id="room-order-choose-tabs">
-      <el-tabs v-model="activeTabName">
-        <el-tab-pane
+      <a-tabs v-model="activeTabName">
+        <a-tab-pane
           v-for="(type,index) in goodsType"
           :key="index"
-          :label="type"
+          :tab="type"
           :name="type"
         >
           <div style="display:flex;flex-wrap:wrap">
@@ -27,9 +26,9 @@
               :productInfo="product"
             ></base-product>
           </div>
-        </el-tab-pane>
-        <el-tab-pane
-          label="检索商品"
+        </a-tab-pane>
+        <a-tab-pane
+          tab="检索商品"
           name="searchGoods"
         >
           <div style="display:flex;flex-wrap:wrap">
@@ -39,8 +38,8 @@
               :productInfo="product"
             ></base-product>
           </div>
-        </el-tab-pane>
-      </el-tabs>
+        </a-tab-pane>
+      </a-tabs>
     </div>
     <under-line lineColor="red">
       <span slot="left">订单</span>
@@ -53,10 +52,10 @@
       <span slot="left">选项</span>
     </under-line>
     <div class="mg-top-20 mg-bottom-10 delivery">
-      <el-switch
+      <a-switch
         v-model="isDeliveryWhenAbsent"
         active-text="客人不在时是否允许配送到房间"
-      ></el-switch>
+      ></a-switch>
     </div>
     <under-line lineColor="red">
       <span slot="left">备注</span>

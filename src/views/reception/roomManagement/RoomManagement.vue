@@ -11,7 +11,7 @@
     <div>
       <room-order-dialog></room-order-dialog>
     </div>
-    <div class="room-order-zoomin" v-show="getIsShowRoomOrderZoomIn">
+    <!-- <div class="room-order-zoomin" v-show="getIsShowRoomOrderZoomIn">
       <div class="zoomin-main">
         <div class="self-dialog-title">
           <div class="option" @click="handleZoomOut" title="缩小">
@@ -27,7 +27,7 @@
         </div>
         <room-order></room-order>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>

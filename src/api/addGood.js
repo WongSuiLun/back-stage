@@ -15,9 +15,26 @@ export function addAttach(data){
     data,
   })
 }
+
 export function getDistrict(){
   return request({
     url: `${GOOD_BASE_URL}/api/tengxun`,
     method: 'get',
+  })
+}
+
+export function getTags(){
+  return request({
+    url:`${GOOD_BASE_URL}/api/tags`,
+    method:'get'
+  })
+}
+
+
+export function addTag(data){
+  return request({
+    url:`${GOOD_BASE_URL}/api/tags`,
+    method:'post',
+    data
   })
 }

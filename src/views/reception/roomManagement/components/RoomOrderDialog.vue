@@ -1,12 +1,11 @@
 <template>
-  <el-dialog
+  <a-modal
     :visible="getIsShowRoomOrderDialog"
-    :show-close="false"
     width="50%"
     custom-class="room-order-dialog"
     :before-close="handleClose"
   >
-    <div class="self-dialog-title">
+    <!-- <div class="self-dialog-title">
       <div class="option" @click="handleZoomIn" title="放大">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-icon--"></use>
@@ -17,16 +16,15 @@
           <use xlink:href="#icon-guanbi"></use>
         </svg>
       </div>
-    </div>
-    <!-- <span>这是一段信息</span> -->
+    </div> -->
     <div>
       <room-order></room-order>
     </div>
-    <!-- <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-    </span>-->
-  </el-dialog>
+    <span slot="footer" class="dialog-footer">
+      <a-button @click="dialogVisible = false">取 消</a-button>
+      <a-button type="primary" @click="dialogVisible = false">确 定</a-button>
+    </span>
+  </a-modal>
 </template>
 <script>
 import RoomOrder from './RoomOrder'

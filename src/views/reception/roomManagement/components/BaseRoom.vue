@@ -20,6 +20,7 @@
         <svg
           class="icon"
           aria-hidden="true"
+          style="width:40px;height:40px"
         >
           <use :xlink:href="iconType"></use>
         </svg>
@@ -33,6 +34,7 @@
             <svg
               class="icon"
               aria-hidden="true"
+               style="width:20px;height:20px"
             >
               <use xlink:href="#icon-EXPARR"></use>
             </svg>
@@ -46,6 +48,7 @@
           <svg
             class="icon"
             aria-hidden="true"
+             style="width:20px;height:20px"
           >
             <use xlink:href="#icon-EXPLEA"></use>
           </svg>
@@ -63,23 +66,22 @@
         <li @click="checkOut">退房</li>
       </ul>
     </div>
-    <el-dialog
+    <a-modal
       title="入住"
-      :visible.sync="checkInDialogVisible"
+      :visible="checkInDialogVisible"
       width="40%"
-      custom-class="checkInDialog"
       @click.native.stop="stopProp"
     >
-      <el-tabs type="border-card">
-        <el-tab-pane>
+      <a-tabs type="border-card">
+        <a-tab-pane>
           <span slot="label"><i class="el-icon-date"></i> 直接入住</span>
           <straight-checkin ></straight-checkin>
-        </el-tab-pane>
-        <el-tab-pane label="团队入住">
+        </a-tab-pane>
+        <a-tab-pane label="团队入住">
           <team-checkin></team-checkin>
-        </el-tab-pane>
-      </el-tabs>
-    </el-dialog>
+        </a-tab-pane>
+      </a-tabs>
+    </a-modal>
   </div>
 </template>
 <script>
@@ -221,6 +223,7 @@ export default {
   width: 100%;
   height: 100%;
   min-height: 80px;
+  max-height: 130px;
   max-width: 100%;
   cursor: pointer;
   display: flex;
@@ -247,7 +250,7 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 5px 0;
-    font-size: 3em;
+    font-size: 1em;
     color: #fff;
   }
   &.activeContext .room-context-menu {

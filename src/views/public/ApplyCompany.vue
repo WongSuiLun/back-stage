@@ -72,7 +72,7 @@
             <a-select v-model="cityValue" style="width: 120px"  @change="handleCityChange">
               <a-select-option v-for="city in cityData" :key="city.id" >{{city.fullname}}</a-select-option>
             </a-select>
-             <a-select v-model="secondCity" style="width: 120px" v-if="districtData.length>0">
+             <a-select v-model="districtValue" style="width: 120px" v-if="districtData.length>0">
               <a-select-option v-for="district in districtData" :key="district.id" >{{district.fullname}}</a-select-option>
             </a-select>
           </a-form-item>
@@ -172,8 +172,7 @@ export default {
       districtData:[],
       provinceValue:'',
       cityValue:'',
-      cities:'',
-      secondCity: ''
+      districtValue:'',
     };
   },
   created() {
@@ -195,22 +194,21 @@ export default {
     },
     handleProvinceChange(value) {
       let prefix = value.toString().substr(0,2)
-         console.log(value)
+      console.log(value)
       console.log(prefix)
       this.cityData = this.areaData[1].filter((v,index)=>{
         return v.id.indexOf(prefix)==0;
       })
+      this.cityValue = ''
       console.log(this.cityData)
     },
     handleCityChange(value){
-       let prefix = value.toString().substr(0,4)
-         console.log(value)
-      console.log(prefix)
+      let prefix = value.toString().substr(0,4)
       this.districtData = this.areaData[2].filter((v,index)=>{
-        console.log(v.id.indexOf(prefix))
         return v.id.indexOf(prefix)==0;
       })
       console.log(this.districtData)
+      this.districtValue = ''
     }
   }
 };
