@@ -185,7 +185,9 @@ export default {
                 let expires_in = res.data.expires_in;
                 console.log(token);
                 this.$store.commit("SET_TOKEN", token);
+                
                 this.$ls.set("Access-Token", token, expires_in * 1000);
+                 this.$ls.set("Access-Token",1123213, expires_in * 1000);
                 this.$router.push({ name: "company-choose" });
               }
             })

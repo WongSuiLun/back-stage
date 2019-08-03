@@ -266,46 +266,49 @@
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="转增">
           <a-select
             v-decorator="[
-            'storeType',
+            'transfer',
             {
               rules: [{ required: true, message: 'Username is required!' }],
             }]"
             style="width: 200px"
           >
             <a-select-option
-              v-for="i in 25"
-              :key="(i + 9).toString(36) + i"
-            >{{(i + 9).toString(36) + i}}</a-select-option>
+              v-for="option in transferOption"
+              :value="option.value"
+              :key="option.value"
+            >{{option.label}}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="允许评论">
           <a-select
             v-decorator="[
-            'storeType',
+            'comment',
             {
               rules: [{ required: true, message: 'Username is required!' }],
             }]"
             style="width: 200px"
           >
             <a-select-option
-              v-for="i in 25"
-              :key="(i + 9).toString(36) + i"
-            >{{(i + 9).toString(36) + i}}</a-select-option>
+              v-for="option in commentOption"
+              :value="option.value"
+              :key="option.value"
+            >{{option.label}}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="销售渠道">
           <a-select
             v-decorator="[
-            'storeType',
+            'place',
             {
               rules: [{ required: true, message: 'Username is required!' }],
             }]"
             style="width: 200px"
           >
             <a-select-option
-              v-for="i in 25"
-              :key="(i + 9).toString(36) + i"
-            >{{(i + 9).toString(36) + i}}</a-select-option>
+              v-for="place in placeOption"
+              :value="place.value"
+              :key="place.value"
+            >{{place.label}}</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -411,6 +414,31 @@ export default {
       tagInputVisible: false,
       tagInputValue: '',
       tagSet:'', //存储已有的tag列表
+      //销售渠道选项
+      placeOption:[
+        {
+          value:'0',
+          label:'全网'
+        },
+        {
+          value:'1',
+          label:'后台'
+        },
+        {
+          value:'3',
+          label:'微信'
+        }
+      ],
+      //转增选项
+      commentOption:[
+        {value:'0',label:'不允许评价'},
+        {value:'1',label:'允许评价'},
+      ],
+      //转增选项
+      transferOption:[
+        {value:'0',label:'不允许转增'},
+        {value:'1',label:'允许转增'},
+      ],
     };
   },
   computed: {

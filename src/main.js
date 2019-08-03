@@ -7,7 +7,7 @@ import store from './store'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import Viser from 'viser-vue'
-
+import Moment from 'moment'
 import '@/styles/index.less'
 import './permission'
 import './mock'
@@ -21,7 +21,7 @@ const options = {
 };
 
 Vue.config.productionTip = false
-
+Vue.prototype.$moment = Moment
 Vue.use(Antd)
 Vue.use(Viser)
 Vue.use(Storage,options)

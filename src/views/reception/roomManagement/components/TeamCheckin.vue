@@ -31,16 +31,16 @@
     </under-line>
       <div class="dialog-footer">
       <span >
-        <el-button
+        <a-button
           @click="dialogVisible = false"
           size="small"
           type="danger"
-        >取 消</el-button>
-        <el-button
+        >取 消</a-button>
+        <a-button
           type="primary"
           @click="dialogVisible = false"
           size="small"
-        >确 定</el-button>
+        >确 定</a-button>
       </span>
     </div>
   </div>

@@ -157,21 +157,21 @@ export const asyncRouterMap = [
           //   component: () => import('@/views/errpage/err404'),
           //   meta: { title: '预定分房入住', icon: 'menu', module: 1 }
           // },
-          // {
-          //   path: 'chooseroom',
-          //   component: () => import('@/views/chooseRoom/ChooseRoom'),
-          //   meta: { title: '房态分房', icon: 'menu', module: 1 }
-          // },
+          {
+            path: 'chooseroom',
+            component: () => import('@/views/reception/chooseRoom/ChooseRoom'),
+            meta: { title: '房态分房', icon: 'menu', module: 1 }
+          },
           // {
           //   path: 'order',
           //   component: () => import('@/views/orderPage/OrderPage'),
           //   meta: { title: '订单管理', icon: 'menu', module: 1 }
           // },
-          // {
-          //   path: 'lock',
-          //   component: () => import('@/views/doorLock/index'),
-          //   meta: { title: '门锁管理', icon: 'menu', module: 1 }
-          // }
+          {
+            path: 'lock',
+            component: () => import('@/views/reception/doorLock/index'),
+            meta: { title: '门锁管理', icon: 'menu', module: 1 }
+          }
         ]
       },
       {
