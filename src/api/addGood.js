@@ -38,3 +38,11 @@ export function addTag(data){
     data
   })
 }
+
+export function addGood(data){
+  return request({
+    url:`${GOOD_BASE_URL}/api/goods            `,
+    method:'post',
+    data
+  })
+}

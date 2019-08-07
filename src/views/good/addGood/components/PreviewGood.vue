@@ -23,7 +23,7 @@
       </div>
       <div class="module">
         <div class="good-name">{{name}}</div>
-        <div class="good-sub-name">{{name1}}</div>
+        <div class="good-sub-name">{{name2}}</div>
         <div class="tag">
           <a-tag color="red">云来客栈</a-tag>
           <a-tag color="red">大餐庙会</a-tag>

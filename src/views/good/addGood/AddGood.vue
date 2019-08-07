@@ -41,7 +41,7 @@ export default {
         {name:"编辑详情页面",finish:false},
         {name:"完成",finish:false},
       ],
-      step:1
+      step:0
     };
   },
   created(){

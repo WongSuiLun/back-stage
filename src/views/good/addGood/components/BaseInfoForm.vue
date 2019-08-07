@@ -103,7 +103,7 @@
             id="error"
             placeholder="商品副标题"
             v-decorator="[
-            'name1',
+            'name2',
             {
               rules: [{ required: true, message: 'name is required!' }],
             }
@@ -116,7 +116,7 @@
             <a-tag
               v-for="(tag,index) in tags"
               :key="`tag${tag.name}${index}`"
-              closable 
+              closable
               @close="handleTagClose(tag,index)"
               color="#f50"
             >{{tag.name}}</a-tag>
@@ -138,14 +138,23 @@
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品亮点">
-          <a-row>
-            <a-col :span="18">
-              <a-input></a-input>
-            </a-col>
-            <a-col :span="6">
-              <a-button type="primary">添加</a-button>
-            </a-col>
-          </a-row>
+          <template v-for="(lightsport,index) in tempLightsports">
+            <a-row :key="index">
+              <a-col :span="14">
+                <a-input v-model="tempLightsports[index]" @change="handleLightsports"></a-input>
+              </a-col>
+              <a-col :span="4" :offset="1">
+                <a-button @click="deleteLightspot(index)">删除</a-button>
+              </a-col>
+              <a-col :span="3">
+                <a-button
+                  type="primary"
+                  @click="addLightspot"
+                  v-if="index==tempLightsports.length-1"
+                >添加</a-button>
+              </a-col>
+            </a-row>
+          </template>
         </a-form-item>
 
         <a-form-item
@@ -258,6 +267,11 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="预定须知">
           <a-textarea
+          v-decorator="[
+            'bookNeedKnow',
+            {
+              rules: [{ required: true, message: 'Username is required!' }],
+            }]"
             placeholder="Autosize height with minimum and maximum number of lines"
             :autosize="{ minRows: 2, maxRows: 6 }"
           />
@@ -319,28 +333,33 @@
       <a-form :form="wechatShareForm">
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享标题">
           <a-input id placeholder />
-          <slot name="help">
+          <!-- <slot name="help">
             <span style="clolr:#ccc">
               微信分享给好友时显示，建议38个字以内
               <span style="color:#009804;">&nbsp;&nbsp;查看示例&nbsp;&nbsp;</span>
             </span>
-          </slot>
+          </slot>-->
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享描述">
           <a-input id placeholder="I'm the content is being validated" />
-          <slot name="help">
+          <!-- <slot name="help">
             <span style="clolr:#ccc">
               微信分享给好友时显示，建议38个字以内
               <span style="color:#009804;">&nbsp;&nbsp;查看示例&nbsp;&nbsp;</span>
             </span>
-          </slot>
+          </slot>-->
         </a-form-item>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享图片">
           <!-- <under-line></under-line> -->
           <PicUpload v-model="imgList" :max="1"></PicUpload>
         </a-form-item>
       </a-form>
+      <a-row type="flex" justify="center">
+           <a-button  @click="handleNextStep">下一步</a-button>
+      </a-row>
+       
+       
     </div>
   </div>
 </template>
@@ -350,7 +369,7 @@ import { PicUpload, RadioBox } from "@/components";
 import { mapGetters, mapState } from "vuex";
 import { mixinGobalState } from "@/utils/mixin";
 import { mixinAddGoodState } from "../mixin";
-import { deleteAttach, addAttach ,getTags , addTag} from "@/api/addGood";
+import { deleteAttach, addAttach, getTags, addTag,addGood} from "@/api/addGood";
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
 require("vue-video-player/src/custom-theme.css");
@@ -412,33 +431,35 @@ export default {
         ]
       },
       tagInputVisible: false,
-      tagInputValue: '',
-      tagSet:'', //存储已有的tag列表
+      tagInputValue: "",
+      tagSet: "", //存储已有的tag列表
       //销售渠道选项
-      placeOption:[
+      placeOption: [
         {
-          value:'0',
-          label:'全网'
+          value: "0",
+          label: "全网"
         },
         {
-          value:'1',
-          label:'后台'
+          value: "1",
+          label: "后台"
         },
         {
-          value:'3',
-          label:'微信'
+          value: "3",
+          label: "微信"
         }
       ],
       //转增选项
-      commentOption:[
-        {value:'0',label:'不允许评价'},
-        {value:'1',label:'允许评价'},
+      commentOption: [
+        { value: "0", label: "不允许评价" },
+        { value: "1", label: "允许评价" }
       ],
       //转增选项
-      transferOption:[
-        {value:'0',label:'不允许转增'},
-        {value:'1',label:'允许转增'},
+      transferOption: [
+        { value: "0", label: "不允许转增" },
+        { value: "1", label: "允许转增" }
       ],
+      //亮点中间值
+      tempLightsports: [""]
     };
   },
   computed: {
@@ -479,8 +500,8 @@ export default {
             name: this.$form.createFormField({
               value: this.name
             }),
-            name1: this.$form.createFormField({
-              value: this.name1
+            name2: this.$form.createFormField({
+              value: this.name2
             }),
             tags: this.$form.createFormField({
               value: this.tags
@@ -508,6 +529,9 @@ export default {
             }),
             place: this.$form.createFormField({
               value: this.place
+            }),
+            bookNeedKnow: this.$form.createFormField({
+              value: this.bookNeedKnow
             })
           };
         },
@@ -656,63 +680,126 @@ export default {
         module: "goods"
       };
     },
-    handleClose (removedTag) {
-      const tags = this.tags.filter(tag => tag !== removedTag)
-      console.log(tags)
-      this.tags = tags
+    handleClose(removedTag) {
+      const tags = this.tags.filter(tag => tag !== removedTag);
+      console.log(tags);
+      this.tags = tags;
     },
 
-    showTagInput () {
-      this.tagInputVisible = true
-      this.$nextTick(function () {
-        this.$refs.tagInput.focus()
-      })
+    showTagInput() {
+      this.tagInputVisible = true;
+      this.$nextTick(function() {
+        this.$refs.tagInput.focus();
+      });
     },
 
-    handleTagInputChange (e) {
-      this.tagInputValue = e.target.value
+    handleTagInputChange(e) {
+      this.tagInputValue = e.target.value;
     },
 
-    handleTagClose(tag,index){
-      let tags = this.tags
-      console.log(tags)
-      tags.splice(index,1)
-      
-      this.$store.commit('SET_FORM',{tags:tags})
+    handleTagClose(tag, index) {
+      let tags = this.tags;
+      console.log(tags);
+      tags.splice(index, 1);
+
+      this.$store.commit("SET_FORM", { tags: tags });
     },
 
-    handleTagInputConfirm () {
-      const inputValue = this.tagInputValue
-      let tags = this.tags
-      let tagNames = this.tags.map(ele=>ele.name);
+    handleTagInputConfirm() {
+      const inputValue = this.tagInputValue;
+      let tags = this.tags;
+      let tagNames = this.tags.map(ele => ele.name);
 
-      console.log(tagNames)
-      console.log(inputValue)
-      console.log(tagNames.indexOf(inputValue))
+      console.log(tagNames);
+      console.log(inputValue);
+      console.log(tagNames.indexOf(inputValue));
       if (inputValue && tagNames.indexOf(inputValue) === -1) {
         let id = undefined;
-        this.tagSet.forEach(ele=>{
-          if(ele.name == inputValue){
-            id = ele.id
+        this.tagSet.forEach(ele => {
+          if (ele.name == inputValue) {
+            id = ele.id;
           }
-        })
-       
-        if(!id){
+        });
+
+        if (!id) {
           //还没有这个标签
-          addTag({tag_name:inputValue}).then(res=>{
-            console.log(res)
-          })
+          addTag({ tag_name: inputValue }).then(res => {
+            console.log(res);
+          });
         }
-        this.$store.commit('SET_FORM',{tags:[...tags, {id,name:inputValue}]})
+        this.$store.commit("SET_FORM", {
+          tags: [...tags, { id, name: inputValue }]
+        });
       }
-      console.log(tags)
-      this.tagInputVisible = false
-      this.tagInputValue = ''
+      console.log(tags);
+      this.tagInputVisible = false;
+      this.tagInputValue = "";
     },
 
-    initTagData(){
-      getTags().then(res=>{
-        this.tagSet = res.data.data
+    initTagData() {
+      getTags().then(res => {
+        this.tagSet = res.data.data;
+      });
+    },
+
+    addLightspot() {
+      this.tempLightsports.push("");
+    },
+    deleteLightspot(index) {
+      if (this.tempLightsports.length == 1) {
+        return;
+      } else {
+        this.tempLightsports.splice(index, 1);
+        this.$store.commit("SET_FORM", {
+          lightspots: this.tempLightsports.filter(ele => {
+            return ele != " ";
+          })
+        });
+      }
+    },
+    handleLightsports() {
+      this.$store.commit("SET_FORM", {
+        lightspots: this.tempLightsports.filter(ele => {
+          return ele != " ";
+        })
+      });
+    },
+    handleNextStep(){
+      console.log(this.$store.getters.getImgListAttachIdList)
+      addGood({
+        store_no:this.storeNo,
+        name:this.name,
+        name2:this.name2,
+        type_id:"I do not know",
+        tags:this.tags,
+        is_need_address:0,
+        is_point:0,
+        is_cash:0,
+
+        features:this.lightspots,
+        book_need_know:this.bookNeedKnow,
+        back_end:this.place,
+        is_regifted:this.transfer,
+        is_reviewed:this.comment,
+        'attach[img]':this.$store.getters.getImgListAttachIdList,
+        'attach[shopV]':this.$store.getters.getShopVideoAttachIdList,
+        'attach[mainV]':this.$store.getters.getMainVideoAttachIdList
+        // storeNo:state => state.addGood.storeNo,
+        // storeType:state => state.addGood.storeType,
+        // roomType:state => state.addGood.roomType,
+        // name:state => state.addGood.name,
+        // name2:state => state.addGood.name2,
+        // tags:state => state.addGood.tags,
+        // lightspots:state => state.addGood.lightspots,
+        // goodImgList:state => state.addGood.goodImgList,
+        // goodMainVideo:state => state.addGood.goodMainVideo,
+        // goodShopVideo:state => state.addGood.goodShopVideo,
+        // bookingInfo:state => state.addGood.bookingInfo,
+        // transfer:state => state.addGood.transfer,
+        // comment:state => state.addGood.comment,
+        // place:state => state.addGood.place,
+      }).then(res=>{
+
       })
     }
   }

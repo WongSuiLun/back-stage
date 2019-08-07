@@ -8,7 +8,7 @@ const mixinAddGoodState = {
         storeType:state => state.addGood.storeType,
         roomType:state => state.addGood.roomType,
         name:state => state.addGood.name,
-        name1:state => state.addGood.name1,
+        name2:state => state.addGood.name2,
         tags:state => state.addGood.tags,
         lightspots:state => state.addGood.lightspots,
         goodImgList:state => state.addGood.goodImgList,
@@ -18,7 +18,7 @@ const mixinAddGoodState = {
         transfer:state => state.addGood.transfer,
         comment:state => state.addGood.comment,
         place:state => state.addGood.place,
-
+        bookNeedKnow: state => state.addGood.bookNeedKnow,
         //微信分享
         shareTitle:state => state.addGood.shareTitle,
         shareDesc:state => state.addGood.shareDesc,

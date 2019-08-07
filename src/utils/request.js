@@ -23,13 +23,12 @@ service.interceptors.request.use(config => {
       }
     }
 
-    config.headers['Authorization'] = store.getters.getToken
+    config.headers['Authorization'] = token
     
   } else {
     store.dispatch('logout')
     // router.push('/login')
   }
-  config.headers['Authorization'] = 'token'
   config.headers['company'] = store.getters.getCompany
   config.headers['shop'] = store.getters.getShop
   return config

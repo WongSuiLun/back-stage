@@ -14,7 +14,7 @@ export const asyncRouterMap = [
         name: 'dashboard',
         redirect: '/dashboard/statistics',
         component: RouteView,
-        meta: { title: '仪表盘',icon:'form'},
+        meta: { title: '仪表盘', icon: 'form' },
         children: [
           {
             path: '/dashboard/statistics',
@@ -26,7 +26,7 @@ export const asyncRouterMap = [
             path: '/dashboard/admin-log',
             name: 'admin-log',
             component: () => import('@/views/dashboard/AdminLog'),
-            meta: { title: '系统日志'},
+            meta: { title: '系统日志' },
           }
         ]
       },
@@ -35,117 +35,144 @@ export const asyncRouterMap = [
         name: 'company',
         redirect: '/company/staff-management',
         component: RouteView,
-        meta: { title:'公司',icon:'deployment-unit' },
+        meta: { title: '公司', icon: 'deployment-unit' },
         children: [
-        {
-          path: '/company/staff-management',
-          name:'staff-management',
-          component: () => import('@/views/company/StaffManagement'),
-          meta: { title: '员工管理' }
-        }]
+          {
+            path: '/company/staff-management',
+            name: 'staff-management',
+            component: () => import('@/views/company/StaffManagement'),
+            meta: { title: '员工管理' }
+          },
+          {
+            path: '/company/organizational/management',
+            name:'organizational-management',
+            component: () => import('@/views/company/organizational/OrgManagement'),
+            meta: { title: '机构管理',icon:'setting' }
+          },
+          {
+            path: '/company/user/management/list',
+            name:'user-management',
+            component: () => import('@/views/company/user/UserManagement'),
+            meta: { title: '用户管理',icon:'setting'},
+            // children:[
+            //   {
+            //     path: '/company/user/management/list',
+            //     name:'user-list',
+            //     component: () => import('@/views/company/user/UserList'),
+            //     meta: { title: '用户列表',icon:'setting'},
+            //   },
+            //   {
+            //     path: '/company/user/management/add',
+            //     name:'add-user',
+            //     component: () => import('@/views/company/user/AddUser'),
+            //     meta: { title: '添加用户',icon:'setting'},
+            //   },
+            // ]
+          }
+        ]
       },
       {
-        path:'/order',
-        name:'order',
-        redirect:'/order/index',
-        meta: {title:'订单', icon:'shop'},
+        path: '/order',
+        name: 'order',
+        redirect: '/order/index',
+        meta: { title: '订单', icon: 'shop' },
         component: RouteView,
-        children:[
+        children: [
           {
-            path:'/order/index',
-            name:'order-index',
+            path: '/order/index',
+            name: 'order-index',
             component: () => import('@/views/order/AllOrder'),
-            meta: { title: '全部订单'}
+            meta: { title: '全部订单' }
           },
           {
-            path:'/order/placeOrder',
-            name:'place-order',
+            path: '/order/placeOrder',
+            name: 'place-order',
             component: () => import('@/views/order/placeOrder/PlaceOrder'),
-            meta:{title:'快速下单'}
+            meta: { title: '快速下单' }
           }
         ]
       },
       {
-        path:'/good',
-        name:'good',
-        redirect:'/good/add',
-        meta:{title:'商品',icon:'shop'},
-        component:RouteView,
-        children:[
+        path: '/good',
+        name: 'good',
+        redirect: '/good/add',
+        meta: { title: '商品', icon: 'shop' },
+        component: RouteView,
+        children: [
           {
-            path:'/good/add',
-            name:'add-good',
-            component:() => import('@/views/good/addGood/AddGood'),
-            meta:{title:'添加商品'}
+            path: '/good/add',
+            name: 'add-good',
+            component: () => import('@/views/good/addGood/AddGood'),
+            meta: { title: '添加商品' }
           }
         ]
       },
       {
-        path:'/wechat',
-        name:'wechat',
-        redirect:'/wechat/AutoResponse',
-        meta:{title:'微信设置',icon:'wechat'},
-        component:RouteView,
-        children:[
+        path: '/wechat',
+        name: 'wechat',
+        redirect: '/wechat/AutoResponse',
+        meta: { title: '微信设置', icon: 'wechat' },
+        component: RouteView,
+        children: [
           {
-            path:'/wechat/AutoResponse',
-            name:'auto-response',
-            component:() => import('@/views/wechat/autoResponse/index'),
-            meta:{title:'自动回复'}
+            path: '/wechat/AutoResponse',
+            name: 'auto-response',
+            component: () => import('@/views/wechat/autoResponse/index'),
+            meta: { title: '自动回复' }
           },
           {
-            path:'/wechat/customizeMenu',
-            name:'auto-response',
-            component:() => import('@/views/wechat/customizeMenu/index'),
-            meta:{title:'自定义菜单'}
+            path: '/wechat/customizeMenu',
+            name: 'auto-response',
+            component: () => import('@/views/wechat/customizeMenu/index'),
+            meta: { title: '自定义菜单' }
           }
         ]
       },
       {
-        path:'/linen',
-        name:'linen',
-        redirect:'/linen/linenManagement',
-        meta:{title:'布草管理',icon:'wechat'},
-        component:RouteView,
-        children:[
+        path: '/linen',
+        name: 'linen',
+        redirect: '/linen/linenManagement',
+        meta: { title: '布草管理', icon: 'wechat' },
+        component: RouteView,
+        children: [
           {
-            path:'/linen/linenManagement',
-            name:'linen-management',
-            component:() => import('@/views/linen/linenManagement/linenManagement'),
-            meta:{title:'布草类型'}
+            path: '/linen/linenManagement',
+            name: 'linen-management',
+            component: () => import('@/views/linen/linenManagement/linenManagement'),
+            meta: { title: '布草类型' }
           },
           {
-            path:'/linen/linenStorage',
-            name:'linen-Storage',
-            component:() => import('@/views/linen/linenManagement/linenManagement'),
-            meta:{title:'布草入库'}
+            path: '/linen/linenStorage',
+            name: 'linen-Storage',
+            component: () => import('@/views/linen/linenManagement/linenManagement'),
+            meta: { title: '布草入库' }
           },
           {
-            path:'/linen/linenScan',
-            name:'linen-scan',
-            component:() => import('@/views/linen/linenManagement/linenManagement'),
-            meta:{title:'布草扫描'}
+            path: '/linen/linenScan',
+            name: 'linen-scan',
+            component: () => import('@/views/linen/linenManagement/linenManagement'),
+            meta: { title: '布草扫描' }
           },
           {
-            path:'/linen/linenSetting',
-            name:'linen-setting',
-            component:() => import('@/views/linen/linenManagement/linenManagement'),
-            meta:{title:'仓库设置'}
+            path: '/linen/linenSetting',
+            name: 'linen-setting',
+            component: () => import('@/views/linen/linenManagement/linenManagement'),
+            meta: { title: '仓库设置' }
           },
           {
-            path:'/linen/linenRoomType',
-            name:'linen-roomType',
-            component:() => import('@/views/linen/linenManagement/linenManagement'),
-            meta:{title:'房型布草'}
+            path: '/linen/linenRoomType',
+            name: 'linen-roomType',
+            component: () => import('@/views/linen/linenManagement/linenManagement'),
+            meta: { title: '房型布草' }
           }
         ]
       },
       {
-        path:'/reception',
-        name:'reception',
+        path: '/reception',
+        name: 'reception',
         redirect: '/reception/roomstate',
-        meta:{title:'前台',icon:'shop'},
-        component:RouteView,
+        meta: { title: '前台', icon: 'shop' },
+        component: RouteView,
         children: [
           {
             path: '/reception/roomstate',
@@ -178,7 +205,7 @@ export const asyncRouterMap = [
         path: '/account/center',
         name: 'center',
         component: () => import('@/views/account/center/Center'),
-        meta: { title: '个人中心',icon:'wechat'}
+        meta: { title: '个人中心', icon: 'wechat' }
       },
     ]
   },
@@ -202,26 +229,26 @@ export const constantRouterMap = [
         path: 'login',
         name: 'login',
         component: () => import('@/views/user/Login'),
-        meta:{title:'登录'}
+        meta: { title: '登录' }
       },
       {
-        path:'/company-choose',
-        name:'company-choose',
-        component:()=>import('@/views/user/CompanyChoose'),
-        meta:{title:'切换公司'}
+        path: '/company-choose',
+        name: 'company-choose',
+        component: () => import('@/views/user/CompanyChoose'),
+        meta: { title: '切换公司' }
       }
     ]
   },
   {
-    path:'/apply',
-    component:LoginLayout,
-    redirect:'/apply/company',
+    path: '/apply',
+    component: LoginLayout,
+    redirect: '/apply/company',
     children: [
       {
         path: '/apply/company',
         name: 'apply-company',
         component: () => import(/* webpackChunkName: "fail" */ '@/views/public/ApplyCompany'),
-        meta: { title: '申请公司',}
+        meta: { title: '申请公司', }
       }
     ]
   },

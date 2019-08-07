@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content-warp">
     员工管理
   </div>
 </template>

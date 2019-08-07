@@ -14,7 +14,7 @@
           :key="item.path"
           v-for="item in menuItem.children"
         >
-          <a-icon type="user" />
+          <a-icon :type="item.meta.icon" v-if="item.meta.icon!==undefined&&item.meta.icon!=''"/>
           <span>{{item.meta.title}}</span>
         </a-menu-item>
       </a-sub-menu>

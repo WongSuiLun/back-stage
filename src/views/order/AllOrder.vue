@@ -1,5 +1,5 @@
 <template>
-  <div class="warp">
+  <div class="content-warp">
     <div class="btn-control">
       <a-button type="primary" class="btn">搜索</a-button>
       <a-button type="primary" class="btn">核销选中订单</a-button>
@@ -248,12 +248,14 @@ export default {
   },
   methods: {
     initData() {
-      let defaultQuery = { use_time: 1539100800, page: 1 };
+      let defaultQuery = { use_time: 0, page: 1 };
       getOrders(defaultQuery).then(res => {
         console.log(res);
         this.dataSource = res.data.data;
         this.goodSource = res.data.meta.goods;
         console.log(this.dataSource);
+      }).catch(err=>{
+        console.log(err)
       });
     },
     handleTableChange(pagination, filters, sorter) {
@@ -281,16 +283,14 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.warp {
-  background: #fff;
-  padding: 15px 25px;
-  .btn-control {
-    padding: 5px 0 15px 0;
-    .btn {
-      margin-right: 8px;
-    }
+
+.btn-control {
+  padding: 5px 0 15px 0;
+  .btn {
+    margin-right: 8px;
   }
 }
+ 
 .custom-filter-dropdown {
   padding: 8px;
   border-radius: 4px;

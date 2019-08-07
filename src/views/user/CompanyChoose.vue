@@ -1,11 +1,7 @@
 <template>
   <div class="company-choose">
-    <a-card
-      title="选择公司"
-      :bordered="false"
-    >
+    <a-card title="选择公司" :bordered="false">
       <template slot="extra">
-
         <a-input-search
           placeholder="搜索公司"
           style="width: 200px;margin-right:8px"
@@ -14,36 +10,24 @@
 
         <a-button type="primary">创建公司</a-button>
       </template>
-      <a-row
-        :gutter="16"
-  
-      >
-        <a-col
-          :md="24"
-          :lg="12"
-          :xl="8"
-          v-for="(company,index) in currentCompanyInfo"
-          :key="index"
-        >
-          <a-card :title="company.company_title"  class="company-card">
-            <a-button
-              type="danger"
-              ghost
-              slot="extra"
-              @click="selectCompany"
-            >进公司</a-button>
-            <p style="text-overflow: ellipsis;
+      <a-row :gutter="16">
+        <a-col :md="24" :lg="12" :xl="8" v-for="(company,index) in currentCompanyInfo" :key="index">
+          <a-card :title="company.company_title" class="company-card">
+            <a-button type="danger" ghost slot="extra" @click="selectCompany">进公司</a-button>
+            <p
+              style="text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;">主体信息：{{company.main_info}}</p>
-            <p>状态：<a-tag color="#87d068" v-if="company.status == 'success'">运营中</a-tag><a-tag color="#ccc" v-else>未营业</a-tag>
+    white-space: nowrap;"
+            >主体信息：{{company.main_info}}</p>
+            <p>
+              状态：
+              <a-tag color="#87d068" v-if="company.status == 'success'">运营中</a-tag>
+              <a-tag color="#ccc" v-else>未营业</a-tag>
             </p>
             <p>有效期至：{{company.indate}}</p>
             <div class="company-choose-action">
               <a href="#">修改</a>
-              <a
-                href="#"
-                @click="showDeleteCompanyModal"
-              >删除</a>
+              <a href="#" @click="showDeleteCompanyModal">删除</a>
             </div>
           </a-card>
         </a-col>
@@ -51,7 +35,7 @@
       <div class="pagination">
         <a-pagination
           v-model="current"
-          showSizeChanger 
+          showSizeChanger
           @change="onPageChange"
           @showSizeChange="onShowSizeChange"
           :total="pageCount"
@@ -76,27 +60,17 @@
         @submit="handleSubmit"
       >
         <a-row :gutter="16">
-          <a-col
-            class="gutter-row"
-            :span="16"
-          >
+          <a-col class="gutter-row" :span="16">
             <a-input
               size="large"
               type="text"
               placeholder="验证码"
               v-decorator="['captcha_code', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]"
             >
-              <a-icon
-                slot="prefix"
-                type="message"
-                :style="{ color: 'rgba(0,0,0,.25)' }"
-              />
+              <a-icon slot="prefix" type="message" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-col>
-          <a-col
-            class="gutter-row"
-            :span="8"
-          >
+          <a-col class="gutter-row" :span="8">
             <a-button
               type="primary"
               size="large"
@@ -111,61 +85,55 @@
         </a-form-item>
       </a-form>
       <template slot="footer">
-        <a-button
-          key="back"
-          type="danger"
-          @click="handleCancel"
-        >删除</a-button>
-        <a-button
-          key="submit"
-          type="primary"
-        >
-          取消
-        </a-button>
+        <a-button key="back" type="danger" @click="handleCancel">删除</a-button>
+        <a-button key="submit" type="primary">取消</a-button>
       </template>
     </a-modal>
   </div>
 </template>
 
 <script>
-import {getCompany} from '@/api/auth'
+import { getCompany } from "@/api/auth";
 export default {
   data() {
     return {
       current: 1,
-      page:'',
-      pageSize:10,
+      page: "",
+      pageSize: 10,
       confirmDeleteCompanyLoading: false,
       deleteModalVisible: false,
-      companyListBackup:[],
-      companyList:[],
+      companyListBackup: [],
+      companyList: []
     };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this);
-    getCompany().then(res=>{
-      this.companyList = res.data.result
-      this.companyListBackup = this.companyList.slice()
-      console.log(this.companyList)
-    })
+    getCompany().then(res => {
+      this.companyList = res.data.result;
+      this.companyListBackup = this.companyList.slice();
+      console.log(this.companyList);
+    });
   },
-  computed:{
-    pageCount(){
-      return this.companyList.length
+  computed: {
+    pageCount() {
+      return this.companyList.length;
     },
-    currentCompanyInfo(){
-      let start = (this.current-1)*this.pageSize
-      let end = start+this.pageSize>=this.companyList.length?this.companyList.length:start+this.pageSize
-      console.log(start)
-      console.log(end)
-      return this.companyList.slice(start,end)
+    currentCompanyInfo() {
+      let start = (this.current - 1) * this.pageSize;
+      let end =
+        start + this.pageSize >= this.companyList.length
+          ? this.companyList.length
+          : start + this.pageSize;
+      console.log(start);
+      console.log(end);
+      return this.companyList.slice(start, end);
     }
   },
   methods: {
     onSearch(value) {
-      this.companyList = this.companyListBackup.filter(company=>{
-        return company.company_title.includes(value)
-      })
+      this.companyList = this.companyListBackup.filter(company => {
+        return company.company_title.includes(value);
+      });
     },
     selectCompany() {
       this.$router.push("/dashboard");
@@ -173,19 +141,19 @@ export default {
     showDeleteCompanyModal() {
       this.deleteModalVisible = true;
     },
-    onPageChange(page,pageSize){
-      console.log(page)
-      console.log(pageSize)
+    onPageChange(page, pageSize) {
+      console.log(page);
+      console.log(pageSize);
     },
-    onShowSizeChange(current, size){
-      this.current = current
-      this.pageSize = size
+    onShowSizeChange(current, size) {
+      this.current = current;
+      this.pageSize = size;
     },
     handleDeleteComapny() {},
     handleCancel() {
-      this.deleteModalVisible = false
+      this.deleteModalVisible = false;
     },
-    handleSubmit(){}
+    handleSubmit() {}
   }
 };
 </script>

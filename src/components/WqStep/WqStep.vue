@@ -35,7 +35,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @green_color: #009804;
 @gray_color: #e9e9e9;
 .step-warp {
