@@ -7,7 +7,7 @@ let SHOP_ID = 49
 let tempBaseApi = 'http://192.168.101.115:8080/oqc/index.php/' + COMPANY_ID + '/'
 import { GOOD_BASE_URL } from '../constant'
 // 获取房态列表
-export function getRoomSurplus (query) {
+export function getRoomSurplus(query) {
   return request({
     url: `${GOOD_BASE_URL}/api/roomsurplus`,
     method: 'get',
@@ -16,7 +16,7 @@ export function getRoomSurplus (query) {
 }
 
 // 获取房间日预定状态
-export function roomDayStatus (query) {
+export function roomDayStatus(query) {
   return request({
     url: `${GOOD_BASE_URL}/api/roomdaystatus`,
     method: 'get',
@@ -25,7 +25,7 @@ export function roomDayStatus (query) {
 }
 
 // 获取店内房间信息（带缓存）
-export function hrooms (query) {
+export function hrooms(query) {
   return request({
     url: `${GOOD_BASE_URL}/api/shops/hrooms`,
     method: 'get',
@@ -34,7 +34,7 @@ export function hrooms (query) {
 }
 
 // 获取线上店内房间信息
-export function getShopsRooms (query) {
+export function getShopsRooms(query) {
   return request({
     url: `${GOOD_BASE_URL}/api/shops/rooms`,
     method: 'get',
@@ -43,7 +43,7 @@ export function getShopsRooms (query) {
 }
 
 // 房间入住业务
-export function checkIn (query) {
+export function checkIn(query) {
   return request({
     url: `${GOOD_BASE_URL}/api/checkIn`,
     method: 'POST',
@@ -52,7 +52,7 @@ export function checkIn (query) {
 }
 
 // 根据shop Id 获取房型
-export function roomtypes (id) {
+export function roomtypes(id) {
   return request({
     url: `${GOOD_BASE_URL}/api/roomtypes/${id}`,
     method: 'get'
@@ -60,7 +60,7 @@ export function roomtypes (id) {
 }
 
 // 清除缓存
-export function cleanRoomsCache () {
+export function cleanRoomsCache() {
   return request({
     url: `${GOOD_BASE_URL}/api/cleanRoomsCache`,
     method: 'POST'
@@ -68,7 +68,7 @@ export function cleanRoomsCache () {
 }
 
 // 获取房间下单的商品类型
-export function getRoomGoods () {
+export function getRoomGoods() {
   return new Promise(function (resolve, reject) {
     axios.get(tempBaseApi + '?app=api&mod=RoomService&act=getRoomGoods&shop_id=' + SHOP_ID + '&company_id=' + COMPANY_ID + '').then(resp => {
       resolve(resp)
@@ -79,7 +79,7 @@ export function getRoomGoods () {
 }
 
 // 客房服务下单
-export function addRoomOrder (data) {
+export function addRoomOrder(data) {
   let params = ''
   for (let key in data) {
     params += '&' + key + '=' + data[key]
@@ -94,7 +94,7 @@ export function addRoomOrder (data) {
 }
 
 // 获取房间的下单信息
-export function getOrderByShop () {
+export function getOrderByShop() {
   return new Promise(function (resolve, reject) {
     axios.get(tempBaseApi + '?app=api&mod=RoomService&act=getOrderByShop&shop_id=' + SHOP_ID + '&company_id=' + COMPANY_ID + '&employee_id=70777').then(resp => {
       resolve(resp)
@@ -105,7 +105,7 @@ export function getOrderByShop () {
 }
 
 // 客房服务取消订单
-export function cancelRoomOrder (data) {
+export function cancelRoomOrder(data) {
   let params = ''
   for (let key in data) {
     params += '&' + key + '=' + data[key]
@@ -120,7 +120,7 @@ export function cancelRoomOrder (data) {
 }
 
 // 客房服务订单详情
-export function getOrderDetail (data) {
+export function getOrderDetail(data) {
   let params = ''
   for (let key in data) {
     params += '&' + key + '=' + data[key]
@@ -135,7 +135,7 @@ export function getOrderDetail (data) {
 }
 
 // 客房服务订单日志
-export function getRoomLog () {
+export function getRoomLog() {
   return new Promise(function (resolve, reject) {
     axios.get(tempBaseApi + '?app=api&mod=RoomService&act=getRoomLog&shop_id=' + SHOP_ID + '&company_id=' + COMPANY_ID + '&employee_id=70777').then(response => {
       resolve(response)
@@ -146,7 +146,7 @@ export function getRoomLog () {
 }
 
 // 系统排房
-export function autoArrangeRooms (data) {
+export function autoArrangeRooms(data) {
   return request({
     url: `${GOOD_BASE_URL}/api/autoArrangeRooms`,
     method: 'POST',
@@ -155,10 +155,25 @@ export function autoArrangeRooms (data) {
 }
 
 // 业务--排房
-export function arrangeRooms (data) {
+export function arrangeRooms(data) {
   return request({
     url: `${GOOD_BASE_URL}/api/arrangeRooms`,
     method: 'POST',
     data
+  })
+}
+
+// 添加房型
+export function addRoomTypes(data, shop_id) {
+  return request.post(`${GOOD_BASE_URL}/api/roomtypes`, data, { headers: { 'shop': shop_id } })
+}
+
+// 获取房型
+export function getRoomTypes(shop_id) {
+  return request({
+    url: `${GOOD_BASE_URL}/api/roomtypes/${shop_id}`,
+    headers: {
+      'shop': shop_id
+    }
   })
 }

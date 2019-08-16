@@ -1,49 +1,22 @@
 <template>
   <div class="content-warp">
     <a-tabs defaultActiveKey="1" >
-      <a-tab-pane tab="用户列表" key="1">
-        <user-list></user-list>
+      <a-tab-pane tab="员工列表" key="1">
+       
       </a-tab-pane>
-      <a-tab-pane tab="添加用户" key="2" forceRender>
-        <add-user></add-user>
+      <a-tab-pane tab="添加员工" key="2" forceRender>
+        <add-employee></add-employee>
       </a-tab-pane>
     </a-tabs>
-
-    <!-- <div class="account-settings-info-main" :class="device">
-      <div class="account-settings-info-left">
-        <a-menu
-          :mode="device == 'mobile' ? 'horizontal' : 'inline'"
-          :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
-          :selectedKeys="selectedKeys"
-          type="inner" 
-          @openChange="onOpenChange"
-        >
-          <a-menu-item key="/company/user/management/list">
-            <router-link :to="{ name: 'user-list' }">用户列表</router-link>
-          </a-menu-item>
-          <a-menu-item key="/company/user/management/add">
-            <router-link :to="{ name: 'add-user' }">添加用户</router-link>
-          </a-menu-item>
-        </a-menu>
-      </div>
-      <div class="account-settings-info-right">
-        <div class="account-settings-info-title">
-          <span>{{ $route.meta.title }}</span>
-        </div>
-        <router-view></router-view>
-      </div>
-    </div>-->
   </div>
 </template>
 
 <script>
 import { mixinDevice } from "@/utils/mixin.js";
-import AddUser from "./components/AddUser";
-import UserList from "./components/UserList";
+import AddEmployee from './components/AddEmployee'
 export default {
   components: {
-    AddUser,
-    UserList
+    AddEmployee
   },
   mixins: [mixinDevice],
   data() {
@@ -84,9 +57,6 @@ export default {
     }
   },
   watch: {
-    $route(val) {
-      this.updateMenu();
-    }
   }
 };
 </script>

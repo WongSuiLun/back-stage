@@ -9,12 +9,11 @@
     <template v-for="menuItem in addRouters[0].children">
       <a-sub-menu :key="menuItem.path">
         <span slot="title">
-          <a-icon :type="menuItem.meta.icon" /><span>{{menuItem.meta.title}}</span></span>
-        <a-menu-item
-          :key="item.path"
-          v-for="item in menuItem.children"
-        >
-          <a-icon :type="item.meta.icon" v-if="item.meta.icon!==undefined&&item.meta.icon!=''"/>
+          <a-icon :type="menuItem.meta.icon" v-if="menuItem.meta.icon!==undefined&&menuItem.meta.icon!=''" />
+          <span>{{menuItem.meta.title}}</span>
+        </span>
+        <a-menu-item :key="item.path" v-for="item in menuItem.children">
+          <a-icon :type="item.meta.icon" v-if="item.meta.icon!==undefined&&item.meta.icon!=''" />
           <span>{{item.meta.title}}</span>
         </a-menu-item>
       </a-sub-menu>

@@ -11,7 +11,7 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config => {
-  let token =  Vue.ls.get('Access-Token')
+  let token = Vue.ls.get('Access-Token')
   if (token) {
     const TIME_OFFSET = 0.1
     if (+new Date().getTime() - +store.getters.getLoginTime >= +store.getters.getExpiresIn * 1000) {
@@ -24,13 +24,20 @@ service.interceptors.request.use(config => {
     }
 
     config.headers['Authorization'] = token
-    
+
   } else {
     store.dispatch('logout')
     // router.push('/login')
   }
-  config.headers['company'] = store.getters.getCompany
-  config.headers['shop'] = store.getters.getShop
+
+  console.log(config)
+  if (!config.headers.hasOwnProperty('company')) {
+    config.headers['company'] = store.getters.getCompany
+  }
+  if (!config.headers.hasOwnProperty('shop')) {
+    config.headers['shop'] = store.getters.getShop
+  }
+
   return config
 }, error => {
   return Promise.reject(error)

@@ -1,9 +1,10 @@
 import request from '@/utils/request'
-import { GOOD_BASE_URL } from '../constant'
+import { GOOD_BASE_URL,USER_BASE_URL } from '../constant'
 
-export function deleteAttach(id) {
+export function addUser(data) {
   return request({
-    url: `${GOOD_BASE_URL}/api/attach/${id}`,
-    method: 'delete',
+    url: `${USER_BASE_URL}/user/public/api/users`,
+    method: 'post',
+    data
   })
 }

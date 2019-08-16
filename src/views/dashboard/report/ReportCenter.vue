@@ -1,8 +1,9 @@
 <template>
-  <div class="content-warp">
-    员工管理
+  <div>
+    系统日志
   </div>
 </template>
+
 
 <script>
 export default {

@@ -5,9 +5,6 @@ export function getInstitutions() {
         {
             url: '/chpc/user/public/api/institutions',
             method: 'get',
-            headers: {
-                company: 1
-            }
         }
     )
 }

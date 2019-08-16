@@ -3,11 +3,14 @@
     <div>
       <div class="card-warp">
         <a-divider orientation="left">主要信息</a-divider>
-
-        <a-row type="flex" justify="left">
+        <a-row type="flex" justify="start">
           <a-col :span="12">
-            <a-form-item :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" :label="`用户类型：`">
-              <a-tag color="#f50">用户</a-tag>
+            <a-form-item :label-col="{ span: 3}" :wrapper-col="{ span: 16 }" :label="`用户类型：`">
+              <!-- <a-radio-group v-model="userType">
+                <a-radio :value="1">员工</a-radio>
+                <a-radio :value="2">用户</a-radio>
+              </a-radio-group> -->
+              <a-tag color="#f50">员工</a-tag>
             </a-form-item>
 
             <a-form-item :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" :label="`真实姓名`">
@@ -45,41 +48,23 @@
       <div class="card-warp">
         <a-divider orientation="left">身份信息</a-divider>
         <div>
-          <a-form-item label="用户组：" :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }">
-            <a-radio-group name="radioGroup" :defaultValue="1">
-              <a-radio :value="1">A</a-radio>
-              <a-radio :value="2">B</a-radio>
-              <a-radio :value="3">C</a-radio>
-              <a-radio :value="4">D</a-radio>
-            </a-radio-group>
-          </a-form-item>
+          <a-row type="flex" justify="start">
+            <a-col :span="12">
+              <a-form layout="vertical">
+                <a-form-item :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" :label="`机构`">
+                  <a-checkbox-group :options="plainOptions" v-model="checkedList" />
+                </a-form-item>
+              </a-form>
+            </a-col>
+          </a-row>
         </div>
       </div>
       <div class="card-warp">
         <a-divider orientation="left">基本账户信息</a-divider>
-       
 
         <div class="account-settings-info-view">
-          <a-row type="flex" justify="left">
+          <a-row type="flex" justify="start">
             <a-col :md="12">
-
-                <a-form-item :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" label=" ">
-          <a-upload
-            name="avatar"
-            listType="picture-card"
-            class="avatar-uploader"
-            :showUploadList="false"
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            :beforeUpload="beforeUpload"
-            @change="handleChange"
-          >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-            <div v-else>
-              <a-icon :type="loading ? 'loading' : 'plus'" />
-              <div class="ant-upload-text">头像</div>
-            </div>
-          </a-upload>
-                </a-form-item>
               <a-form-item :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" label="用户名">
                 <a-input placeholder="给自己起个名字" />
               </a-form-item>
@@ -120,7 +105,7 @@
                 :wrapper-col="{ span: 16 }"
                 label="密码"
                 :required="false"
-                v-decorator="[
+                 v-decorator="[
                 `password`,
                 {
                   rules: [],
@@ -134,7 +119,7 @@
                 :wrapper-col="{ span: 16 }"
                 label="电子邮箱"
                 :required="false"
-                v-decorator="[
+                 v-decorator="[
                 `email`,
                 {
                   rules: [],

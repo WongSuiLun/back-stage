@@ -69,12 +69,12 @@
           </a-col>
           <a-col :md="5" :sm="24">
             <a-form-item :label="`注册时间`" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-              <a-range-picker @change="onChange" />
+              <a-range-picker />
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="24">
             <a-form-item :label="`实名时间`" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-              <a-range-picker @change="onChange" />
+              <a-range-picker />
             </a-form-item>
           </a-col>
           <a-col :md="3" :sm="24" offset="1">

@@ -19,11 +19,17 @@ export const asyncRouterMap = [
           {
             path: '/dashboard/statistics',
             name: 'statistics',
-            component: () => import('@/views/dashboard/data_statistics/DataStatistics'),
+            component: () => import('@/views/dashboard/statistics/DataStatistics'),
             meta: { title: '数据统计' },
           },
           {
-            path: '/dashboard/admin-log',
+            path:'/dashboard/report',
+            name:'report',
+            component: () => import('@/views/dashboard/report/ReportCenter'),
+            meta:{title:'报表中心'}
+          },
+          {
+            path: '/dashboard/log',
             name: 'admin-log',
             component: () => import('@/views/dashboard/AdminLog'),
             meta: { title: '系统日志' },
@@ -31,29 +37,46 @@ export const asyncRouterMap = [
         ]
       },
       {
+        path: '/business',
+        name: 'business',
+        redirect: '/business/roomtype',
+        component: RouteView,
+        meta: {
+          title: '营业管理'
+        },
+        children: [
+          {
+            path: '/business/roomtype',
+            name: 'roomtype',
+            component: () => import('@/views/business/roomtype/RoomTypeManagement'),
+            meta: { title: '房型管理', icon: '' }
+          }
+        ]
+      },
+      {
         path: '/company',
         name: 'company',
-        redirect: '/company/staff-management',
+        redirect: '/company/employee/management',
         component: RouteView,
         meta: { title: '公司', icon: 'deployment-unit' },
         children: [
           {
-            path: '/company/staff-management',
+            path: '/company/employee/management',
             name: 'staff-management',
-            component: () => import('@/views/company/StaffManagement'),
+            component: () => import('@/views/company/employee/StaffManagement'),
             meta: { title: '员工管理' }
           },
           {
             path: '/company/organizational/management',
-            name:'organizational-management',
+            name: 'organizational-management',
             component: () => import('@/views/company/organizational/OrgManagement'),
-            meta: { title: '机构管理',icon:'setting' }
+            meta: { title: '机构管理', icon: 'setting' }
           },
           {
             path: '/company/user/management/list',
-            name:'user-management',
+            name: 'user-management',
             component: () => import('@/views/company/user/UserManagement'),
-            meta: { title: '用户管理',icon:'setting'},
+            meta: { title: '用户管理', icon: 'setting' },
             // children:[
             //   {
             //     path: '/company/user/management/list',

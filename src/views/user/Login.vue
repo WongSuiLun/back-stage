@@ -143,7 +143,7 @@ export default {
   beforeCreate() {
   },
   created() {
-    this.getCaptch();
+    // this.getCaptch();
   },
   mounted() {
     this.setCookieAccount();

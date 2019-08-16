@@ -1,6 +1,6 @@
 <template>
   <div class="content-warp">
-    <a-tabs defaultActiveKey="1" @change="callback">
+    <a-tabs defaultActiveKey="1" >
       <a-tab-pane tab="机构列表" key="1">
         <organizational-list></organizational-list>
       </a-tab-pane>
