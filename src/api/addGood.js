@@ -41,8 +41,38 @@ export function addTag(data){
 
 export function addGood(data){
   return request({
-    url:`${GOOD_BASE_URL}/api/goods            `,
+    url:`${GOOD_BASE_URL}/api/goods`,
     method:'post',
     data
+  })
+}
+
+export function getDaterules(){
+  return request({
+    url:`${GOOD_BASE_URL}/api/daterules`,
+    method:'get',
+  })
+}
+
+export function postDaterules(data){
+  return request({
+    url:`${GOOD_BASE_URL}/api/daterules`,
+    method:'post',
+    data
+  })
+}
+
+export function putDaterules(data,id){
+  return request({
+    url:`${GOOD_BASE_URL}/api/daterules/${id}`,
+    method:'put',
+    data
+  })
+}
+
+export function deleteDaterules(id){
+  return request({
+    url:`${GOOD_BASE_URL}/api/daterules/${id}`,
+    method:'delete'
   })
 }

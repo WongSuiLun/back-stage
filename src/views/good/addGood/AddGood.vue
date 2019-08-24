@@ -18,6 +18,7 @@
       </a-step>
     </a-steps> -->
     <base-info-form v-show="step==0"/>
+    <putaway-info-form v-show="step==1"/>
     <preview-good></preview-good>
   </div>
 </template>
@@ -25,11 +26,13 @@
 <script>
 import PreviewGood from './components/PreviewGood'
 import BaseInfoForm from './components/BaseInfoForm'
+import PutawayInfoForm from './components/PutawayInfoForm'
 import { WqStep } from "@/components";
 export default {
   components: {
     PreviewGood,
     BaseInfoForm,
+    PutawayInfoForm,
     WqStep
   },
   data() {

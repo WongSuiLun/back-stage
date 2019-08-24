@@ -42,7 +42,8 @@ export const asyncRouterMap = [
         redirect: '/business/roomtype',
         component: RouteView,
         meta: {
-          title: '营业管理'
+          title: '营业管理',
+          icon: 'wechat'
         },
         children: [
           {
@@ -50,6 +51,18 @@ export const asyncRouterMap = [
             name: 'roomtype',
             component: () => import('@/views/business/roomtype/RoomTypeManagement'),
             meta: { title: '房型管理', icon: '' }
+          },
+          {
+            path: '/business/state',
+            name: 'roomtype',
+            component: () => import('@/views/business/roomstate/RoomState'),
+            meta: { title: '房态', icon: '' }
+          },
+          {
+            path:'/business/bus',
+            name:'bus',
+            component:()=> import('@/views/business/bus/BusManagement'),
+            meta: { title: '接车管理', icon: '' }
           }
         ]
       },
@@ -70,13 +83,13 @@ export const asyncRouterMap = [
             path: '/company/organizational/management',
             name: 'organizational-management',
             component: () => import('@/views/company/organizational/OrgManagement'),
-            meta: { title: '机构管理', icon: 'setting' }
+            meta: { title: '机构管理', icon: '' }
           },
           {
             path: '/company/user/management/list',
             name: 'user-management',
             component: () => import('@/views/company/user/UserManagement'),
-            meta: { title: '用户管理', icon: 'setting' },
+            meta: { title: '用户管理', icon: '' },
             // children:[
             //   {
             //     path: '/company/user/management/list',
@@ -127,6 +140,30 @@ export const asyncRouterMap = [
             name: 'add-good',
             component: () => import('@/views/good/addGood/AddGood'),
             meta: { title: '添加商品' }
+          },
+          {
+            path: '/good/price',
+            name: 'price-date',
+            component: () => import('@/views/good/price/PriceDateManagement'),
+            meta: { title: '价格日期规则' }
+          },
+          {
+            path: '/good/price/management',
+            name: 'price-management',
+            component: () => import('@/views/good/priceManagement/GoodPriceManagement'),
+            meta: { title: '商品价格管理' }
+          },
+          {
+            path: '/good/management',
+            name: 'price-management',
+            component: () => import('@/views/good/priceManagement/GoodPriceManagement'),
+            meta: { title: '商品管理' }
+          },
+          {
+            path: '/good/comment/management',
+            name: 'comment-management',
+            component: () => import('@/views/good/comment/CommentManagement'),
+            meta: { title: '评论管理' }
           }
         ]
       },
@@ -161,7 +198,7 @@ export const asyncRouterMap = [
           {
             path: '/linen/linenManagement',
             name: 'linen-management',
-            component: () => import('@/views/linen/linenManagement/linenManagement'),
+            component: () => import('@/views/linen/linenManagement/linenManagement'),  
             meta: { title: '布草类型' }
           },
           {

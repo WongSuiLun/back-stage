@@ -173,6 +173,7 @@ export default {
     },
     handleSubmit(e) {
       e.preventDefault();
+      this.$router.push({ name: "company-choose" });
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);

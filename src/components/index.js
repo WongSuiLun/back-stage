@@ -17,6 +17,10 @@ import WechatContentTab from './WechatContentTab'
 import RadioBox from './RadioBox'
 import DropFixedBox from './DropFixedBox'
 import WqStep from './WqStep'
+import TagSelect from './TagSelect'
+import StandardFormRow from './StandardFormRow'
+import Ellipsis from '@/components/Ellipsis'
+import AvatarList from '@/components/AvatarList'
 // import ChartCard from './Charts/ChartCard'
 export {
   ExceptionPage, 
@@ -37,5 +41,9 @@ export {
   WechatContentTab,
   RadioBox,
   DropFixedBox,
-  WqStep
+  WqStep,
+  TagSelect,
+  Ellipsis,
+  AvatarList,
+  StandardFormRow
 }
