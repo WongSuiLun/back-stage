@@ -799,7 +799,7 @@ export default {
         // comment:state => state.addGood.comment,
         // place:state => state.addGood.place,
       }).then(res=>{
-
+        
       })
     }
   }

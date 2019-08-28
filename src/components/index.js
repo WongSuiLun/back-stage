@@ -5,7 +5,7 @@ import GlobalMenu from './GlobalMenu'
 import GlobalLogo from './GlobalLogo'
 import MultiTab from './MultiTab'
 import TimeSelectTab from './TimeSelectTab'
-import {TimeSelectTabPane} from './TimeSelectTab'
+import { TimeSelectTabPane } from './TimeSelectTab'
 import NumberInfo from './NumberInfo'
 import RadioBtn from './RadioBtn'
 import UnderLine from './UnderLine'
@@ -21,10 +21,12 @@ import TagSelect from './TagSelect'
 import StandardFormRow from './StandardFormRow'
 import Ellipsis from '@/components/Ellipsis'
 import AvatarList from '@/components/AvatarList'
+import EditableCell from './EditableCell'
+import Result from './Result'
 // import ChartCard from './Charts/ChartCard'
 export {
-  ExceptionPage, 
-  GlobalHeader, 
+  ExceptionPage,
+  GlobalHeader,
   GlobalFooter,
   GlobalMenu,
   GlobalLogo,
@@ -45,5 +47,6 @@ export {
   TagSelect,
   Ellipsis,
   AvatarList,
-  StandardFormRow
+  StandardFormRow, EditableCell,
+  Result
 }

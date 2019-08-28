@@ -84,7 +84,6 @@
               </a-row>
               <div>
                 <a-date-picker
-                  showTime
                   @openChange="handleOpenChange1"
                   @panelChange="handlePanelChange1"
                 >
