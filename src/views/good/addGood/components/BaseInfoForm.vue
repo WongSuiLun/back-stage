@@ -7,24 +7,6 @@
     <div class="content-item">产品基本信息</div>
     <div>
       <a-form :form="form">
-        <!-- <a-form-item
-          :label-col="labelCol"
-          :wrapper-col="wrapperCol"
-          label="编号"
-          validate-status="error"
-        >
-          <a-input
-            id="error"
-            placeholder="unavailable choice"
-            v-decorator="[
-            'storeNo',
-            {
-              rules: [{ required: true, message: 'Username is required!' }],
-            }
-          ]"
-          />
-        </a-form-item>-->
-
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="部门">
           <a-select
             v-decorator="[
@@ -98,6 +80,7 @@
           ]"
           />
         </a-form-item>
+
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品副标题">
           <a-input
             id="error"
@@ -267,7 +250,7 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="预定须知">
           <a-textarea
-          v-decorator="[
+            v-decorator="[
             'bookNeedKnow',
             {
               rules: [{ required: true, message: 'Username is required!' }],
@@ -293,6 +276,7 @@
             >{{option.label}}</a-select-option>
           </a-select>
         </a-form-item>
+
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="允许评论">
           <a-select
             v-decorator="[
@@ -309,6 +293,7 @@
             >{{option.label}}</a-select-option>
           </a-select>
         </a-form-item>
+
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="销售渠道">
           <a-select
             v-decorator="[
@@ -333,33 +318,20 @@
       <a-form :form="wechatShareForm">
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享标题">
           <a-input id placeholder />
-          <!-- <slot name="help">
-            <span style="clolr:#ccc">
-              微信分享给好友时显示，建议38个字以内
-              <span style="color:#009804;">&nbsp;&nbsp;查看示例&nbsp;&nbsp;</span>
-            </span>
-          </slot>-->
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享描述">
           <a-input id placeholder="I'm the content is being validated" />
-          <!-- <slot name="help">
-            <span style="clolr:#ccc">
-              微信分享给好友时显示，建议38个字以内
-              <span style="color:#009804;">&nbsp;&nbsp;查看示例&nbsp;&nbsp;</span>
-            </span>
-          </slot>-->
         </a-form-item>
+
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享图片">
-          <!-- <under-line></under-line> -->
           <PicUpload v-model="imgList" :max="1"></PicUpload>
         </a-form-item>
       </a-form>
+
       <a-row type="flex" justify="center">
-           <a-button  @click="handleNextStep">下一步</a-button>
+        <a-button @click="handleNextStep">下一步</a-button>
       </a-row>
-       
-       
     </div>
   </div>
 </template>
@@ -369,7 +341,13 @@ import { PicUpload, RadioBox } from "@/components";
 import { mapGetters, mapState } from "vuex";
 import { mixinGobalState } from "@/utils/mixin";
 import { mixinAddGoodState } from "../mixin";
-import { deleteAttach, addAttach, getTags, addTag,addGood} from "@/api/addGood";
+import {
+  deleteAttach,
+  addAttach,
+  getTags,
+  addTag,
+  addGood
+} from "@/api/addGood";
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
 require("vue-video-player/src/custom-theme.css");
@@ -536,7 +514,6 @@ export default {
           };
         },
         onValuesChange: (_, values) => {
-          // Synchronize to vuex store in real time
           this.$store.commit("SET_FORM", values);
         }
       });
@@ -764,26 +741,26 @@ export default {
         })
       });
     },
-    handleNextStep(){
-      console.log(this.$store.getters.getImgListAttachIdList)
+    handleNextStep() {
       addGood({
-        store_no:this.storeNo,
-        name:this.name,
-        name2:this.name2,
-        type_id:"I do not know",
-        tags:this.tags,
-        is_need_address:0,
-        is_point:0,
-        is_cash:0,
+        store_no: this.storeNo,
+        name: this.name,
+        name2: this.name2,
+        type_id: "I do not know",
+        tags: this.tags,
+        is_need_address: 0,
+        is_point: 0,
+        is_cash: 0,
 
-        features:this.lightspots,
-        book_need_know:this.bookNeedKnow,
-        back_end:this.place,
-        is_regifted:this.transfer,
-        is_reviewed:this.comment,
-        'attach[img]':this.$store.getters.getImgListAttachIdList,
-        'attach[shopV]':this.$store.getters.getShopVideoAttachIdList,
-        'attach[mainV]':this.$store.getters.getMainVideoAttachIdList
+        features: this.lightspots,
+        book_need_know: this.bookNeedKnow,
+        back_end: this.place,
+        is_regifted: this.transfer,
+        is_reviewed: this.comment,
+        "attach[img]": this.$store.getters.getImgListAttachIdList,
+        "attach[shopV]": this.$store.getters.getShopVideoAttachIdList,
+        "attach[mainV]": this.$store.getters.getMainVideoAttachIdList
+
         // storeNo:state => state.addGood.storeNo,
         // storeType:state => state.addGood.storeType,
         // roomType:state => state.addGood.roomType,
@@ -798,9 +775,7 @@ export default {
         // transfer:state => state.addGood.transfer,
         // comment:state => state.addGood.comment,
         // place:state => state.addGood.place,
-      }).then(res=>{
-        
-      })
+      }).then(res => {});
     }
   }
 };

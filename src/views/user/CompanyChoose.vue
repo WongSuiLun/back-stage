@@ -106,12 +106,14 @@ export default {
       companyList: []
     };
   },
+  /**
+   * 1.处理组件初始化，拉取公司数据
+   */
   beforeCreate() {
     this.form = this.$form.createForm(this);
     getCompany().then(res => {
       this.companyList = res.data.result;
       this.companyListBackup = this.companyList.slice();
-      console.log(this.companyList);
     });
   },
   computed: {
@@ -124,8 +126,6 @@ export default {
         start + this.pageSize >= this.companyList.length
           ? this.companyList.length
           : start + this.pageSize;
-      console.log(start);
-      console.log(end);
       return this.companyList.slice(start, end);
     }
   },

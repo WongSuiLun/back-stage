@@ -16,8 +16,8 @@
 
 <script>
 // import { TimeSelectTab, TimeSelectTabPane } from "@/components";
-import DataCollect from "./DataCollect";
-import DaCanChart from "./DaCanChart";
+import DataCollect from "./components/DataCollect";
+import DaCanChart from "./components/DaCanChart";
 // import Chart  from "./Chart";
 export default {
   components: {

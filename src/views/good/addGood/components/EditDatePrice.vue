@@ -10,7 +10,7 @@
 
     <a-card style="margin-top:20px">
         <div class="time-select">
-            选择时间范围:<a-range-picker  @change="handleDateRangeChange"/>{{value}}
+            选择时间范围:<a-range-picker  @change="handleDateRangeChange"/>
         </div>
       <div class="date-select-warp">
          <div
@@ -219,19 +219,17 @@ export default {
     handleDateRangeChange(date, dateString){
         // 1. 选择时间应该控制在开始~结束时间内
         // 2. 处理日历的选择范围及样式
-        console.log(date, dateString);
         this.handleDateOption(dateString[0],dateString[1])
     },
     disabledDate(currentDate){
         //选择时间应该控制在开始~结束时间内
-        console.log(currentDate<this.$moment(this.startTime));
         return currentDate<this.$moment(this.startTime)
     },
     onSelect(value) {
       this.date = value.format('l');
     },
     onPanelChange (value) {
-      this.value = value
+      // this.value = value
     }
   }
 };

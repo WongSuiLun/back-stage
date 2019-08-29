@@ -44,9 +44,13 @@
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>
         <div class="captch-tip" @click="getScrollCaptch" :class="{'success':isCaptcha}">
-          <div class="captch-text" >
-           <span v-show="!isCaptcha"><a-icon type="lock" />&nbsp;&nbsp;点击完成验证&nbsp;&nbsp;</span>
-            <span v-show="isCaptcha"> <a-icon type="check" style="color:#52ccba;"/>&nbsp;&nbsp;验证成功&nbsp;&nbsp;</span>
+          <div class="captch-text">
+            <span v-show="!isCaptcha">
+              <a-icon type="lock" />&nbsp;&nbsp;点击完成验证&nbsp;&nbsp;
+            </span>
+            <span v-show="isCaptcha">
+              <a-icon type="check" style="color:#52ccba;" />&nbsp;&nbsp;验证成功&nbsp;&nbsp;
+            </span>
           </div>
         </div>
         <!-- <a-button
@@ -72,7 +76,7 @@
         <a-col class="gutter-row" :span="10">
           <img :src="captchaImg" class="img-captcha" title="点击切换" alt="暂无图片" @click="getCaptch" />
         </a-col>
-      </a-row> -->
+      </a-row>-->
       <a-form-item style="margin:0">
         <a-checkbox v-decorator="['rememberMe']" :defaultChecked="rememberMeDefaultChecked">自动登录</a-checkbox>
       </a-form-item>
@@ -134,59 +138,64 @@ export default {
     return {
       toggleFormVisible: true,
       captchaImg: "",
-      captcha_key: "",
+      captchaKey: "",
       rememberMeDefaultChecked: true,
-      isCaptcha:false,
+      isCaptcha: false,
       form: this.$form.createForm(this)
     };
-  },
-  beforeCreate() {
   },
   created() {
     // this.getCaptch();
   },
   mounted() {
-    this.setCookieAccount();
+    this.initCookieAccount();
   },
   methods: {
+    // 获取腾讯的人机验证机制
     getScrollCaptch() {
-      if(this.isCaptcha){
+      if (this.isCaptcha) {
         return;
       }
-      let form = this.form
-      let that = this
+      let form = this.form;
+      let that = this;
       var captcha1 = new TencentCaptcha("2074164461", function(res) {
         /* callback */
-        form.setFieldsValue({captch:"true"})
-        that.isCaptcha = true
-
+        form.setFieldsValue({ captch: "true" });
+        that.isCaptcha = true;
       });
       // this.form.setFieldsValue({captch:"123"})
       captcha1.show(); // 显示验证码
     },
+    //获取图片验证码（已启用）
     getCaptch() {
       captchas().then(res => {
         console.log(res);
         this.captchaImg = res.data.captcha_image_content;
-        this.captcha_key = res.data.captcha_key;
+        this.captchaKey = res.data.captchaKey;
       });
     },
+    /**
+     * 处理登录
+     * 1.验证表单
+     * 2.成功，处理token和路由跳转
+     * 3.失败
+     */
     handleSubmit(e) {
       e.preventDefault();
       this.$router.push({ name: "company-choose" });
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
-          values.captcha_key = this.captcha_key;
+          values.captchaKey = this.captchaKey;
           authorizations(values)
             .then(res => {
-              this.saveAcount(values);
+              this.setCookieAcount(values);
               if (res.data) {
                 let token = `${res.data.token_type} ${res.data.access_token}`;
                 let expires_in = res.data.expires_in;
                 console.log(token);
                 this.$store.commit("SET_TOKEN", token);
-                
+
                 this.$ls.set("Access-Token", token, expires_in * 1000);
                 this.$router.push({ name: "company-choose" });
               }
@@ -204,8 +213,8 @@ export default {
     toggleForm() {
       this.toggleFormVisible = !this.toggleFormVisible;
     },
-    setCookieAccount() {
-      console.log(document.cookie);
+    // 初始化cookie中保存账号密码
+    initCookieAccount() {
       if (Cookies.get("rememberMe")) {
         this.form.setFieldsValue({
           username: Cookies.get("username"),
@@ -217,7 +226,11 @@ export default {
         this.rememberMeDefaultChecked = false;
       }
     },
-    saveAcount(values) {
+    /**
+     * 1.若记住密码，设置账号密码
+     * 2.初始化checkedBox
+     */
+    setCookieAcount(values) {
       if (values.rememberMe) {
         Cookies.set("username", values.username, { expires: 7 });
         Cookies.set("password", values.password, { expires: 7 });
@@ -252,10 +265,10 @@ export default {
   border: 1px solid #e4e7eb;
   background-color: #f7f9fa;
   overflow: hidden;
-  &.success{
+  &.success {
     border-color: #52ccba;
     background-color: #d2f4ef;
-    color:#52ccba;
+    color: #52ccba;
   }
 }
 .captch-tip {
