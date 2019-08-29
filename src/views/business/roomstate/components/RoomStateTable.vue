@@ -1,6 +1,6 @@
 <template>
   <div class="room-state-table" style="margin-top:20px;">
-    <a-table bordered :dataSource="dataSource" :columns="columns" size :scroll="{ x: 500 }">
+    <a-table bordered :dataSource="dataSource" :columns="columns" :scroll="{ x: 500 }">
       <template slot="date" slot-scope="text, record">
         <div
           class="td date"

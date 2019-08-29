@@ -182,10 +182,10 @@ export default {
      */
     handleSubmit(e) {
       e.preventDefault();
-      this.$router.push({ name: "company-choose" });
+      // this.$router.push({ name: "company-choose" });
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log("Received values of form: ", values);
+          // console.log("Received values of form: ", values);
           values.captchaKey = this.captchaKey;
           authorizations(values)
             .then(res => {
@@ -193,15 +193,13 @@ export default {
               if (res.data) {
                 let token = `${res.data.token_type} ${res.data.access_token}`;
                 let expires_in = res.data.expires_in;
-                console.log(token);
                 this.$store.commit("SET_TOKEN", token);
-
                 this.$ls.set("Access-Token", token, expires_in * 1000);
                 this.$router.push({ name: "company-choose" });
               }
             })
             .catch(err => {
-              console.log(err.response);
+              // console.log(err.response);
               this.$notification["error"]({
                 message: "登陆失败",
                 description: err.response ? err.response.data.message : ""

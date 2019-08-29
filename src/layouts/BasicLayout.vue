@@ -135,5 +135,8 @@ export default {
     padding: 0;
   }
 }
+.ant-layout-sider-children{
+  overflow: auto;
+}
 </style>
 

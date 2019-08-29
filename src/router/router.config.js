@@ -90,20 +90,6 @@ export const asyncRouterMap = [
             name: 'user-management',
             component: () => import('@/views/company/user/UserManagement'),
             meta: { title: '用户管理', icon: '' },
-            // children:[
-            //   {
-            //     path: '/company/user/management/list',
-            //     name:'user-list',
-            //     component: () => import('@/views/company/user/UserList'),
-            //     meta: { title: '用户列表',icon:'setting'},
-            //   },
-            //   {
-            //     path: '/company/user/management/add',
-            //     name:'add-user',
-            //     component: () => import('@/views/company/user/AddUser'),
-            //     meta: { title: '添加用户',icon:'setting'},
-            //   },
-            // ]
           }
         ]
       },
@@ -121,7 +107,7 @@ export const asyncRouterMap = [
             meta: { title: '全部订单' }
           },
           {
-            path: '/order/placeOrder',
+            path: '/order/place',
             name: 'place-order',
             component: () => import('@/views/order/placeOrder/PlaceOrder'),
             meta: { title: '快速下单' }
@@ -175,13 +161,13 @@ export const asyncRouterMap = [
         component: RouteView,
         children: [
           {
-            path: '/wechat/AutoResponse',
+            path: '/wechat/response',
             name: 'auto-response',
             component: () => import('@/views/wechat/autoResponse/index'),
             meta: { title: '自动回复' }
           },
           {
-            path: '/wechat/customizeMenu',
+            path: '/wechat/menu',
             name: 'auto-response',
             component: () => import('@/views/wechat/customizeMenu/index'),
             meta: { title: '自定义菜单' }
