@@ -193,8 +193,11 @@ export default {
               if (res.data) {
                 let token = `${res.data.token_type} ${res.data.access_token}`;
                 let expires_in = res.data.expires_in;
+                console.log(res)
+                let permissions = res.data.data;
                 this.$store.commit("SET_TOKEN", token);
-                this.$ls.set("Access-Token", token, expires_in * 1000);
+                this.$ls.set("Access-Token", token, expires_in*1000);
+                this.$ls.set("PERMISSIONS", permissions, expires_in * 1000);
                 this.$router.push({ name: "company-choose" });
               }
             })

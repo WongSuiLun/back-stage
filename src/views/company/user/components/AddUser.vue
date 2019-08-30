@@ -160,7 +160,7 @@
                 <a-textarea rows="3" placeholder="You are not alone." />
               </a-form-item>
               <a-form-item>
-                <a-button type="primary" html-type="submit">提交</a-button>
+                <a-button type="primary" html-type="submit" >提交</a-button>
                 <a-button style="margin-left: 8px">保存</a-button>
               </a-form-item>
             </a-col>
@@ -231,8 +231,23 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       alert(1);
+      
       this.form.validateFields((err, values) => {
         if (!err) {
+          let userModel = {
+            area_code:86,
+            phone_number:13631230698,
+            realname:'csj',
+            name:'csj',
+            account:'csjcsj',
+            password:'ywq123',
+            sex:1,
+            email:'807324068@qq.com'
+          }
+          console.log(userModel)
+          addUser(userModel).then(res=>{
+            console.log(res)
+          })
         }
       });
     }

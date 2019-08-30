@@ -47,7 +47,6 @@ const app = {
       commit('TOGGLE_DEVICE', device)
     },
     logout(){
-      
     }
   }
 }

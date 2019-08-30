@@ -14,19 +14,19 @@ export const asyncRouterMap = [
         name: 'dashboard',
         redirect: '/dashboard/statistics',
         component: RouteView,
-        meta: { title: '仪表盘', icon: 'form' },
+        meta: { title: '仪表盘', icon: 'form'},
         children: [
           {
             path: '/dashboard/statistics',
             name: 'statistics',
             component: () => import('@/views/dashboard/statistics/DataStatistics'),
-            meta: { title: '数据统计' },
+            meta: { title: '数据统计', },
           },
           {
             path:'/dashboard/report',
             name:'report',
             component: () => import('@/views/dashboard/report/ReportCenter'),
-            meta:{title:'报表中心'}
+            meta:{title:'报表中心',permission:['report']}
           },
           {
             path: '/dashboard/log',
@@ -43,7 +43,8 @@ export const asyncRouterMap = [
         component: RouteView,
         meta: {
           title: '营业管理',
-          icon: 'wechat'
+          icon: 'wechat',
+          permission:['business']
         },
         children: [
           {
@@ -71,7 +72,7 @@ export const asyncRouterMap = [
         name: 'company',
         redirect: '/company/employee/management',
         component: RouteView,
-        meta: { title: '公司', icon: 'deployment-unit' },
+        meta: { title: '公司', icon: 'deployment-unit' ,permission:['company']},
         children: [
           {
             path: '/company/employee/management',
@@ -97,7 +98,7 @@ export const asyncRouterMap = [
         path: '/order',
         name: 'order',
         redirect: '/order/index',
-        meta: { title: '订单', icon: 'shop' },
+        meta: { title: '订单', icon: 'shop',permission:['order'] },
         component: RouteView,
         children: [
           {
@@ -118,7 +119,7 @@ export const asyncRouterMap = [
         path: '/good',
         name: 'good',
         redirect: '/good/add',
-        meta: { title: '商品', icon: 'shop' },
+        meta: { title: '商品', icon: 'shop',permission:['good'] },
         component: RouteView,
         children: [
           {
@@ -157,7 +158,7 @@ export const asyncRouterMap = [
         path: '/wechat',
         name: 'wechat',
         redirect: '/wechat/AutoResponse',
-        meta: { title: '微信设置', icon: 'wechat' },
+        meta: { title: '微信设置', icon: 'wechat' ,permission:['wechat']},
         component: RouteView,
         children: [
           {
@@ -178,7 +179,7 @@ export const asyncRouterMap = [
         path: '/linen',
         name: 'linen',
         redirect: '/linen/linenManagement',
-        meta: { title: '布草管理', icon: 'wechat' },
+        meta: { title: '布草管理', icon: 'wechat',permission:['linen'] },
         component: RouteView,
         children: [
           {
@@ -217,7 +218,7 @@ export const asyncRouterMap = [
         path: '/reception',
         name: 'reception',
         redirect: '/reception/roomstate',
-        meta: { title: '前台', icon: 'shop' },
+        meta: { title: '前台', icon: 'shop',permission:['reception'] },
         component: RouteView,
         children: [
           {
@@ -251,7 +252,7 @@ export const asyncRouterMap = [
         path: '/account/center',
         name: 'center',
         component: () => import('@/views/account/center/Center'),
-        meta: { title: '个人中心', icon: 'wechat' }
+        meta: { title: '个人中心', icon: 'wechat' ,permission:['center']  }
       },
     ]
   },
@@ -310,19 +311,19 @@ export const constantRouterMap = [
         path: '403',
         name: 'Exception403',
         component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
-        meta: { title: '403', permission: ['exception'] }
+        meta: { title: '403',  }
       },
       {
         path: '404',
         name: 'Exception404',
         component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
-        meta: { title: '404', permission: ['exception'] }
+        meta: { title: '404',  }
       },
       {
         path: '500',
         name: 'Exception500',
         component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/500'),
-        meta: { title: '500', permission: ['exception'] }
+        meta: { title: '500',}
       }
     ]
   }

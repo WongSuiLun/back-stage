@@ -65,6 +65,7 @@ for (let i = 0; i < 100; i++) {
     address: `London Park no. ${i}`,
   })
 }
+import {getInstitutions} from '@/api/institutions'
 export default {
   data () {
     this.cacheData = data.map(item => ({ ...item }))
@@ -72,6 +73,11 @@ export default {
       data,
       columns,
     }
+  },
+  created(){
+    getInstitutions().then(res=>{
+      console.log(res)
+    })
   },
   methods: {
     handleChange (value, key, column) {
@@ -82,7 +88,7 @@ export default {
         this.data = newData
       }
     },
-    edit (key) {
+    edit (key) { 
       const newData = [...this.data]
       const target = newData.filter(item => key === item.key)[0]
       if (target) {
