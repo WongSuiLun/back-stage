@@ -91,7 +91,7 @@ const permission = {
     GenerateRoutes ({ commit }) {
       return new Promise(resolve => {
         // const { roles } = data
-        let permissionList = ['dashboard','report','business']
+        let permissionList = ['dashboard','report','business','company']
         const accessedRouters = filterAsyncRouter(asyncRouterMap, permissionList);
         commit('SET_ROUTERS', accessedRouters)
         commit('SET_IS_GENERATE_ROUTES',true)

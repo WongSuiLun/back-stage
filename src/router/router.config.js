@@ -98,7 +98,7 @@ export const asyncRouterMap = [
         path: '/order',
         name: 'order',
         redirect: '/order/index',
-        meta: { title: '订单', icon: 'shop',permission:['order'] },
+        meta: { title: '订单', icon: 'shop', },
         component: RouteView,
         children: [
           {
@@ -119,7 +119,7 @@ export const asyncRouterMap = [
         path: '/good',
         name: 'good',
         redirect: '/good/add',
-        meta: { title: '商品', icon: 'shop',permission:['good'] },
+        meta: { title: '商品', icon: 'shop' },
         component: RouteView,
         children: [
           {
@@ -143,7 +143,7 @@ export const asyncRouterMap = [
           {
             path: '/good/management',
             name: 'price-management',
-            component: () => import('@/views/good/priceManagement/GoodPriceManagement'),
+            component: () => import('@/views/good/goodManagement/GoodManagement'),
             meta: { title: '商品管理' }
           },
           {
@@ -218,7 +218,7 @@ export const asyncRouterMap = [
         path: '/reception',
         name: 'reception',
         redirect: '/reception/roomstate',
-        meta: { title: '前台', icon: 'shop',permission:['reception'] },
+        meta: { title: '前台', icon: 'shop' },
         component: RouteView,
         children: [
           {

@@ -71,7 +71,7 @@ export default {
     },
     logout(){
       this.$ls.clear()
-      this.$router.push('/404')
+      this.$router.push('/login')
     }
   }
 };

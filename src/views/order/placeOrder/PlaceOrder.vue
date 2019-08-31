@@ -6,14 +6,16 @@
       <a-col
         :sm="24"
         :md="24"
-        :lg="14"
+        :lg="24"
+        :xl="13"
       >
         <good-select></good-select>
       </a-col>
       <a-col
         :sm="24"
         :md="24"
-        :lg="10"
+        :lg="24"
+        :xl="11"
         
       >
         <date-price></date-price>
@@ -60,13 +62,13 @@
 </template>
 
 <script>
-import UserSearch from "./UserSearch";
-import UserInfo from "./UserInfo";
-import GoodSelect from "./GoodSelect";
-import OrderDetail from "./OrderDetail";
-import CustomerInfo from "./CustomerInfo";
-import BusOrder from "./BusOrder";
-import DatePrice from "./DatePrice";
+import UserSearch from "./components/UserSearch";
+import UserInfo from "./components/UserInfo";
+import GoodSelect from "./components/GoodSelect";
+import OrderDetail from "./components/OrderDetail";
+import CustomerInfo from "./components/CustomerInfo";
+import BusOrder from "./components/BusOrder";
+import DatePrice from "./components/DatePrice";
 export default {
   components: {
     UserSearch,

@@ -13,7 +13,6 @@ import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 
 // router.addRoutes(constantRouterMap)
 router.beforeEach((to, from, next) => {
-  alert(store.getters.isGenerateRoutes)
   console.log(to)
   NProgress.start()
   let token = Vue.ls.get('Access-Token')

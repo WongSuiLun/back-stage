@@ -131,13 +131,13 @@
         <a href="javascript:;">删除</a>
         <a-divider type="vertical" />
         <a-dropdown>
-          <a class="ant-dropdown-link" href="#">
+          <a class="ant-dropdown-link">
             更多操作
             <a-icon type="down" />
           </a>
           <a-menu slot="overlay">
             <a-menu-item>
-              <a href="javascript:;">权限配置</a>
+              <a>权限配置</a>
             </a-menu-item>
             <a-menu-item>
               <a href="javascript:;">禁用</a>
@@ -191,11 +191,16 @@
         <template v-else>{{text}}</template>
       </template>
     </a-table>
+    <permission-config></permission-config>
   </div>
 </template>
 
 <script>
+import PermissionConfig from './PermissionConfig';
 export default {
+  components:{
+    PermissionConfig
+  },
   data() {
     return {
       // 高级搜索 展开/关闭
