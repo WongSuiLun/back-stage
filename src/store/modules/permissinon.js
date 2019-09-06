@@ -13,7 +13,8 @@ function hasPermission(permission, route) {
   if (route.meta && route.meta.permission) {
     let flag = false
     for (let i = 0, len = permission.length; i < len; i++) {
-      flag = route.meta.permission.includes(permission[i])
+      flag = permission[i].includes('*')||route.meta.permission.includes(permission[i])
+      console.log(flag)
       if(flag){
         return true
       }
@@ -51,7 +52,6 @@ function filterAsyncRouter(routerMap,permissionList){
   const accessedRouters = routerMap.filter(route=>{
     if(hasPermission(permissionList,route)){
       if(route.children&&route.children.length){
-        console.log(route.children)
         route.children = filterAsyncRouter(route.children,permissionList)
       }
       return true
@@ -81,7 +81,6 @@ const permission = {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
-      console.log(state.addRouters)
     },
     SET_IS_GENERATE_ROUTES:(state,isGenerateRoutes)=>{
       state.isGenerateRoutes = isGenerateRoutes
@@ -91,7 +90,7 @@ const permission = {
     GenerateRoutes ({ commit }) {
       return new Promise(resolve => {
         // const { roles } = data
-        let permissionList = ['dashboard','report','business','company']
+        let permissionList = ['*']
         const accessedRouters = filterAsyncRouter(asyncRouterMap, permissionList);
         commit('SET_ROUTERS', accessedRouters)
         commit('SET_IS_GENERATE_ROUTES',true)

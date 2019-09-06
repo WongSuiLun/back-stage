@@ -14,7 +14,8 @@ export const asyncRouterMap = [
         name: 'dashboard',
         redirect: '/dashboard/statistics',
         component: RouteView,
-        meta: { title: '仪表盘', icon: 'form'},
+        permission:['dashboard'],
+        meta: { title: '仪表盘', icon: 'form' },
         children: [
           {
             path: '/dashboard/statistics',
@@ -23,10 +24,13 @@ export const asyncRouterMap = [
             meta: { title: '数据统计', },
           },
           {
-            path:'/dashboard/report',
-            name:'report',
+            path: '/dashboard/report',
+            name: 'report',
             component: () => import('@/views/dashboard/report/ReportCenter'),
-            meta:{title:'报表中心',permission:['report']}
+            meta: {
+              title: '报表中心',
+              permission: ['report']
+            }
           },
           {
             path: '/dashboard/log',
@@ -44,7 +48,7 @@ export const asyncRouterMap = [
         meta: {
           title: '营业管理',
           icon: 'wechat',
-          permission:['business']
+          permission:['business'],
         },
         children: [
           {
@@ -55,14 +59,14 @@ export const asyncRouterMap = [
           },
           {
             path: '/business/state',
-            name: 'roomtype',
+            name: 'roomstate',
             component: () => import('@/views/business/roomstate/RoomState'),
             meta: { title: '房态', icon: '' }
           },
           {
-            path:'/business/bus',
-            name:'bus',
-            component:()=> import('@/views/business/bus/BusManagement'),
+            path: '/business/bus',
+            name: 'bus',
+            component: () => import('@/views/business/bus/BusManagement'),
             meta: { title: '接车管理', icon: '' }
           }
         ]
@@ -72,7 +76,10 @@ export const asyncRouterMap = [
         name: 'company',
         redirect: '/company/employee/management',
         component: RouteView,
-        meta: { title: '公司', icon: 'deployment-unit' ,permission:['company']},
+        meta: {
+          title: '公司', icon: 'deployment-unit',
+          //  permission: ['company']
+        },
         children: [
           {
             path: '/company/employee/management',
@@ -142,7 +149,7 @@ export const asyncRouterMap = [
           },
           {
             path: '/good/management',
-            name: 'price-management',
+            name: 'good-management',
             component: () => import('@/views/good/goodManagement/GoodManagement'),
             meta: { title: '商品管理' }
           },
@@ -158,7 +165,10 @@ export const asyncRouterMap = [
         path: '/wechat',
         name: 'wechat',
         redirect: '/wechat/AutoResponse',
-        meta: { title: '微信设置', icon: 'wechat' ,permission:['wechat']},
+        meta: {
+          title: '微信设置', icon: 'wechat',
+          // permission: ['wechat'] 
+        },
         component: RouteView,
         children: [
           {
@@ -169,7 +179,7 @@ export const asyncRouterMap = [
           },
           {
             path: '/wechat/menu',
-            name: 'auto-response',
+            name: 'wechat-menu',
             component: () => import('@/views/wechat/customizeMenu/index'),
             meta: { title: '自定义菜单' }
           }
@@ -179,13 +189,16 @@ export const asyncRouterMap = [
         path: '/linen',
         name: 'linen',
         redirect: '/linen/linenManagement',
-        meta: { title: '布草管理', icon: 'wechat',permission:['linen'] },
+        meta: {
+          title: '布草管理', icon: 'wechat',
+          //  permission: ['linen'] 
+        },
         component: RouteView,
         children: [
           {
             path: '/linen/linenManagement',
             name: 'linen-management',
-            component: () => import('@/views/linen/linenManagement/linenManagement'),  
+            component: () => import('@/views/linen/linenManagement/linenManagement'),
             meta: { title: '布草类型' }
           },
           {
@@ -249,10 +262,21 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: '/account/center',
-        name: 'center',
-        component: () => import('@/views/account/center/Center'),
-        meta: { title: '个人中心', icon: 'wechat' ,permission:['center']  }
+        path: '/account',
+        name: 'account',
+        redirect:'/account/center',
+        meta: {
+          title: '个人中心', icon: 'wechat   ',
+        },
+        component: RouteView,
+        children: [
+          {
+            path:  '/account/center',
+            name:'account-center',
+            component: () => import('@/views/account/center/Center'),
+            meta: { title: '个人信息' }
+          },
+        ],
       },
     ]
   },
@@ -305,25 +329,29 @@ export const constantRouterMap = [
     name: 'exception',
     component: RouteView,
     redirect: '/exception/403',
-    meta: { title: '异常页', icon: 'warning', permission: ['exception'] },
+    meta: {
+      title: '异常页',
+      icon: 'warning',
+      permission: ['exception']
+    },
     children: [
       {
         path: '403',
         name: 'Exception403',
         component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
-        meta: { title: '403',  }
+        meta: { title: '403', }
       },
       {
         path: '404',
         name: 'Exception404',
         component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
-        meta: { title: '404',  }
+        meta: { title: '404', }
       },
       {
         path: '500',
         name: 'Exception500',
         component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/500'),
-        meta: { title: '500',}
+        meta: { title: '500', }
       }
     ]
   }

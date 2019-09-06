@@ -1,5 +1,5 @@
 # 项目开发规范
-本文档为御温泉后台开发规范。
+本文档为御温泉中后台开发规范。
 
 # 命名规范
 为了让大家书写可维护的代码，而不是一次性的代码
@@ -35,6 +35,9 @@ kebab-case (短横线分隔命名) 是最通用的使用约定
 ## 目录文件夹及子文件规范
 ```
 src                               源码目录
+|-- main                             项目入口
+|-- constant                         全局常量
+|-- permission                       router钩子设置，用于权限控制
 |-- api                              接口，统一管理
 |-- assets                           静态资源，统一管理
 |-- components                       公用组件，全局文件
@@ -48,4 +51,43 @@ src                               源码目录
 |   |   |   |-- AddGood.vue                 模块入口页面
 |   |   |   |-- components                  页面级组件文件夹
 |   |   |   |-- mixin.js                    Vuex混入文件               
+```
+
+## vue 文件基本结构
+```
+  <template>
+    <div>
+      <!--必须在div中编写页面-->
+    </div>
+  </template>
+  <script>
+    export default {
+      components : {
+      },
+      data () {
+        return {
+        }
+      },
+      mounted() {
+      }，
+      methods: {
+      }
+   }
+  </script>
+  <!--声明语言，并且添加scoped-->
+  <style lang="*" scoped>
+  </style>
+```
+## 组件选项顺序
+```
+  - components
+  - props
+  - data
+  - computed
+  - created
+  - mounted
+  - metods
+  - filter
+  - watch
+
 ```

@@ -18,6 +18,7 @@
 // import { TimeSelectTab, TimeSelectTabPane } from "@/components";
 import DataCollect from "./components/DataCollect";
 import DaCanChart from "./components/DaCanChart";
+import {getUserInfo} from '@/api/auth'
 // import Chart  from "./Chart";
 export default {
   components: {
@@ -27,7 +28,11 @@ export default {
   data() {
     return {};
   },
-  created() {}
+  created() {
+    getUserInfo().then(res=>{
+      console.log(res)
+    })
+  }
 };
 </script>
 

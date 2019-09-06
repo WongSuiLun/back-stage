@@ -58,7 +58,6 @@ export default {
     };
   },
   created() {
-    // console.log(this);
     this.handleChildrenKeys();
   },
   methods: {
@@ -66,7 +65,6 @@ export default {
       this.showContent = !this.showContent;
     },
     handleChildrenKeys() {
-      console.log(this.$slots.default);
       this.defaultSoltVNode = this.$slots.default;
       this.defaultSoltVNode.forEach(vnode => {
         this.keyList.push({
@@ -77,11 +75,8 @@ export default {
     },
     changeTabKey(tab){
       this.activeKey = tab.key
-      // console.log(tab)
     },
     onChange(date, dateString){
-      // console.log(date)
-      // console.log(dateString)
       this.$emit('timeSelectOnChange',date,dateString)
     }
   }

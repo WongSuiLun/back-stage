@@ -12,8 +12,8 @@
       </template>
       <a-row :gutter="16">
         <a-col :md="24" :lg="12" :xl="8" v-for="(company,index) in currentCompanyInfo" :key="index">
-          <a-card :title="company.company_title" class="company-card">
-            <a-button type="danger" ghost slot="extra" @click="selectCompany">进公司</a-button>
+          <a-card :title="company.name" class="company-card">
+            <a-button type="danger" ghost slot="extra" @click="selectCompany(company)">进公司</a-button>
             <p
               style="text-overflow: ellipsis;
     overflow: hidden;
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { getCompany } from "@/api/auth";
+import { getCompany, getContactCompany,getUserInfo } from "@/api/auth";
 export default {
   data() {
     return {
@@ -111,10 +111,14 @@ export default {
    */
   beforeCreate() {
     this.form = this.$form.createForm(this);
-    getCompany().then(res => {
-      this.companyList = res.data.result;
-      this.companyListBackup = this.companyList.slice();
+    getContactCompany().then(res => {
+       this.companyList = res.data.data;
+       this.companyListBackup = this.companyList.slice();
     });
+    // getCompany().then(res => {
+    //   this.companyList = res.data.result;
+    //   this.companyListBackup = this.companyList.slice();
+    // });
   },
   computed: {
     pageCount() {
@@ -132,10 +136,12 @@ export default {
   methods: {
     onSearch(value) {
       this.companyList = this.companyListBackup.filter(company => {
-        return company.company_title.includes(value);
+        return company.name.includes(value);
       });
     },
-    selectCompany() {
+    selectCompany(company) {
+      this.$store.dispatch('setCompany',company.id)
+      this.$ls.set('company',company)
       this.$router.push("/dashboard");
     },
     showDeleteCompanyModal() {

@@ -5,7 +5,7 @@
     </div>
     <div>
       <a-row :gutter="8">
-        <a-col :xl="2" :md="4" :sm="6"  :xs="8" v-for="(room) in floorRooms" :key="room.room_id">
+        <a-col :xl="2" :lg="3" :md="4" :sm="8"  :xs="12" v-for="(room) in floorRooms" :key="room.room_id">
           <base-room :roomInfo="room"></base-room>
         </a-col>
       </a-row>

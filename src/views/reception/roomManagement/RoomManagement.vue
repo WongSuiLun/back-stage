@@ -1,45 +1,32 @@
 <template>
-  <div class="room-management"    v-loading="loading">
-    <div class="room-management-body">
-      <div class="room-management-main">
-        <room-dashboard></room-dashboard>
-      </div>
-      <div class="room-management-footer">
-        <room-management-footer></room-management-footer>
-      </div>
-    </div>
-    <div>
-      <room-order-dialog></room-order-dialog>
-    </div>
-    <!-- <div class="room-order-zoomin" v-show="getIsShowRoomOrderZoomIn">
-      <div class="zoomin-main">
-        <div class="self-dialog-title">
-          <div class="option" @click="handleZoomOut" title="缩小">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-icon--"></use>
-            </svg>
+  <div class="">
+    <a-spin :spinning="spinning">
+      <div class="room-management">
+        <div class="room-management-body">
+          <div class="room-management-main">
+            <room-dashboard></room-dashboard>
           </div>
-          <div class="option" @click="handleClose" title="关闭">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-guanbi"></use>
-            </svg>
+          <div class="room-management-footer">
+            <room-management-footer></room-management-footer>
           </div>
         </div>
-        <room-order></room-order>
+        <div>
+          <room-order-dialog></room-order-dialog>
+        </div>
       </div>
-    </div> -->
+    </a-spin>
   </div>
 </template>
 <script>
-import BaseRoom from './components/BaseRoom.vue'
-import RoomManagementHeader from './components/RoomManagementHeader'
-import RoomDashboard from './components/RoomDashboard'
-import RoomManagementFooter from './components/RoomManagementFooter'
-import RoomOrderDialog from './components/RoomOrderDialog'
-import RoomOrder from './components/RoomOrder'
-import { hrooms } from '@/api/room'
+import BaseRoom from "./components/BaseRoom.vue";
+import RoomManagementHeader from "./components/RoomManagementHeader";
+import RoomDashboard from "./components/RoomDashboard";
+import RoomManagementFooter from "./components/RoomManagementFooter";
+import RoomOrderDialog from "./components/RoomOrderDialog";
+import RoomOrder from "./components/RoomOrder";
+import { hrooms } from "@/api/room";
 export default {
-  name: 'room-management',
+  name: "room-management",
   components: {
     BaseRoom,
     RoomManagementHeader,
@@ -48,43 +35,46 @@ export default {
     RoomOrderDialog,
     RoomOrder
   },
-  created: function () {
-    this.getAllRoom()
+  created: function() {
+    this.getAllRoom();
   },
-  data () {
+  data() {
     return {
-      loading: true
-    }
+      loading: true,
+      spinning: false
+    };
   },
   methods: {
-    getAllRoom: function () {
+    getAllRoom: function() {
+      this.spinning = true;
       hrooms().then(response => {
-        this.$store.dispatch('resetRoomManagement')
-        this.$store.dispatch('initRoomList', response.data.data)
-        this.closeLoading()
-      })
+        this.$store.dispatch("resetRoomManagement");
+        this.$store.dispatch("initRoomList", response.data.data);
+        this.closeLoading();
+        this.spinning = false;
+      });
     },
-    closeLoading () {
-      this.loading = false
+    closeLoading() {
+      this.loading = false;
     },
-    handleClose () {
-      this.$store.dispatch('updateisShowRoomOrderDialog', false)
-      this.$store.dispatch('updateIsShowZoomIn', false)
+    handleClose() {
+      this.$store.dispatch("updateisShowRoomOrderDialog", false);
+      this.$store.dispatch("updateIsShowZoomIn", false);
     },
-    handleZoomOut () {
-      this.$store.dispatch('updateisShowRoomOrderDialog', true)
-      this.$store.dispatch('updateIsShowZoomIn', false)
+    handleZoomOut() {
+      this.$store.dispatch("updateisShowRoomOrderDialog", true);
+      this.$store.dispatch("updateIsShowZoomIn", false);
     }
   },
   computed: {
-    getIsShowRoomOrderDialog () {
-      return this.$store.state.RoomManagement.isShowRoomOrderDialog
+    getIsShowRoomOrderDialog() {
+      return this.$store.state.RoomManagement.isShowRoomOrderDialog;
     },
-    getIsShowRoomOrderZoomIn () {
-      return this.$store.state.RoomManagement.isShowRoomOrderZoomIn
+    getIsShowRoomOrderZoomIn() {
+      return this.$store.state.RoomManagement.isShowRoomOrderZoomIn;
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .room-management {

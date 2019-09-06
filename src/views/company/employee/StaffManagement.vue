@@ -56,8 +56,6 @@ export default {
       this.selectedKeys = [routes.pop().path];
     }
   },
-  watch: {
-  }
 };
 </script>
 

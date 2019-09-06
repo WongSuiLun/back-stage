@@ -17,9 +17,7 @@ export default {
       locale: zhCN
     };
   },
-  mounted() {
-
-  }
+  mounted() {}
 };
 </script>
 <style lang="less">

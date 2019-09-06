@@ -1,78 +1,52 @@
 <template>
   <div class="room-filter">
-    <!-- <span style="font-weight:700">房间类型：</span>
-    <div class="all-type-select">
-      <el-checkbox
-        border
-        size="small"
-        :indeterminate="isIndeterminate"
-        v-model="checkAll"
-        @change="handleCheckAllChange"
-      >全选</el-checkbox>
-    </div>
-    <div>
-      <el-checkbox-group v-model="checkedroomTypes" @change="handleCheckedroomTypesChange">
-        <el-checkbox border size="small" v-for="roomType in getRoomTypeOption" :label="roomType" :key="roomType">{{roomType}}</el-checkbox>
-      </el-checkbox-group>
-    </div>-->
-    <div>
-      <!-- <radio v-model="radio" size='small' :items="getRoomTypeOption" @change="handleChange"></radio> -->
-    </div>
+    <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">全选</a-checkbox>
+    <a-checkbox-group :options="getRoomTypeOption" v-model="checkedList" @change="handleChange" />
   </div>
 </template>
 <script>
-// import Radio from '@/components/Radio/Radio'
 export default {
-  components: {
-    // Radio
-  },
-  data () {
+  components: {},
+  data() {
     return {
-      checkAll: true,
-      checkedroomTypes: [],
-      roomTypes: this.getRoomTypeOption,
-      isIndeterminate: false,
-      radio: '全选'
-    }
+      indeterminate: false,
+      checkedList: [],
+      checkAll: false,
+    };
   },
-  // created: function () {
-  //   this.initCheckedRoomTypes()
-  // },
+  created(){
+
+  },
   methods: {
-    // initCheckedRoomTypes () {
-    //   this.checkedroomTypes = this.getRoomTypeOption
-    // },
-    // handleCheckAllChange (val) {
-    //   this.checkedroomTypes = val ? this.getRoomTypeOption : []
-    //   this.isIndeterminate = false
-    //   this.updateRoomTypeFilter()
-    // },
-    // handleCheckedroomTypesChange (value) {
-    //   let checkedCount = value.length
-    //   this.checkAll = checkedCount === this.getRoomTypeOption.length
-    //   this.isIndeterminate =
-    //     checkedCount > 0 && checkedCount < this.getRoomTypeOption.length
-    //   this.updateRoomTypeFilter()
-    // },
-    // updateRoomTypeFilter () {
-    //   this.$store.dispatch('updateTypeFilter', this.checkedroomTypes)
-    // },
-    handleChange () {
-      if (this.radio === '全选') {
-        this.$store.dispatch('updateTypeFilter', this.$store.state.RoomManagement.typeOptions)
+    handleChange() {
+      this.indeterminate =
+        !!this.checkedList.length &&
+        this.checkedList.length < this.getRoomTypeOption.length;
+      this.checkAll = this.checkedList.length === this.getRoomTypeOption.length;
+      if (this.checkAll === true) {
+        this.$store.dispatch(
+          "updateTypeFilter",
+          this.$store.state.RoomManagement.typeOptions
+        );
       } else {
-        this.$store.dispatch('updateTypeFilter', new Array(this.radio))
+        this.$store.dispatch("updateTypeFilter", this.checkedList);
       }
+    },
+    onCheckAllChange(e) {
+      Object.assign(this, {
+        checkedList: e.target.checked ? this.getRoomTypeOption : [],
+        indeterminate: false,
+        checkAll: e.target.checked
+      });
     }
   },
   computed: {
-    getRoomTypeOption () {
-      let roomTypeOption = this.$store.state.RoomManagement.typeOptions.slice()
-      roomTypeOption.unshift('全选')
-      return roomTypeOption
+    getRoomTypeOption() {
+      let roomTypeOption = this.$store.state.RoomManagement.typeOptions.slice();
+      return roomTypeOption;
     }
-  }
-}
+  },
+};
 </script>
 <style lang="less" scoped>
 .room-filter {

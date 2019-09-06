@@ -10,12 +10,7 @@
         width="240"
         :visible="!collapsed"
       >
-        <a-layout-sider
-          :trigger="null"
-          collapsible
-          width="240"
-          v-model="collapsed"
-        >
+        <a-layout-sider :trigger="null" collapsible width="240" v-model="collapsed">
           <global-logo />
 
           <global-menu />
@@ -30,13 +25,10 @@
       >
         <global-logo />
 
-        <global-menu/>
+        <global-menu />
       </a-layout-sider>
       <a-layout>
-        <global-header
-          :collapsed="collapsed"
-          @toggle="toggle"
-        ></global-header>
+        <global-header :collapsed="collapsed" @toggle="toggle"></global-header>
         <multi-tab></multi-tab>
         <div class="layout-content">
           <router-view></router-view>
@@ -67,6 +59,11 @@ export default {
     MultiTab
   },
   mixins: [mixinDevice],
+  data() {
+    return {
+      collapsed: false
+    };
+  },
   computed: {
     ...mapState({
       sidebar: state => state.app.sidebar
@@ -74,11 +71,6 @@ export default {
   },
   created() {
     console.log(this.isMobile());
-  },
-  data() {
-    return {
-      collapsed: false
-    };
   },
   methods: {
     ...mapActions(["setSidebar"]),
@@ -135,7 +127,7 @@ export default {
     padding: 0;
   }
 }
-.ant-layout-sider-children{
+.ant-layout-sider-children {
   overflow: auto;
 }
 </style>

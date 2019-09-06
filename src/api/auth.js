@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { GOOD_BASE_URL,USER_BASE_URL } from '../constant'
 
 export function login(data){
   return request({
@@ -26,6 +27,20 @@ export function authorizations(data){
 export function getCompany(){
   return request({
     url:'/api/auth/getCompany',
+    method:'get'
+  })
+}
+
+export function getContactCompany(){
+  return request({
+    url:`${USER_BASE_URL}/user/public/api/users/contact-companies`,
+    method:'get'
+  })
+}
+
+export function getUserInfo(){
+  return  request({
+    url:`${USER_BASE_URL}/user/public/api/users/current?include=roles,permissions,client.statistics,credit,authorization.contact`,
     method:'get'
   })
 }

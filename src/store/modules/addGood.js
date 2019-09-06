@@ -29,10 +29,6 @@ const addGoodState = {
     },
     getters: {
         getImgListAttachIdList: state => {
-            console.log(state)
-            console.log( state.goodImgList.map(ele => {
-                return ele.attach_id
-            }))
             if (state.goodImgList.length > 1) {
                 return state.goodImgList.map(ele => {
                     return ele.attach_id

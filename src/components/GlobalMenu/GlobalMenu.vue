@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     changeMenu(e) {
-      this.$router.push(e.key);
+      this.$router.push(e.key).catch(err=>err);
     }
   },
   watch: {

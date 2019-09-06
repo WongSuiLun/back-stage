@@ -1,243 +1,25 @@
 <template>
   <div class="content-warp">
-    <a-table
-      :columns="columns"
-      :dataSource="goodList"
-      :bordered="true"
-      :loading="loading"
-      :pagination="pagination"
-      :rowSelection="rowSelection"
-    >
-      <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
-      <!-- 操作单元格 -->
-      <div slot="operator">
-        <a-button
-          type="default"
-          size="small"
-          style="margin-right:8px;background:#990033;color:#fff"
-        >下架</a-button>
-        <a-button
-          type="default"
-          size="small"
-          style="margin-right:8px;background:#9933FF;color:#fff"
-        >编辑</a-button>
-        <a-button
-          type="default"
-          size="small"
-          style="margin-right:8px;background:#FF0066;color:#fff"
-        >添加限购</a-button>
-        <a-button
-          type="default"
-          size="small"
-          style="margin-right:8px;background:#FFFF66;color:#000"
-        >销售数据</a-button>
-        <a-button type="danger" size="small" style="margin-right:8px;">删除</a-button>
-      </div>
+    <a-tabs defaultActiveKey="1" >
+      <a-tab-pane tab="商品列表" key="1">
+          <good-list></good-list>
+      </a-tab-pane>
+      <a-tab-pane tab="下架商品" key="2" forceRender>
 
-      <div
-        slot="filterDropdown"
-        slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
-        class="custom-filter-dropdown"
-      >
-        <a-input
-          v-ant-ref="c => searchInput = c"
-          :placeholder="`搜索 ${column.dataIndex}`"
-          :value="selectedKeys[0]"
-          @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
-          @pressEnter="() => handleSearch(selectedKeys, confirm)"
-          style="width: 188px; margin-bottom: 8px; display: block;"
-        />
-        <a-button
-          type="primary"
-          @click="() => handleSearch(selectedKeys, confirm)"
-          icon="search"
-          size="small"
-          style="width: 90px; margin-right: 8px"
-        >搜索</a-button>
-        <a-button @click="() => handleReset(clearFilters)" size="small" style="width: 90px">重置</a-button>
-      </div>
-      <a-icon
-        slot="filterIcon"
-        slot-scope="filtered"
-        type="search"
-        :style="{ color: filtered ? '#108ee9' : undefined }"
-      />
-      <template slot="customRender" slot-scope="text">
-        <span v-if="searchText">
-          <template
-            v-for="(fragment, i) in text.toString().split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
-          >
-            <mark
-              v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-              :key="i"
-              class="highlight"
-            >{{fragment}}</mark>
-            <template v-else>{{fragment}}</template>
-          </template>
-        </span>
-        <template v-else>{{text}}</template>
-      </template>
-    </a-table>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 
 <script>
-import { getGoods } from "@/api/good";
+import GoodList from './components/GoodList'
+
 export default {
-  components: {},
-  data() {
-    return {
-      searchText: "",
-      searchInput: null,
-      columns: [
-        {
-          title: "商品名称",
-          dataIndex: "name",
-          scopedSlots: { customRender: "name" },
-          key: "name",
-          scopedSlots: {
-            filterDropdown: "filterDropdown",
-            filterIcon: "filterIcon",
-            customRender: "customRender"
-          },
-          onFilter: (value, record) => {
-            this.searchParam.name = value;
-            return true;
-          },
-          onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-              setTimeout(() => {
-                this.searchInput.focus();
-              }, 0);
-            }
-          }
-        },
-        {
-          title: "房间类型",
-          dataIndex: "type"
-        },
-        {
-          title: "门市价",
-          dataIndex: "unit_price"
-        },
-        {
-          title: "商品类型",
-          dataIndex: "type_id"
-        },
-        {
-          title: "上架时间",
-          dataIndex: "up_shelves_time"
-        },
-        {
-          title: "下架时间",
-          dataIndex: "down_shelves_time"
-        },
-        {
-          title: "最近修改人",
-          dataIndex: "updated_admin_no"
-        },
-        {
-          title: "操作",
-          scopedSlots: { customRender: "operator" }
-        }
-      ],
-      goodList: [],
-      selectedRowKeys: [],
-      loading: false,
-      searchParam: {
-        name: ""
-      },
-      pagination: {
-        current: 1,
-        defaultPageSize: 20,
-        pageSize: 20,
-        total: 0,
-        onChange: (page, pageSize) => {
-          this.getGoodsData(page, pageSize, this.searchParam);
-        },
-        onShowSizeChange: (current, size) => {
-          this.getGoodsData(current, pageSize, this.searchParam);
-        }
-      }
-    };
-  },
-  computed: {
-    rowSelection() {
-      const { selectedRowKeys } = this;
-      return {
-        onChange: (selectedRowKeys, selectedRows) => {
-          console.log(
-            `selectedRowKeys: ${selectedRowKeys}`,
-            "selectedRows: ",
-            selectedRows
-          );
-        },
-        getCheckboxProps: record => ({
-          props: {
-            disabled: record.name === "Disabled User", // Column configuration not to be checked
-            name: record.name
-          }
-        })
-      };
+    components:{
+        GoodList,
     }
-  },
-  created() {
-    this.init();
-  },
-  methods: {
-    /**
-            初始化方法
-            步骤：
-            1.拉取商品数据
-         */
-    init() {
-      this.getGoodsData(1);
-    },
-    //获取商品数据
-    getGoodsData(page, limit = 20, searchParam) {
-      this.loading = true;
-      getGoods(page, limit, searchParam).then(res => {
-        if (res.data.status == "success") {
-          this.loading = false;
-          this.pagination.current = res.data.data.current_page;
-          this.goodList = res.data.data.data;
-          this.pagination.total = res.data.data.total;
-          // this.$set(this.pagination,total,)
-        }
-      });
-    },
-    //处理搜索
-    handleSearch(selectedKeys, confirm) {
-      confirm();
-      this.searchText = selectedKeys[0];
-      this.searchParam.name = this.searchText;
-      this.getGoodsData(
-        this.pagination.current,
-        this.pagination.pageSize,
-        this.searchParam
-      );
-    },
-    handleReset(clearFilters) {
-      clearFilters();
-      this.searchText = "";
-    },
-    onSelectChange(selectedRowKeys) {
-      console.log("selectedRowKeys changed: ", selectedRowKeys);
-      this.selectedRowKeys = selectedRowKeys;
-    }
-  }
 };
 </script>
-<style scoped>
-.custom-filter-dropdown {
-  padding: 8px;
-  border-radius: 4px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
 
-.highlight {
-  background-color: rgb(255, 192, 105);
-  padding: 0px;
-}
+<style>
 </style>

@@ -1,20 +1,24 @@
 <template>
   <div class="dashboard-control">
-    <div class="control-filter">
-      <floor-filter></floor-filter>
-      <room-filter></room-filter>
-    </div>
-    <div class="dashboard-control-right">
-      <anchor-room></anchor-room>
-      <clean-room-cache></clean-room-cache>
-    </div>
+    <a-row type="flex">
+      <a-col :span="12">
+        <floor-filter></floor-filter>
+        <room-filter></room-filter>
+      </a-col>
+      <a-col :span="12">
+        <div class="dashboard-control-right">
+          <anchor-room></anchor-room>
+          <clean-room-cache></clean-room-cache>
+        </div>
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script>
-import RoomFilter from './RoomFilter'
-import FloorFilter from './FloorFilter'
-import AnchorRoom from './AnchorRoom'
-import CleanRoomCache from './CleanRoomCache'
+import RoomFilter from "./RoomFilter";
+import FloorFilter from "./FloorFilter";
+import AnchorRoom from "./AnchorRoom";
+import CleanRoomCache from "./CleanRoomCache";
 export default {
   components: {
     RoomFilter,
@@ -22,24 +26,20 @@ export default {
     AnchorRoom,
     CleanRoomCache
   },
-  data () {
+  data() {
     return {
       show: false,
-      roomNum: ''
-    }
+      roomNum: ""
+    };
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .dashboard-control {
   background: #fff;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 15px;
+  padding:15px 5px;
   .control-filter {
-    /*min-width: 800px;*/
+    min-width: 800px;
   }
   .dashboard-control-right {
     display: flex;

@@ -1,11 +1,13 @@
 // import Vue from 'vue'
+import router from '@/router'
 const app = {
   state: {
-    sidebar: true,
-    device: 'desktop',
-    token:'',
-    company:66,
-    shop:49,
+    sidebar: true,//左边菜单
+    device: 'desktop',//设备类型，或者是说根据屏幕适配的设备类型
+    token:'',//token凭证
+    company:null,//公司ID
+    companyName:'',//公司姓名
+    shop:49,//店Id
     // theme: '',
     // layout: '',
     // contentWidth: '',
@@ -34,6 +36,9 @@ const app = {
     },
     SET_TOKEN:(state,token) =>{
       state.token = token
+    },
+    SET_COMPANY:(state,company)=>{
+      state.company = company
     }
   },
   actions: {
@@ -46,7 +51,11 @@ const app = {
     ToggleDevice ({ commit }, device) {
       commit('TOGGLE_DEVICE', device)
     },
+    setCompany({commit},companyId){
+      commit('SET_COMPANY',companyId)
+    },
     logout(){
+      router.push('login')
     }
   }
 }

@@ -8,49 +8,80 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 
 import { constantRouterMap } from '@/router/router.config'
-
+import {getUserInfo} from '@/api/auth'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 
 // router.addRoutes(constantRouterMap)
+const ALL_PERMISSIONS = [
+  "dashboard",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+]
 router.beforeEach((to, from, next) => {
-  console.log(to)
   NProgress.start()
   let token = Vue.ls.get('Access-Token')
+  let company = Vue.ls.get('company')
+  console.log(company)
+  console.log(token)
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (token) {
-    // has token
-    // todo 如果未选公司的,跳到选择公司
-    // router.addRoutes(asyncRouterMap)
-    if (!store.getters.isGenerateRoutes) {
-      console.log(store.getters.isGenerateRoutes)
-      // console.log(store)
-      store.dispatch('GenerateRoutes').then(() => {
-        router.addRoutes(store.getters.addRouters)
-        console.log(store)
-        const redirect = decodeURIComponent(from.query.redirect || to.path)
-        console.log(redirect)
-        if (to.path === redirect) {
-          // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-          next({ ...to, replace: false })
-        } else {
-          // 跳转到目的路由
-          next({ path: redirect })
-        }
+    if(company){
+      getUserInfo().then(res=>{
+        console.log(res)
       })
-      next()
+      // has token
+      // todo 如果未选公司的,跳到选择公司
+      // router.addRoutes(asyncRouterMap)
+      if (!store.getters.isGenerateRoutes) {
+        // console.log(store)
+        store.dispatch('GenerateRoutes').then(() => {
+          router.addRoutes(store.getters.addRouters)
+          const redirect = decodeURIComponent(from.query.redirect || to.path)
+          if (to.path === redirect) {
+            // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+            next({ ...to, replace: false })
+          } else {
+            // 跳转到目的路由
+            next({ path: redirect })
+          }
+        })
+        next()
+      }
+  
     }
 
-
     if (to.path == '/login') {
-      next('/dashboard/statistics')
+      if(company){
+        next('/dashboard/statistics')
+      }else{
+        console.log(company)
+        next({ name:'company-choose' })
+      }
+     
     } else {
       next()
     }
   } else {
-    next()
+    console.log('no-token')
+    if (to.path == '/login') {
+      next()
+    } else {
+      if(from.name=='login'){
+        NProgress.done()
+        return ;
+      }else{
+        next({name:'login'})
+      }
+      
+    }
   }
 })
 
 router.afterEach(() => {
+  console.log('done')
   NProgress.done()
 })

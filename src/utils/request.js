@@ -2,6 +2,7 @@ import axios from 'axios'
 // import router from '@/router'
 import Vue from 'vue'
 import store from '@/store'
+import Modal from 'ant-design-vue'
 // import sysConfig from '@/utils/sysConfig'
 
 const service = axios.create({
@@ -30,7 +31,6 @@ service.interceptors.request.use(config => {
     // router.push('/login')
   }
 
-  console.log(config)
   if (!config.headers.hasOwnProperty('company')) {
     config.headers['company'] = store.getters.getCompany
   }
@@ -52,10 +52,22 @@ service.interceptors.response.use(
     try {
 
       msg = error.response.data.message
+     
+      if(error.response.status === 401){
+        Vue.prototype.$confirm({
+          title: '错误信息',
+          content: '您的登录凭证已失效，是否重新登录？',
+          okText: '确认',
+          cancelText: '取消',
+          onOk(){
+
+            store.dispatch('logout')
+          },
+        });
+      }
     } catch (e) {
       msg = error.message
     }
-    console.log(msg)
     return Promise.reject(error)
   })
 

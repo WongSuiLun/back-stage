@@ -18,7 +18,6 @@
 <style scoped>
   .container {
     max-height: 150px;
-    overflow: auto;
   }
   .el-tag {
     margin: 5px 10px 5px 0;
