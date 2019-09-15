@@ -76,3 +76,11 @@ export function deleteDaterules(id){
     method:'delete'
   })
 }
+
+export function updateDaterules(data,id){
+  return request({
+    url:`${GOOD_BASE_URL}/api/daterules/${id}`,
+    method:'put',
+    data
+  })
+}

@@ -141,11 +141,11 @@ export default {
       captchaKey: "",
       rememberMeDefaultChecked: true,
       isCaptcha: false,
-      form: this.$form.createForm(this)
+      form:  this.$form.createForm(this)
     };
   },
   created() {
-    
+   
   },
   mounted() {
     this.initCookieAccount();

@@ -14,7 +14,7 @@ export const asyncRouterMap = [
         name: 'dashboard',
         redirect: '/dashboard/statistics',
         component: RouteView,
-        permission:['dashboard'],
+        permission: ['dashboard'],
         meta: { title: '仪表盘', icon: 'form' },
         children: [
           {
@@ -48,7 +48,7 @@ export const asyncRouterMap = [
         meta: {
           title: '营业管理',
           icon: 'wechat',
-          permission:['business'],
+          permission: ['business'],
         },
         children: [
           {
@@ -264,20 +264,67 @@ export const asyncRouterMap = [
       {
         path: '/account',
         name: 'account',
-        redirect:'/account/center',
+        redirect: '/account/center',
         meta: {
-          title: '个人中心', icon: 'wechat   ',
+          title: '个人中心', icon: 'wechat',
         },
         component: RouteView,
         children: [
           {
-            path:  '/account/center',
-            name:'account-center',
+            path: '/account/center',
+            name: 'account-center',
             component: () => import('@/views/account/center/Center'),
             meta: { title: '个人信息' }
           },
         ],
       },
+      {
+        path: '/coupon',
+        name: 'coupon',
+        redirect: '/coupon/list',
+        meta: {
+          title: '优惠券',
+          icon: 'euro'
+        },
+        component: RouteView,
+        children: [{
+          path: '/coupon/list',
+          name: 'coupon-list',
+          component: () => import('@/views/coupon/couponList/CouponList'),
+          meta: {
+            title: '优惠券列表'
+          }
+        }
+        ]
+      },
+      {
+        path: '/tag',
+        name: 'tag',
+        redirect: '/tag/list',
+        meta: {
+          title: '标签',
+          icon: 'tags'
+        },
+        component: RouteView,
+        children: [
+          {
+            path: '/tag/list',
+            name: 'tag-list',
+            component: () => import('@/views/tags/tagList/TagList'),
+            meta: {
+              title: '标签列表'
+            }
+          },
+          {
+            path: '/tag/edit',
+            name: 'tag-edit',
+            component: () => import('@/views/tags/tagEdit/TagEdit'),
+            meta: {
+              title: '标签編輯'
+            }
+          }
+        ]
+      }
     ]
   },
   {

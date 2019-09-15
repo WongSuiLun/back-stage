@@ -24,7 +24,8 @@
                 </div>
                 <div v-if="item.type==2">
                   <div>
-                    日期：<a @click="previewDateData(item.id)">预览{{item.id}}</a>
+                    日期：
+                    <a @click="previewDateData(item.id)">预览{{item.id}}</a>
                   </div>
                 </div>
 
@@ -32,7 +33,7 @@
               </div>
             </a-card-meta>
             <template class="ant-card-actions" slot="actions">
-              <a>编辑</a>
+              <a @click="updateDateRulesById(item.id)">编辑</a>
               <a @click="deleteDateRulesById(item.id)">删除</a>
             </template>
           </a-card>
@@ -40,7 +41,7 @@
       </a-list-item>
     </a-list>
     <a-drawer
-      title="新建日期规则"
+      :title="previewTitle"
       :width="520"
       @close="onClose"
       :visible="visible"
@@ -61,18 +62,26 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row>
+        <a-row style="margin-bottom:15px">
           <a-col :span="24">
-            <a-form-item label="星期选择">
+            <a-radio-group defaultValue="week" buttonStyle="solid" v-model="ruleDateMode">
+              <a-radio-button value="week">星期</a-radio-button>
+              <a-radio-button value="date">日期</a-radio-button>
+            </a-radio-group>
+          </a-col>
+        </a-row>
+        <a-row v-if="ruleDateMode == 'week'">
+          <a-col :span="24">
+            <a-form-item >
               <a-select mode="multiple" style="width: 100%" placeholder="请选择" v-model="weekSelect">
                 <a-select-option v-for="(i,index) in weekSelectOption" :key="i" :value="index">{{i}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row>
+        <a-row v-if="ruleDateMode == 'date'">
           <a-col :span="24">
-            <a-form-item label="日期选择">
+            <a-form-item>
               <a-row>
                 <a-tag
                   closable
@@ -83,10 +92,7 @@
                 >{{date}}</a-tag>
               </a-row>
               <div>
-                <a-date-picker
-                  @openChange="handleOpenChange1"
-                  @panelChange="handlePanelChange1"
-                >
+                <a-date-picker showTime>
                   <template slot="dateRender" slot-scope="current, today">
                     <div
                       @click="handleDateClick(current)"
@@ -100,7 +106,7 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row :gutter="16">
+        <!-- <a-row :gutter="16">
           <a-col :span="24">
             <a-form-item label="描述">
               <a-textarea
@@ -112,7 +118,7 @@
               />
             </a-form-item>
           </a-col>
-        </a-row>
+        </a-row> -->
       </a-form>
       <div
         :style="{
@@ -143,13 +149,14 @@
           :key="item.toString()"
           :style="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px', margin:'10px 0' }"
         >
-          <a-calendar :value="item" :fullscreen="false" @panelChange="onPanelChange" >
-            <template  slot="dateFullCellRender" slot-scope="value">
-              <div  :style="getPreviewCurrentStyle(value,item)" style="text-align:center">
-                {{value.date()}}
-              </div>
+          <a-date-picker :value="item"  :open="true">
+            <template slot="dateFullCellRender" slot-scope="value">
+              <div
+                :style="getPreviewCurrentStyle(value,item)"
+                style="text-align:center"
+              >{{value.date()}}</div>
             </template>
-          </a-calendar>
+          </a-date-picker>
         </div>
       </a-row>
       <div
@@ -192,7 +199,7 @@ class Rule {
     this.value = value;
   }
 }
-import { postDaterules, getDaterules, deleteDaterules } from "@/api/addGood";
+import { postDaterules, getDaterules, deleteDaterules,updateDaterules } from "@/api/addGood";
 export default {
   name: "CardList",
   data() {
@@ -200,6 +207,7 @@ export default {
       daterulesData: [],
       visible: false,
       previewVisible: false,
+      previewTitle:'新建日期规则',
       newRuleList: [],
       weekSelectOption,
       yearSelectOption,
@@ -208,9 +216,13 @@ export default {
       date: "",
       weekSelect: [],
       dateList: [],
-      previewId:'',
-      previewData:{},
-      previewDateOption:[]
+      previewId: "",
+      previewData: {},
+      previewDateOption: [],
+      ruleDateMode:'week',//两种选项：（星期/日期）,
+      dateSelectOpen:true,
+      isUpdate:false,
+      updateId:-1
     };
   },
   created() {
@@ -236,18 +248,24 @@ export default {
     }
   },
   methods: {
-    initPreviewDateOption(){
+    initPreviewDateOption() {
       let start_date = this.previewData.start_date;
       let end_date = this.previewData.end_date;
-      let start = new Date(start_date)
-      let end = new Date(end_date)
-      this.previewDateOption=[]
-      for(let year = start.getFullYear();year<=end.getFullYear();year++){
-        for(let month = year==start.getFullYear()?start.getMonth()+1:1 ; (year==end.getFullYear()&&month<=end.getMonth()+1)||(year!=end.getFullYear()&&month<=12);month++){
-          this.previewDateOption.push(this.$moment(new Date(`${year}-${month}-01`)))
+      let start = new Date(start_date);
+      let end = new Date(end_date);
+      this.previewDateOption = [];
+      for (let year = start.getFullYear(); year <= end.getFullYear(); year++) {
+        for (
+          let month = year == start.getFullYear() ? start.getMonth() + 1 : 1;
+          (year == end.getFullYear() && month <= end.getMonth() + 1) ||
+          (year != end.getFullYear() && month <= 12);
+          month++
+        ) {
+          this.previewDateOption.push(
+            this.$moment(new Date(`${year}-${month}-01`))
+          );
         }
       }
-
     },
     initDaterulesData() {
       getDaterules().then(res => {
@@ -262,18 +280,14 @@ export default {
       return weeks.join("、");
     },
     previewDateData(id) {
-  
       this.previewId = id;
-      this.daterulesData.forEach(ele=>{
-        if(ele.id == this.previewId){
-          this.previewData = ele
+      this.daterulesData.forEach(ele => {
+        if (ele.id == this.previewId) {
+          this.previewData = ele;
         }
-      })
-      this.initPreviewDateOption()
+      });
+      this.initPreviewDateOption();
       this.previewVisible = true;
-    },
-    onPanelChange(value, mode) {
-      console.log(value, mode);
     },
     //深色
     getRandomColor() {
@@ -285,18 +299,13 @@ export default {
       return col; //最后返回一个七位的值 格式即为#nnnnnn 颜色的格式
     },
 
-    changeValue() {
-      const index = UserList.indexOf(this.avatarValue);
-      this.avatarValue =
-        index < UserList.length - 1 ? UserList[index + 1] : UserList[0];
-      this.color =
-        index < colorList.length - 1 ? colorList[index + 1] : colorList[0];
-    },
     onAddPriceDateRule() {
+      this.previewTitle = '新建日期规则' 
+      this.isUpdate = false
       this.visible = true;
-    },
-    handleAddRule() {
-      this.newRuleList.push(new Rule("week", "0"));
+      this.rule_name = '';
+      this.weekSelect = []
+      this.dateList = []
     },
     onClose() {
       this.visible = false;
@@ -304,21 +313,22 @@ export default {
     onPreviewClose() {
       this.previewVisible = false;
     },
-    getPreviewCurrentStyle(value,item){
+    getPreviewCurrentStyle(value, item) {
       const style = {};
-      let currentDate = this.previewData.items.map(ele=>{
-        return this.$moment(new Date(ele.year+"-"+ele.month+"-"+ele.day)).format("YY-MM-DD")
-      })
+      let currentDate = this.previewData.items.map(ele => {
+        return this.$moment(
+          new Date(ele.year + "-" + ele.month + "-" + ele.day)
+        ).format("YY-MM-DD");
+      });
       // console.log(currentDate)
-      if(value.month()==item.month()){
+      if (value.month() == item.month()) {
         // console.log(currentDate.includes(value.format("YY-MM-DD")))
-        if(currentDate.includes(value.format("YY-MM-DD"))){
-          style.background = 'red'
-          style.color = '#fff'
+        if (currentDate.includes(value.format("YY-MM-DD"))) {
+          style.background = "red";
+          style.color = "#fff";
         }
-      }else{
-        style.color = '#00000040'
-
+      } else {
+        style.color = "#00000040";
       }
       return style;
     },
@@ -330,13 +340,6 @@ export default {
       }
       return style;
     },
-    handleOpenChange1(open) {
-      if (open) {
-        this.mode1 = "time";
-      }
-    },
-
-    handlePanelChange1(value, mode) {},
     handleDateClick(date) {
       // console.log(this.dateList.indexOf(date.format("YY-MM-DD")));
       if (this.dateList.indexOf(date.format("YY-MM-DD")) == -1) {
@@ -356,13 +359,14 @@ export default {
       // console.log(this.dateList);
     },
     handleSubmit() {
+     
       console.log(this.dateList);
       let level = 0;
       let type = 1;
       let start_date = this.$moment(new Date(this.date + "-1-1")).format(
         "YYYY-MM-DD"
       );
-      let end_date = this.$moment(new Date(this.date+ "-12-31")).format(
+      let end_date = this.$moment(new Date(this.date + "-12-31")).format(
         "YYYY-MM-DD"
       );
       let item = [];
@@ -385,17 +389,54 @@ export default {
         },
         item: item
       };
-      postDaterules(data).then(res => {
-        this.$message.success("添加成功");
-        this.initDaterulesData();
-      });
+      if(this.isUpdate){
+        updateDaterules(data,this.updateId).then(res=>{
+          this.$message.success("修改成功");
+          this.initDaterulesData();
+        })
+      }else{
+        postDaterules(data).then(res => {
+          this.$message.success("添加成功");
+          this.initDaterulesData();
+        });
+      }
     },
     deleteDateRulesById(id) {
       deleteDaterules(id).then(res => {
         this.$message.success("删除成功");
         this.initDaterulesData();
       });
-    }
+    },
+    updateDateRulesById(id){
+       this.previewTitle = '编辑'
+       this.updateId = id
+       this.isUpdate = true
+       this.visible = true;
+       let currentRuleData =  this.daterulesData.find(ele=>ele.id==id)
+       this.rule_name = currentRuleData.rule_name
+       console.log(currentRuleData)
+       if(currentRuleData.type==1){
+         this.ruleDateMode='week'
+         console.log(currentRuleData.items)
+         this.weekSelect = currentRuleData.items.map(ele=>{
+           console.log(ele)
+           if(ele.hasOwnProperty('day')){
+            //  return this.weekSelectOption[ele.day]
+             return ele.day
+           }
+         })
+         console.log(this.weekSelect)
+       }else if(currentRuleData.type==2){
+         this.ruleDateMode='date'
+          this.dateList = currentRuleData.items.map(ele=>{
+            return `${ele.year}-${ele.month}-${ele.day}`
+          })
+       }
+       console.log(currentRuleData.type==1)
+       console.log(currentRuleData)
+
+    },
+
   }
 };
 </script>

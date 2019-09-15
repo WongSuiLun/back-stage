@@ -5,11 +5,11 @@
         <a-divider orientation="left">主要信息</a-divider>
         <a-row type="flex" justify="start">
           <a-col :span="12">
-            <a-form-item :label-col="{ span: 3}" :wrapper-col="{ span: 16 }" :label="`用户类型：`">
+            <a-form-item :label-col="{ span: 4}" :wrapper-col="{ span: 16 }" :label="`用户类型：`">
               <!-- <a-radio-group v-model="userType">
                 <a-radio :value="1">员工</a-radio>
                 <a-radio :value="2">用户</a-radio>
-              </a-radio-group> -->
+              </a-radio-group>-->
               <a-tag color="#f50">员工</a-tag>
             </a-form-item>
 
@@ -43,25 +43,10 @@
               />
             </a-form-item>
           </a-col>
+          <a-col :span="12">
+            <a-avatar :size="120" icon="user" />
+          </a-col>
         </a-row>
-      </div>
-      <div class="card-warp">
-        <a-divider orientation="left">身份信息</a-divider>
-        <div>
-          <a-row type="flex" justify="start">
-            <a-col :span="12">
-              <a-form layout="vertical">
-                <a-form-item :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" :label="`机构`">
-                  <a-checkbox-group :options="plainOptions" v-model="checkedList" />
-                </a-form-item>
-              </a-form>
-            </a-col>
-          </a-row>
-        </div>
-      </div>
-      <div class="card-warp">
-        <a-divider orientation="left">基本账户信息</a-divider>
-
         <div class="account-settings-info-view">
           <a-row type="flex" justify="start">
             <a-col :md="12">
@@ -105,7 +90,7 @@
                 :wrapper-col="{ span: 16 }"
                 label="密码"
                 :required="false"
-                 v-decorator="[
+                v-decorator="[
                 `password`,
                 {
                   rules: [],
@@ -119,7 +104,7 @@
                 :wrapper-col="{ span: 16 }"
                 label="电子邮箱"
                 :required="false"
-                 v-decorator="[
+                v-decorator="[
                 `email`,
                 {
                   rules: [],
@@ -144,13 +129,29 @@
               >
                 <a-textarea rows="3" placeholder="You are not alone." />
               </a-form-item>
-              <a-form-item>
-                <a-button type="primary" html-type="submit">提交</a-button>
-                <a-button style="margin-left: 8px">保存</a-button>
-              </a-form-item>
             </a-col>
           </a-row>
         </div>
+      </div>
+      <div class="card-warp">
+        <a-divider orientation="left">身份信息</a-divider>
+        <div>
+          <a-row type="flex" justify="start">
+            <a-col :span="12">
+              <a-form layout="vertical">
+                <a-form-item :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" :label="`机构`">
+                  <a-checkbox-group :options="plainOptions" v-model="checkedList" />
+                </a-form-item>
+              </a-form>
+            </a-col>
+          </a-row>
+        </div>
+      </div>
+      <div class="card-warp">
+        <a-form-item>
+          <a-button type="primary" html-type="submit">提交</a-button>
+          <a-button style="margin-left: 8px">保存</a-button>
+        </a-form-item>
       </div>
     </div>
   </a-form>

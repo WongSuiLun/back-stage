@@ -23,6 +23,7 @@ import Ellipsis from '@/components/Ellipsis'
 import AvatarList from '@/components/AvatarList'
 import EditableCell from './EditableCell'
 import Result from './Result'
+import Coupon from './Coupon'
 // import ChartCard from './Charts/ChartCard'
 export {
   ExceptionPage,
@@ -48,5 +49,6 @@ export {
   Ellipsis,
   AvatarList,
   StandardFormRow, EditableCell,
-  Result
+  Result,
+  Coupon
 }

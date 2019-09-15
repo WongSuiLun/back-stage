@@ -6,21 +6,14 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-
-import { constantRouterMap } from '@/router/router.config'
-import {getUserInfo} from '@/api/auth'
+import { getUserInfo } from '@/api/auth'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 
 // router.addRoutes(constantRouterMap)
-const ALL_PERMISSIONS = [
-  "dashboard",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-]
+
+/**
+*
+*/
 router.beforeEach((to, from, next) => {
   NProgress.start()
   let token = Vue.ls.get('Access-Token')
@@ -29,8 +22,8 @@ router.beforeEach((to, from, next) => {
   console.log(token)
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (token) {
-    if(company){
-      getUserInfo().then(res=>{
+    if (company) {
+      getUserInfo().then(res => {
         console.log(res)
       })
       // has token
@@ -51,37 +44,35 @@ router.beforeEach((to, from, next) => {
         })
         next()
       }
-  
-    }
 
+    }       
     if (to.path == '/login') {
-      if(company){
+      if (company) {
         next('/dashboard/statistics')
-      }else{
+      } else {
         console.log(company)
-        next({ name:'company-choose' })
+        next({ name: 'company-choose' })
       }
-     
+
     } else {
       next()
     }
   } else {
-    console.log('no-token')
+    console.warn("No token!You don't have access")
     if (to.path == '/login') {
       next()
     } else {
-      if(from.name=='login'){
+      if (from.name == 'login') {
         NProgress.done()
-        return ;
-      }else{
-        next({name:'login'})
+        return;
+      } else {
+        next({ name: 'login' })
       }
-      
+
     }
   }
 })
 
 router.afterEach(() => {
-  console.log('done')
   NProgress.done()
 })

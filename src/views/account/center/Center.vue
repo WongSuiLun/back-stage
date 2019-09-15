@@ -8,19 +8,19 @@
               <img :src="avatar()">
             </div>
             <div class="username">{{ nickname() }}</div>
-            <div class="bio">海纳百川，有容乃大</div>
+            <div class="bio">个性签名</div>
           </div>
           <div class="account-center-detail">
             <p>
               <i class="title"></i>交互专家
             </p>
             <p>
-              <i class="group"></i>蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED
+              <i class="group"></i>御温泉－产品研发部
             </p>
             <p>
               <i class="address"></i>
-              <span>浙江省</span>
-              <span>杭州市</span>
+              <span>广东省</span>
+              <span>珠海市</span>
             </p>
           </div>
           <a-divider/>
@@ -65,14 +65,7 @@
             <div class="teamTitle">团队</div>
             <a-spin :spinning="teamSpinning">
               <div class="members">
-                <a-row>
-                  <a-col :span="12" v-for="(item, index) in teams" :key="index">
-                    <a>
-                      <a-avatar size="small" :src="item.avatar"/>
-                      <span class="member">{{ item.name }}</span>
-                    </a>
-                  </a-col>
-                </a-row>
+               
               </div>
             </a-spin>
           </div>
@@ -86,7 +79,15 @@
           :activeTabKey="noTitleKey"
           @tabChange="key => handleTabChange(key, 'noTitleKey')"
         >
-          
+          <div v-if="noTitleKey === 'notification'">
+            article
+          </div>
+          <div v-if="noTitleKey === 'message'">
+            article
+          </div>
+          <div v-if="noTitleKey === 'backlog'">
+            article
+          </div>
         </a-card>
       </a-col>
     </a-row>
@@ -107,32 +108,25 @@ export default {
       teamSpinning: true,
       tabListNoTitle: [
         {
-          key: 'article',
-          tab: '文章(8)'
+          key: 'notification',
+          tab: '通知'
         },
         {
-          key: 'app',
-          tab: '应用(8)'
+          key: 'message',
+          tab: '消息'
         },
         {
-          key: 'project',
-          tab: '项目(8)'
+          key: 'backlog',
+          tab: '待办'
         }
       ],
-      noTitleKey: 'app'
+      noTitleKey: 'notification'
     }
   },
   mounted () {
-    this.getTeams()
   },
   methods: {
     ...mapGetters(['nickname', 'avatar']),
-    getTeams () {
-      this.$http.get('/workplace/teams').then(res => {
-        this.teams = res.result
-        this.teamSpinning = false
-      })
-    },
     handleTabChange (key, type) {
       this[type] = key
     },
