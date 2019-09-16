@@ -294,6 +294,14 @@ export const asyncRouterMap = [
           meta: {
             title: '优惠券列表'
           }
+        },
+        {
+          path: '/coupon/add',
+          name: 'coupon-add',
+          component: () => import('@/views/coupon/addCoupon/AddCoupon'),
+          meta: {
+            title: '添加优惠券'
+          }
         }
         ]
       },

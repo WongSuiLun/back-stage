@@ -37,11 +37,10 @@
           <span class="label">券编号：</span>
           <span class="txt">40976785103</span>
         </div>
-         <div class="range-item">
+        <div class="range-item">
           <span class="label">类型：</span>
           <span class="txt">优惠券</span>
         </div>
-
       </div>
 
       <div class="op-btns" style="display:flex;justify-content: space-between;padding:0 20px;">
@@ -70,84 +69,94 @@ export default {};
 .coupon-item-d .c-type {
   background-color: #74d2d4;
   position: relative;
-    width: 100%;
-    height: 149px;
-    padding: 30px 0 0;
-    overflow: hidden;
-    color: #fff;
-    text-align: center;
+  width: 100%;
+  height: 149px;
+  padding: 30px 0 0;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  margin-top: 5px;
 }
 .coupon-item {
-    position: relative;
-    width: 264px;
+  position: relative;
+  width: 264px;
 }
 .coupon-item .c-price {
-    margin: 0 0 5px;
-    text-align: center;
-    font-weight: 400;
+  margin: 0 0 5px;
+  text-align: center;
+  font-weight: 400;
 }
 .coupon-item .c-price em {
-    font-family: verdana;
-    font-size: 24px;
-    position: relative;
-    top: -11px;
+  font-family: verdana;
+  font-size: 24px;
+  position: relative;
+  top: -11px;
 }
 .coupon-item .c-price strong {
-    line-height: 45px;
-    font-size: 40px;
-    font-family: Arial;
+  line-height: 45px;
+  font-size: 40px;
+  font-family: Arial;
 }
 .coupon-item .c-price .type {
-    display: inline-block;
-    *display: inline;
-    *zoom: 1;
-    text-align: text-bottom;
-    color: #197f81;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  text-align: text-bottom;
+  color: #197f81;
 }
 .coupon-item .c-type .c-type-bottom {
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    bottom: 0;
-    left: 0;
-    background: url(//misc.360buyimg.com/user/myjd/coupon/css/i/coupon20160715.png) -3px -296px no-repeat;
-    background-position: 2px -302px;
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background: url(//misc.360buyimg.com/user/myjd/coupon/css/i/coupon20160715.png) -3px -296px
+    no-repeat;
+  background-position: 2px -302px;
 }
-.coupon-item-d .c-type .c-limit span, .coupon-item-d .c-type .c-time {
-    color: #197f81;
+.coupon-item-d .c-type .c-limit span,
+.coupon-item-d .c-type .c-time {
+  color: #197f81;
 }
 
 .coupon-item .c-msg {
-    overflow: visible;
-    height: 277px;
-    padding: 15px 0 0;
-    background: #f9f9f9;
+  overflow: visible;
+  height: 220px;
+  padding: 15px 0 0;
+  background: #f9f9f9;
 }
 
 .coupon-item .range-item {
-    display: block;
-    margin: 0 0 10px;
+  padding: 0 20px;
+  display: block;
+  margin: 0 0 10px;
 }
 .coupon-item .range-item .label {
-    width: 60px;
-    display: inline;
-    text-align: right;
+  display: inline;
+  text-align: right;
 }
 .coupon-item .range-item .txt {
-    width: 144px;
-    color: #999;
-    overflow: hidden;
-    white-space: nowrap;
+  width: 144px;
+  color: #999;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .coupon-item .overdue-site {
-    position: absolute;
-    display: block;
-    width: 65px;
-    height: 66px;
-    left: 0;
-    top: 0;
-    overflow: hidden;
-    background: url(//misc.360buyimg.com/user/myjd/coupon/css/i/coupon20160715.png) -99px 0;
+  position: absolute;
+  display: block;
+  width: 65px;
+  height: 66px;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  background: url(//misc.360buyimg.com/user/myjd/coupon/css/i/coupon20160715.png) -99px
+    0;
+}
+
+.op-btns {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
 }
 </style>

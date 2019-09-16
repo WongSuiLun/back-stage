@@ -183,6 +183,9 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       // this.$router.push({ name: "company-choose" });
+      if(!this.isCaptcha){
+        this.getScrollCaptch()
+      }
       this.form.validateFields((err, values) => {
         if (!err) {
           // console.log("Received values of form: ", values);
@@ -203,7 +206,7 @@ export default {
               }
             })
             .catch(err => {
-              // console.log(err.response);
+              console.log(err);
               this.$notification["error"]({
                 message: "登陆失败",
                 description: err.response ? err.response.data.message : ""
