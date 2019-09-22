@@ -1,5 +1,5 @@
 <template>
-  <a-layout class="layout">
+  <a-layout class="layout" id="layout">
     <a-layout id="components-layout-demo-custom-trigger">
       <a-drawer
         v-if="isMobile()"
@@ -30,9 +30,11 @@
       <a-layout>
         <global-header :collapsed="collapsed" @toggle="toggle"></global-header>
         <multi-tab></multi-tab>
-        <div class="layout-content">
+        <div class="layout-content" id="layout-content">
           <router-view></router-view>
+         
         </div>
+        
         <a-layout-footer>
           <global-footer />
         </a-layout-footer>
@@ -61,7 +63,8 @@ export default {
   mixins: [mixinDevice],
   data() {
     return {
-      collapsed: false
+      collapsed: false,
+      target:()=>{return document.getElementById('layout')}
     };
   },
   computed: {

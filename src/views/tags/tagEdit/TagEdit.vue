@@ -1,6 +1,6 @@
 <template>
   <div class="content-warp">
-    <a-select mode="tags" style="width: 80%" @change="handleSelectChange" placeholder="Tags Mode">
+    <a-select mode="tags" style="width: 80%" @change="handleSelectChange" placeholder="请选择标签">
       <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">{{(i + 9).toString(36) + i}}</a-select-option>
     </a-select>
     <a-divider></a-divider>
@@ -34,14 +34,14 @@ export default {
     };
   },
   created() {
-    getGoods().then(res => {
-      this.getMock(res.data.data.data);
-      console.log(123);
-      console.log(this.mockData);
+    getGoods(1,'all').then(res => {
+      this.setData(res.data.data.data);
     });
   },
   methods: {
-    getMock(dataList) {
+    //设置商品到左边,
+    //Todo 如果过滤出含有标签的商品
+    setData(dataList) {
       const targetKeys = [];
       const mockData = [];
       for (let i = 0; i < dataList.length; i++) {
@@ -63,12 +63,8 @@ export default {
     renderItem(item) {
       const customLabel = (
         <span class="custom-item">
-          <img
-            src="http://test.00800.com.cn/data/upload/2017/1108/17/5a02d5496434953a6481.jpg"
-            width="40"
-            height="30"
-          />
-          {item.name} - {item.name2}
+          
+          <span style="font-size:16 px;font-weight:700">{item.name}</span> - <span>{item.name2}</span>
         </span>
       );
 

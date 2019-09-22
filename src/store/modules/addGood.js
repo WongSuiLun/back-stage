@@ -1,18 +1,19 @@
 // import Vue from 'vue'
 const addGoodState = {
     state: {
-        storeNo: '123',
+        storeNo: '',
         storeType: '',
         roomType: '',
-        name: '大餐庙会2人入格套票',
-        name2: '（2人入格+温泉2位+早餐2位+大餐庙会2位+单车券+烟花券+游艺券）',
+        name: '123',
+        name2: '',
+        unitPrice:1,//商品单价
         tags: [
             { id: 6, name: "假日通用" },
             { id: 7, name: "周末通用" },
             { id: 8, name: "免预约" },
             { id: 9, name: "限时购" },
         ],
-        lightspots: [""],
+        lightspots: [],
         goodImgList: [],
         goodMainVideo: {},
         goodShopVideo: {},
@@ -20,6 +21,14 @@ const addGoodState = {
         transfer: '',
         comment: '',
         place: '',
+        bookNeedKnow:'',
+        upShelvesStyle: 0,//上架类型
+        upShelvesTime: '',//上架时间
+        downShelvesTime: '',//下架时间
+        bookableType: 0,
+        bookableTime: '',
+        endBookableTime: '',
+        peopleNum: 1,
 
         //微信分享
         shareTitle: '',
@@ -29,7 +38,7 @@ const addGoodState = {
     },
     getters: {
         getImgListAttachIdList: state => {
-            if (state.goodImgList.length > 1) {
+            if (state.goodImgList.length > 0) {
                 return state.goodImgList.map(ele => {
                     return ele.attach_id
                 })
@@ -37,19 +46,19 @@ const addGoodState = {
             return []
         },
         getShopVideoAttachIdList: state => {
-            if (state.goodShopVideo.length > 1) {
-                return state.goodShopVideo.map(ele => {
-                    return ele.attach_id
-                })
+            if (state.goodShopVideo.id) {
+                let vedio = []
+                vedio.push(state.goodShopVideo.id)
+                return vedio
             }
             return []
 
         },
         getMainVideoAttachIdList: state => {
-            if (state.goodMainVideo.length > 1) {
-                return state.goodMainVideo.map(ele => {
-                    return ele.attach_id  
-                })
+            if (state.goodMainVideo.id) {
+                let vedio = []
+                vedio.push(state.goodMainVideo.id)
+                return vedio
             }
             return []
 

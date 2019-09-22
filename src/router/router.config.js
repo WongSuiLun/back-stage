@@ -37,6 +37,12 @@ export const asyncRouterMap = [
             name: 'admin-log',
             component: () => import('@/views/dashboard/AdminLog'),
             meta: { title: '系统日志' },
+          },
+          {
+            path:'/dashboard/shop',
+            name:'shop-choice',
+            component:()=> import('@/views/dashboard/shopChoice/ShopChoice'),
+            meta:{title:'进店'}
           }
         ]
       },
@@ -329,6 +335,26 @@ export const asyncRouterMap = [
             component: () => import('@/views/tags/tagEdit/TagEdit'),
             meta: {
               title: '标签編輯'
+            }
+          }
+        ]
+      },
+      {
+        path: '/member',
+        name: 'member',
+        redirect: '/member/message',
+        meta: {
+          title: '会员中心',
+          icon: 'message'
+        },
+        component: RouteView,
+        children: [
+          {
+            path: '/member/message',
+            name: 'member-message',
+            component: () => import('@/views/member/memberMessage/MemberMessage'),
+            meta: {
+              title: '会员通信中心'
             }
           }
         ]

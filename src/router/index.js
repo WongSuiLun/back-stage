@@ -4,6 +4,18 @@ import { constantRouterMap } from './router.config'
 
 Vue.use(Router)
 
-export default new Router({
-  routes: constantRouterMap
+const createRouter = () => new Router({
+  routes: []
 })
+
+const router = createRouter()
+
+export function resetRouter () {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // the relevant part
+}
+
+export default router
+// export default new Router({
+//   routes: constantRouterMap
+// })

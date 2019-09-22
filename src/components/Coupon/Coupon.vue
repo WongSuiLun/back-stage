@@ -1,10 +1,15 @@
 <template>
   <div class="coupon-item coupon-item-d">
-    <div class="c-type">
+    <div class="c-type" :style="getTypeClass">
       <div class="c-price">
-        <em>¥</em>
-        <strong>20</strong>
-        <span class="type">东券</span>
+        <template v-if="type=='coupon'">
+          <em>¥</em> 
+          <strong>20</strong>
+        </template>
+        <template v-if="type=='voucher'">
+          <span style="font-size:26px;font-weight:600">二人入格</span>
+        </template>
+        <span class="type">{{getTypeName}}</span>
       </div>
       <div class="c-limit">满199可用</div>
       <div class="c-time">&nbsp;&nbsp;</div>
@@ -16,7 +21,7 @@
       <div class="c-range">
         <div class="range-item">
           <span class="label">限品类：</span>
-          <span class="txt">仅可购买酒类部分商品</span>
+          <span class="txt">仅可购买二人入格等商品</span>
           <b class style="display: none;"></b>
           <div class="item-tips" style="display: none;">
             <s></s>
@@ -39,13 +44,12 @@
         </div>
         <div class="range-item">
           <span class="label">类型：</span>
-          <span class="txt">优惠券</span>
+          <span class="txt">{{getTypeName}}</span>
         </div>
       </div>
 
-      <div class="op-btns" style="display:flex;justify-content: space-between;padding:0 20px;">
-        <a-button type="primary">导出领取人</a-button>
-        <a-button type="danger">立即下架</a-button>
+      <div class="op-btns">
+        <slot name="footer" style="width:100%"></slot>
       </div>
 
       <div class="ftx-03 ac mt5">&nbsp;&nbsp;</div>
@@ -62,12 +66,39 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props:{
+    type:{
+      default:'coupon',//voucher
+      type:String,
+    }
+  },
+  computed:{
+    getTypeClass(){
+      if(this.type == 'coupon'){
+        return {
+          backgroundColor:'#ff4d4f'
+        }
+      }else{
+        return {
+          backgroundColor:'#74d2d4'
+        }
+      }
+    },
+    getTypeName(){
+      if(this.type == 'coupon'){
+        return "优惠券"
+      }else{
+        return "抵用券"
+      }
+    }
+  }
+};
 </script>
 
 <style scoped>
 .coupon-item-d .c-type {
-  background-color: #74d2d4;
+  
   position: relative;
   width: 100%;
   height: 149px;
@@ -110,11 +141,10 @@ export default {};
   height: 3px;
   bottom: 0;
   left: 0;
-  background: url(//misc.360buyimg.com/user/myjd/coupon/css/i/coupon20160715.png) -3px -296px
-    no-repeat;
-  background-position: 2px -302px;
+  border-bottom: 1px dashed #ffffff;
 }
 .coupon-item-d .c-type .c-limit span,
+
 .coupon-item-d .c-type .c-time {
   color: #197f81;
 }

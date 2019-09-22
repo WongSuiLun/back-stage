@@ -1,6 +1,61 @@
 <template>
   <div>
-    <div></div>
+    <div style="margin-bottom:10px">
+      <a-button type="primary" @click="showDrawer">新增机构类型</a-button>
+      <a-drawer
+        title="新增机构列表"
+        placement="right"
+        :closable="false"
+        @close="onClose"
+        :visible="newInstituteDrawerVisible"
+      >
+        <a-form layout="vertical" hideRequiredMark>
+          <a-row :gutter="16">
+            <a-col :span="24">
+              <a-form-item label="类别名">
+                <a-input
+                  v-model="typeTitle"
+                  placeholder="请输入类别名"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col :span="24">
+              <a-form-item label="Sign">
+                <a-input
+                 v-model="sign"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+         
+        </a-form>
+        <div
+        :style="{
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          borderTop: '1px solid #e8e8e8',
+          padding: '10px 16px',
+          textAlign: 'right',
+          left: 0,
+          background: '#fff',
+          borderRadius: '0 0 4px 4px',
+        }"
+      >
+        <a-button
+          style="marginRight: 8px"
+          @click="onClose"
+        >
+          取消
+        </a-button>
+        <a-button @click="handleAddInstituteType" type="primary" >
+          提交
+        </a-button>
+      </div>
+      </a-drawer>
+    </div>
     <a-table :columns="columns" :dataSource="data" bordered>
       <template
         v-for="col in ['name', 'age', 'address']"
@@ -35,81 +90,96 @@
 </template>
 
 <script>
-const columns = [{
-  title: 'name',
-  dataIndex: 'name',
-  width: '25%',
-  scopedSlots: { customRender: 'name' },
-}, {
-  title: 'age',
-  dataIndex: 'age',
-  width: '15%',
-  scopedSlots: { customRender: 'age' },
-}, {
-  title: 'address',
-  dataIndex: 'address',
-  width: '40%',
-  scopedSlots: { customRender: 'address' },
-}, {
-  title: 'operation',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' },
-}]
+const columns = [
+  {
+    title: "id",
+    dataIndex: "id",
+  },
+  {
+    title: "title",
+    dataIndex: "title",
+  },
+  {
+    title: "operation",
+    dataIndex: "operation",
+    scopedSlots: { customRender: "operation" }
+  }
+];
 
-const data = []
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  })
-}
+import { getInstitutionType,createInstitution } from "@/api/institutions";
 export default {
-  data () {
-    this.cacheData = data.map(item => ({ ...item }))
+  data() {
     return {
-      data,
+      data:[],
       columns,
-    }
+      newInstituteDrawerVisible: false,
+      typeTitle:'',
+      sign:''
+    };
+  },
+  created() {
+    getInstitutionType().then(res => {
+      this.data=res.data.data
+    });
+    
   },
   methods: {
-    handleChange (value, key, column) {
-      const newData = [...this.data]
-      const target = newData.filter(item => key === item.key)[0]
+    showDrawer() {
+      this.newInstituteDrawerVisible = true;
+    },
+    onClose() {
+      this.newInstituteDrawerVisible = false;
+    },
+    handleAddInstituteType(){
+      let data = {
+        title:this.typeTitle,
+        sign:this.sign
+      }
+      createInstitution(data).then(res=>{
+        this.typeTitle = ''
+        this.sign = ''
+        this.newInstituteDrawerVisible = false
+      })
+    },
+    handleChange(value, key, column) {
+      const newData = [...this.data];
+      const target = newData.filter(item => key === item.key)[0];
       if (target) {
-        target[column] = value
-        this.data = newData
+        target[column] = value;
+        this.data = newData;
       }
     },
-    edit (key) {
-      const newData = [...this.data]
-      const target = newData.filter(item => key === item.key)[0]
+    edit(key) {
+      const newData = [...this.data];
+      const target = newData.filter(item => key === item.key)[0];
       if (target) {
-        target.editable = true
-        this.data = newData
+        target.editable = true;
+        this.data = newData;
       }
     },
-    save (key) {
-      const newData = [...this.data]
-      const target = newData.filter(item => key === item.key)[0]
+    save(key) {
+      const newData = [...this.data];
+      const target = newData.filter(item => key === item.key)[0];
       if (target) {
-        delete target.editable
-        this.data = newData
-        this.cacheData = newData.map(item => ({ ...item }))
+        delete target.editable;
+        this.data = newData;
+        this.cacheData = newData.map(item => ({ ...item }));
       }
     },
-    cancel (key) {
-      const newData = [...this.data]
-      const target = newData.filter(item => key === item.key)[0]
+    cancel(key) {
+      const newData = [...this.data];
+      const target = newData.filter(item => key === item.key)[0];
       if (target) {
-        Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
-        delete target.editable
-        this.data = newData
+        Object.assign(
+          target,
+          this.cacheData.filter(item => key === item.key)[0]
+        );
+        delete target.editable;
+        this.data = newData;
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style>

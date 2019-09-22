@@ -10,16 +10,22 @@
     >
       <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
       <!-- 操作单元格 -->
-      <div slot="operator">
-        <a-button
+      <div slot="operator" slot-scope="text, record">
+          <a-button
+          type="default"
+          size="small"
+          style="margin-right:8px;background:#33CCFF;color:#fff"
+        >上架</a-button>
+        <!-- <a-button
           type="default"
           size="small"
           style="margin-right:8px;background:#990033;color:#fff"
-        >下架</a-button>
+        >下架</a-button> -->
         <a-button
           type="default"
           size="small"
           style="margin-right:8px;background:#9933FF;color:#fff"
+          @click="jumpToEdit(record)"
         >编辑</a-button>
         <a-button
           type="default"
@@ -31,7 +37,10 @@
           size="small"
           style="margin-right:8px;background:#FFFF66;color:#000"
         >销售数据</a-button>
-        <a-button type="danger" size="small" style="margin-right:8px;">删除</a-button>
+        <a-popconfirm title="你确定要删除此商品吗?" @confirm="deleteGoodByNo(record.no)" okText="Yes" cancelText="No">
+            <a-button type="danger" size="small" style="margin-right:8px;">删除</a-button>
+        </a-popconfirm>
+        
       </div>
 
       <div
@@ -82,7 +91,7 @@
 </template>
 
 <script>
-import { getGoods } from "@/api/good";
+import { getGoods,deleteGood  } from "@/api/good";
 export default {
   components: {},
   data() {
@@ -152,7 +161,8 @@ export default {
       selectedRowKeys: [],
       loading: false,
       searchParam: {
-        name: "",
+        name:"",
+        is_downShelves:1,
         sort:-1,
       },
       pagination: {
@@ -201,7 +211,7 @@ export default {
             1.拉取商品数据
          */
     init() {
-      this.getGoodsData(1);
+      this.getGoodsData(1,20,this.searchParam);
     },
     //获取商品数据
     getGoodsData(page, limit = 20, searchParam) {
@@ -241,6 +251,18 @@ export default {
     onSelectChange(selectedRowKeys) {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
+    },
+    jumpToEdit(record){
+        this.$router.push({name:'add-good',params: {good:record}})
+    },
+    deleteGoodByNo(no){
+        deleteGood(no).then(res=>{
+            this.getGoodsData(
+                this.pagination.current,
+                this.pagination.pageSize,
+                this.searchParam
+            );
+        })
     }
   }
 };

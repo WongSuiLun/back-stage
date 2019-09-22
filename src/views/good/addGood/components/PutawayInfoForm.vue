@@ -29,13 +29,13 @@
           </a-radio-group>
         </div>
       </a-form-item>
-      <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="不可预定日期">
+      <!-- <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="不可预定日期">
         <div class="form-item">
           <a-range-picker />
           <a-button shape="circle" icon="plus" size="small" style="margin-left:5px" />
         </div>
-      </a-form-item>
-      <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="每日销售时间">
+      </a-form-item> -->
+      <!-- <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="每日销售时间">
         <div class="form-item">
           <a-radio-group>
             <a-radio :style="radioStyle" :value="1">不限制</a-radio>
@@ -44,8 +44,8 @@
             </a-radio>
           </a-radio-group>
         </div>
-      </a-form-item>
-      <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="每日销售数量">
+      </a-form-item> -->
+      <!-- <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="每日销售数量">
         <div class="form-item">
           <a-radio-group>
             <a-radio :style="radioStyle" :value="1">不限制</a-radio>
@@ -56,8 +56,8 @@
             </a-radio>
           </a-radio-group>
         </div>
-      </a-form-item>
-      <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="单用户购买限制">
+      </a-form-item> -->
+      <!-- <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="单用户购买限制">
         <div class="form-item">
           <a-radio-group>
             <a-radio :style="radioStyle" :value="1">不限制</a-radio>
@@ -89,7 +89,7 @@
             </a-radio>
           </a-radio-group>
         </div>
-      </a-form-item>
+      </a-form-item> -->
       <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="房间入住人数">
         <div class="form-item">
           <a-input-number :min="1" :max="10" />
@@ -100,7 +100,7 @@
           <a-input-number :min="1" :max="10" />
         </div>
       </a-form-item>
-      <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="允许现金支付">
+      <!-- <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="允许现金支付">
         <div class="form-item">
           <a-input-number :min="1" :max="10" :disabled="true" /><span class="text">元</span>
           <a-switch checkedChildren="开" unCheckedChildren="关" defaultChecked />
@@ -145,7 +145,7 @@
             <a-radio :style="radioStyle" :value="4">商品</a-radio>
           </a-radio-group>
         </div>
-      </a-form-item>
+      </a-form-item> -->
       <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="退款政策">
         <div class="form-item">
           <a-radio-group>

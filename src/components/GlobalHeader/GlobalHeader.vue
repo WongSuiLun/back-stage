@@ -11,6 +11,10 @@
       @click="jumpToCompanyChoose"
     >切换
     </a-tag>
+     <a-tag
+      style="margin-left:8px;"
+    >公司级
+    </a-tag>
     <div class="user-menu">
       <user-menu></user-menu>
     </div>

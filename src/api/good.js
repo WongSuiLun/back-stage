@@ -23,3 +23,20 @@ export function getGoods(page,limit,searchParam) {
   })
 }
 
+/**
+ * 获取单个商品接口
+ * @param {Number} no 
+ */
+export function getGood(no){
+  return request({
+    url:`${GOOD_BASE_URL}/api/goods/${no}`,
+    method:'get'
+  })
+}
+
+export function deleteGood(no){
+  return request({
+    url:`${GOOD_BASE_URL}/api/goods/${no}`,
+    method:'delete'
+  })
+}

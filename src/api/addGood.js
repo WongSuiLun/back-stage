@@ -41,7 +41,7 @@ export function addTag(data){
 
 export function addGood(data){
   return request({
-    url:`${GOOD_BASE_URL}/api/goods`,
+    url:`${GOOD_BASE_URL}/api/goods/step1`,
     method:'post',
     data
   })

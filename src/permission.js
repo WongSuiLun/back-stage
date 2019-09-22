@@ -8,8 +8,8 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 import { getUserInfo } from '@/api/auth'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
-
-// router.addRoutes(constantRouterMap)
+import {constantRouterMap} from '@/router/router.config'
+router.addRoutes(constantRouterMap)
 
 /**
 *

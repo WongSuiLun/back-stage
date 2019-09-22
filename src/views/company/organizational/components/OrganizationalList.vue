@@ -1,121 +1,142 @@
 <template>
   <div>
-    <div></div>
-    <a-table :columns="columns" :dataSource="data" bordered>
-      <template
-        v-for="col in ['name', 'age', 'address']"
-        :slot="col"
-        slot-scope="text, record, index"
+    <div style="margin-bottom:10px">
+      <a-button type="primary" @click="showDrawer">新增机构</a-button>
+      <a-drawer
+        title="新增机构列表"
+        placement="right"
+        :closable="false"
+        @close="onClose"
+        :visible="newInstituteDrawerVisible"
       >
-        <div :key="col">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="e => handleChange(e.target.value, record.key, col)"
-          />
-          <template v-else>{{text}}</template>
+        <a-form layout="vertical" hideRequiredMark>
+          <a-row :gutter="16">
+            <a-col :span="24">
+              <a-form-item label="机构类别">
+                <a-select  style="width: 100%" v-model="typeId">
+                  <a-select-option
+                    :key="type.id"
+                    :value="type.id"
+                    v-for="type in institutionTypeOption"
+                  >{{type.title}}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col :span="24">
+              <a-form-item label="机构名称">
+                <a-input v-model="instituteName" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col :span="24" v-model="parentId">
+              <a-form-item label="上级机构">
+                <a-select  style="width: 100%">
+                  <a-select-option key="no" value="">
+                    无上级
+                  </a-select-option>
+                  <a-select-option
+                    :key="institution.id"
+                    :value="institution.id"
+                    v-for="institution in data"
+                  >{{institution.name}}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+        <div
+          :style="{
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          borderTop: '1px solid #e8e8e8',
+          padding: '10px 16px',
+          textAlign: 'right',
+          left: 0,
+          background: '#fff',
+          borderRadius: '0 0 4px 4px',
+        }"
+        >
+          <a-button style="marginRight: 8px" @click="onClose">取消</a-button>
+          <a-button type="primary" @click="handleAddInstitution">提交</a-button>
         </div>
-      </template>
-      <template slot="operation" slot-scope="text, record, index">
-        <div class="editable-row-operations">
-          <span v-if="record.editable">
-            <a @click="() => save(record.key)">Save</a>
-            <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
-              <a>Cancel</a>
-            </a-popconfirm>
-          </span>
-          <span v-else>
-            <a @click="() => edit(record.key)">Edit</a>
-          </span>
-        </div>
-      </template>
-    </a-table>
+      </a-drawer>
+    </div>
+    <a-table :columns="columns" :dataSource="data" bordered></a-table>
   </div>
 </template>
 
 <script>
-const columns = [{
-  title: 'name',
-  dataIndex: 'name',
-  width: '25%',
-  scopedSlots: { customRender: 'name' },
-}, {
-  title: 'age',
-  dataIndex: 'age',
-  width: '15%',
-  scopedSlots: { customRender: 'age' },
-}, {
-  title: 'address',
-  dataIndex: 'address',
-  width: '40%',
-  scopedSlots: { customRender: 'address' },
-}, {
-  title: 'operation',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' },
-}]
-
-const data = []
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  })
-}
-import {getInstitutions} from '@/api/institutions'
-export default {
-  data () {
-    this.cacheData = data.map(item => ({ ...item }))
-    return {
-      data,
-      columns,
-    }
+const columns = [
+  {
+    title: "id",
+    dataIndex: "id"
   },
-  created(){
-    getInstitutions().then(res=>{
-      console.log(res)
-    })
+  {
+    title: "name",
+    dataIndex: "name"
+  },
+  {
+    title: "operation",
+    dataIndex: "operation",
+    scopedSlots: { customRender: "operation" }
+  }
+];
+
+import { getInstitutions, getInstitutionType,addInsitutions } from "@/api/institutions";
+export default {
+  data() {
+    return {
+      data: [],
+      columns,
+      newInstituteDrawerVisible: false,
+      typeTitle: "",
+      instituteName: "",
+      institutionTypeOption: [],
+      typeId:'',
+      parentId:''
+    };
+  },
+  created() {
+    this.initData();
   },
   methods: {
-    handleChange (value, key, column) {
-      const newData = [...this.data]
-      const target = newData.filter(item => key === item.key)[0]
-      if (target) {
-        target[column] = value
-        this.data = newData
-      }
+    initData() {
+      getInstitutions().then(res => {
+        this.data = res.data.data;
+      });
+      getInstitutionType().then(res => {
+        this.institutionTypeOption = res.data.data;
+      });
     },
-    edit (key) { 
-      const newData = [...this.data]
-      const target = newData.filter(item => key === item.key)[0]
-      if (target) {
-        target.editable = true
-        this.data = newData
-      }
+    showDrawer() {
+      this.newInstituteDrawerVisible = true;
     },
-    save (key) {
-      const newData = [...this.data]
-      const target = newData.filter(item => key === item.key)[0]
-      if (target) {
-        delete target.editable
-        this.data = newData
-        this.cacheData = newData.map(item => ({ ...item }))
-      }
+    onClose() {
+      this.newInstituteDrawerVisible = false;
     },
-    cancel (key) {
-      const newData = [...this.data]
-      const target = newData.filter(item => key === item.key)[0]
-      if (target) {
-        Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
-        delete target.editable
-        this.data = newData
+    //处理提交按钮
+    handleAddInstitution(){
+      let data = {
+        type_id:this.typeId,
+        name:this.instituteName,
+        parentId:this.parentId
       }
-    },
-  },
-}
+      addInsitutions(data).then(res=>{
+        if(res.status==201){
+          this.$message.success('创建成功');
+          this.newInstituteDrawerVisible = false
+          this.initData()
+        }else{
+          this.$message.error('创建失败')
+        }
+      })
+    }
+  }
+};
 </script>
 
 <style>

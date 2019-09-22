@@ -1,12 +1,13 @@
 <template>
-  <div class="content">
-    <div class="content-item">商品类型</div>
-    <div>
-      <radio-box :items="items" v-model="activeGoodType"></radio-box>
-    </div>
-    <div class="content-item">产品基本信息</div>
-    <div>
-      <a-form :form="form">
+  <a-form :form="form">
+    <div class="content">
+      <div class="content-item">商品类型</div>
+      <div>
+        <radio-box :items="items" v-model="activeGoodType"></radio-box>
+        {{activeGoodType}}
+      </div>
+      <div class="content-item">产品基本信息</div>
+      <div>
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="部门">
           <a-select
             v-decorator="[
@@ -16,23 +17,7 @@
             }]"
             style="width: 200px"
           >
-            <a-select-option
-              v-for="i in 25"
-              :key="(i + 9).toString(36) + i"
-            >{{(i + 9).toString(36) + i}}</a-select-option>
-          </a-select>
-          <a-select
-            v-decorator="[
-            'storeNo',
-            {
-              rules: [{ required: true, message: 'Username is required!' }],
-            }]"
-            style="width: 200px"
-          >
-            <a-select-option
-              v-for="i in 25"
-              :key="(i + 9).toString(36) + i"
-            >{{(i + 9).toString(36) + i}}</a-select-option>
+            <a-select-option v-for="i in institution" :key="i.id">{{i.name}}</a-select-option>
           </a-select>
         </a-form-item>
 
@@ -70,7 +55,6 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品名称">
           <a-input
-            id="error"
             placeholder="unavailable choice"
             v-decorator="[
             'name',
@@ -83,12 +67,26 @@
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品副标题">
           <a-input
-            id="error"
             placeholder="商品副标题"
             v-decorator="[
             'name2',
             {
               rules: [{ required: true, message: 'name is required!' }],
+            }
+          ]"
+          />
+        </a-form-item>
+
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品单价">
+          <a-input-number
+            style="width:200px"
+            placeholder="商品单价"
+            :step="1.00"
+             :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+            v-decorator="[
+            'unitPrice',
+            {
+              rules: [{ required: true, message: '价格不能为空' }],
             }
           ]"
           />
@@ -310,12 +308,47 @@
             >{{place.label}}</a-select-option>
           </a-select>
         </a-form-item>
-      </a-form>
-    </div>
-
-    <div class="content-item">微信分享</div>
-    <div>
-      <a-form :form="wechatShareForm">
+      </div>
+      <div class="content-item">上架信息</div>
+      <div>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品上架日期">
+          <div class="form-item">
+            <a-radio-group v-model="upShelvesStyle">
+              <a-radio :style="radioStyle" :value="0">立即上架售卖</a-radio>
+              <a-radio :style="radioStyle" :value="1">暂不售卖,放入仓库</a-radio>
+              <a-radio :style="radioStyle" :value="2">
+                <span class="text">设定在</span>
+                <a-range-picker @change="onShelvesStyle" />
+                <span class="text">内售卖</span>
+              </a-radio>
+            </a-radio-group>
+          </div>
+        </a-form-item>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="起始预定日期">
+          <div class="form-item">
+            <a-radio-group v-model="bookableType">
+              <a-radio :style="radioStyle" :value="0">长期</a-radio>
+              <a-radio :style="radioStyle" :value="1">
+                <span class="text">设定在</span>
+                <a-range-picker @change="onBookableDateChange" />
+                <span class="text">内预定有效</span>
+              </a-radio>
+            </a-radio-group>
+          </div>
+        </a-form-item>
+        <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="人数">
+          <a-input-number
+            v-decorator="[
+            'peopleNum',
+            {
+              rules: [{ required: true, message: 'Username is required!' }],
+            }]"
+          />
+        </a-form-item>
+      </div>
+      <!-- <div class="content-item">微信分享</div> -->
+      <div>
+        <!-- <a-form :form="wechatShareForm">
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享标题">
           <a-input id placeholder />
         </a-form-item>
@@ -327,13 +360,14 @@
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="分享图片">
           <PicUpload v-model="imgList" :max="1"></PicUpload>
         </a-form-item>
-      </a-form>
+        </a-form>-->
 
-      <a-row type="flex" justify="center">
-        <a-button @click="handleNextStep">下一步</a-button>
-      </a-row>
+        <a-row type="flex" justify="center">
+          <a-button @click="handleNextStep">下一步</a-button>
+        </a-row>
+      </div>
     </div>
-  </div>
+  </a-form>
 </template>
 
 <script>
@@ -348,6 +382,7 @@ import {
   addTag,
   addGood
 } from "@/api/addGood";
+import { getInstitutions } from "@/api/institutions";
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
 require("vue-video-player/src/custom-theme.css");
@@ -361,9 +396,9 @@ export default {
   data() {
     return {
       items: [
-        { title: "电子商品", sub_title: "（无需地址）" },
-        { title: "实物商品", sub_title: "（需要地址）" },
-        { title: "积分商品", sub_title: "" }
+        { title: "基础商品", sub_title: "（无需地址）", type: "base" },
+        { title: "积分商品", sub_title: "", type: "point" },
+        { title: "套餐商品", sub_title: "", type: "meal  " }
       ],
       labelCol: {
         xs: { span: 24 },
@@ -374,6 +409,7 @@ export default {
         xs: { span: 24 },
         sm: { span: 12 }
       },
+      institution: [], //部门
       imgList: [],
       imgListData: [],
       activeGoodType: "",
@@ -437,7 +473,15 @@ export default {
         { value: "1", label: "允许转增" }
       ],
       //亮点中间值
-      tempLightsports: [""]
+      tempLightsports: [""],
+      // upShelvesStyle: 0,
+      // bookableType: 0,
+      //radio样式
+      radioStyle: {
+        display: "block",
+        height: "30px",
+        lineHeight: "30px"
+      }
     };
   },
   computed: {
@@ -450,21 +494,88 @@ export default {
   created() {
     this.initForm();
     this.initTagData();
+    this.initInstitution();
+  },
+  mounted() {
+    this.$store.commit("SET_FORM", {
+      upShelvesTime: this.$moment(new Date())
+        .format("L")
+        .split("/")
+        .join("-"),
+      downShelvesTime: ""
+    });
+    this.$store.commit("SET_FORM", {
+      bookableTime: this.$moment(new Date())
+        .format("L")
+        .split("/")
+        .join("-"),
+      endBookableTime: ""
+    });
   },
 
   watch: {
-    storeNo(val) {
-      this.form.setFieldsValue({ storeNo: val });
-    },
-    name(val) {
-      this.form.setFieldsValue({ name: val });
-    },
     imgList(val) {},
     imgListData() {
       this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
+    },
+    upShelvesStyle(val) {
+      if (val == 0) {
+        //立即上架售卖
+        this.$store.commit("SET_FORM", {
+          upShelvesTime: this.$moment(new Date())
+            .format("L")
+            .split("/")
+            .join("-"),
+          downShelvesTime: ""
+        });
+      } else if (val == 1) {
+        //暂不售卖,放入仓库
+        this.$store.commit("SET_FORM", {
+          upShelvesTime: "",
+          downShelvesTime: ""
+        });
+      } else if (val == 2) {
+        //onShelvesStyle 中处理
+      }
+    },
+    bookableType(val) {
+      if (val == 0) {
+        //长期有效
+        this.$store.commit("SET_FORM", {
+          bookableTime: this.$moment(new Date())
+            .format("L")
+            .split("/")
+            .join("-"),
+          endBookableTime: ""
+        });
+      } else if (val == 1) {
+        //onchange 中处理
+      }
     }
   },
   methods: {
+    //初始化部门
+    initInstitution() {
+      getInstitutions().then(res => {
+        this.institution = res.data.data;
+      });
+    },
+    onShelvesStyle(date, dateString) {
+      // this.upShelvesStyle = 2;
+      this.$store.commit("SET_FORM", {
+        upShelvesStyle:2,
+        upShelvesTime: dateString[0],
+        downShelvesTime: dateString[1]
+      });
+    },
+    onBookableDateChange(date, dateString) {
+      // this.bookableType = 1;
+      this.$store.commit("SET_FORM", {
+        bookableType:1,
+        bookableTime: dateString[0],
+        endBookableTime: dateString[1]
+      });
+    },
     initForm() {
       this.form = this.$form.createForm(this, {
         onFieldsChange: (_, changedFields) => {
@@ -508,8 +619,29 @@ export default {
             place: this.$form.createFormField({
               value: this.place
             }),
-            bookNeedKnow: this.$form.createFormField({
-              value: this.bookNeedKnow
+            upShelvesStyle: this.$form.createFormField({
+              value: this.upShelvesStyle
+            }),
+            upShelvesTime: this.$form.createFormField({
+              value: this.upShelvesTime
+            }),
+            downShelvesTime: this.$form.createFormField({
+              value: this.downShelvesTime
+            }),
+            bookableType: this.$form.createFormField({
+              value: this.bookableType
+            }),
+            bookableTime: this.$form.createFormField({
+              value: this.bookableTime
+            }),
+            endBookableTime: this.$form.createFormField({
+              value: this.endBookableTime
+            }),
+            peopleNum: this.$form.createFormField({
+              value: this.peopleNum
+            }),
+             unitPrice: this.$form.createFormField({
+              value: this.unitPrice
             })
           };
         },
@@ -686,10 +818,6 @@ export default {
       const inputValue = this.tagInputValue;
       let tags = this.tags;
       let tagNames = this.tags.map(ele => ele.name);
-
-      console.log(tagNames);
-      console.log(inputValue);
-      console.log(tagNames.indexOf(inputValue));
       if (inputValue && tagNames.indexOf(inputValue) === -1) {
         let id = undefined;
         this.tagSet.forEach(ele => {
@@ -741,25 +869,31 @@ export default {
         })
       });
     },
+    //添加商品or编辑商品
     handleNextStep() {
       addGood({
         store_no: this.storeNo,
         name: this.name,
         name2: this.name2,
-        type_id: "I do not know",
-        tags: this.tags,
+        type_id: "",
+        tags: this.tags.map(ele => ele.id),
         is_need_address: 0,
         is_point: 0,
         is_cash: 0,
 
         features: this.lightspots,
-        book_need_know: this.bookNeedKnow,
+        book_need_know: this.bookNeedKnow, //预定须知
         back_end: this.place,
         is_regifted: this.transfer,
         is_reviewed: this.comment,
-        "attach[img]": this.$store.getters.getImgListAttachIdList,
-        "attach[shopV]": this.$store.getters.getShopVideoAttachIdList,
-        "attach[mainV]": this.$store.getters.getMainVideoAttachIdList
+        "attachs[img]": this.$store.getters.getImgListAttachIdList,
+        "attachs[shopV]": this.$store.getters.getShopVideoAttachIdList,
+        "attachs[mainV]": this.$store.getters.getMainVideoAttachIdList,
+        up_shelves_time: this.upShelvesTime,
+        down_shelves_time: this.downShelvesTime,
+        people_num: this.peopleNum,
+        bookable_time: this.bookableTime,
+        end_bookable_time: this.endBookableTime
 
         // storeNo:state => state.addGood.storeNo,
         // storeType:state => state.addGood.storeType,
@@ -775,7 +909,13 @@ export default {
         // transfer:state => state.addGood.transfer,
         // comment:state => state.addGood.comment,
         // place:state => state.addGood.place,
-      }).then(res => {});
+      })
+        .then(res => {})
+        .catch(err => {
+          this.$message.error({
+            content: "添加失败"
+          });
+        });
     }
   }
 };

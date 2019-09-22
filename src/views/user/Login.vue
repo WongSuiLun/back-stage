@@ -78,7 +78,7 @@
         </a-col>
       </a-row>-->
       <a-form-item style="margin:0">
-        <a-checkbox v-decorator="['rememberMe']" :defaultChecked="rememberMeDefaultChecked">自动登录</a-checkbox>
+        <a-checkbox :checked="rememberMe">自动登录</a-checkbox>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit" class="login-button">进入</a-button>
@@ -139,7 +139,7 @@ export default {
       toggleFormVisible: true,
       captchaImg: "",
       captchaKey: "",
-      rememberMeDefaultChecked: true,
+      rememberMe: true,
       isCaptcha: false,
       form:  this.$form.createForm(this)
     };
@@ -192,6 +192,7 @@ export default {
           values.captchaKey = this.captchaKey;
           authorizations(values)
             .then(res => {
+              console.log(values)
               this.setCookieAcount(values);
               if (res.data) {
                 let token = `${res.data.token_type} ${res.data.access_token}`;
@@ -220,7 +221,10 @@ export default {
     },
     // 初始化cookie中保存账号密码
     initCookieAccount() {
+      console.log(Cookies.get("rememberMe"))
+      console.log(Cookies.get("username"))
       if (Cookies.get("rememberMe")) {
+        console.log(Cookies.get("username"))
         this.form.setFieldsValue({
           username: Cookies.get("username"),
           password: Cookies.get("password"),
@@ -236,10 +240,10 @@ export default {
      * 2.初始化checkedBox
      */
     setCookieAcount(values) {
-      if (values.rememberMe) {
+      if (this.rememberMe) {
         Cookies.set("username", values.username, { expires: 7 });
         Cookies.set("password", values.password, { expires: 7 });
-        Cookies.set("rememberMe", values.rememberMe, { expires: 7 });
+        Cookies.set("rememberMe", this.rememberMe, { expires: 7 });
       } else {
         Cookies.remove("username");
         Cookies.remove("password");
