@@ -1,6 +1,6 @@
 //权限
-import { asyncRouterMap, constantRouterMap } from '@/router/router.config.js'
-
+import { asyncRouterMap, constantRouterMap,asyncShopRouterMap } from '@/router/router.config.js'
+import {resetRouter} from '@/router'
 /**
  * 过滤账户是否拥有某一个权限，并将菜单从加载列表移除
  *
@@ -67,14 +67,22 @@ const permission = {
   state: {
     routers: constantRouterMap,
     addRouters: [],
-    isGenerateRoutes:false
+    shopRouters:[],
+    isGenerateRoutes:false,
+    isGenerateShopRoutes:false
   },
   getters:{
     addRouters:(state)=>{
       return state.addRouters
     },
+    shopRouters:(state)=>{
+      return state.shopRouters
+    },
     isGenerateRoutes:(state)=>{
       return state.isGenerateRoutes
+    },
+    isGenerateShopRoutes:(state)=>{
+      return state.isGenerateShopRoutes
     }
   },
   mutations: {
@@ -84,6 +92,12 @@ const permission = {
     },
     SET_IS_GENERATE_ROUTES:(state,isGenerateRoutes)=>{
       state.isGenerateRoutes = isGenerateRoutes
+    },
+    SET_IS_GENERATE_SHOP_ROUTES:(state,isGenerateShopRoutes)=>{
+      state.isGenerateShopRoutes = isGenerateShopRoutes
+    },
+    SET_SHOP_ROUTERS:(state,routers)=>{
+      state.shopRouters = routers
     }
   },
   actions: {
@@ -94,6 +108,23 @@ const permission = {
         const accessedRouters = filterAsyncRouter(asyncRouterMap, permissionList);
         commit('SET_ROUTERS', accessedRouters)
         commit('SET_IS_GENERATE_ROUTES',true)
+        resolve()
+      })
+    },
+    GenerateShopRoutes({commit}){
+      return new Promise(resolve => {
+        let permissionList = ['*']
+        const accessedRouters = filterAsyncRouter(asyncShopRouterMap, permissionList);
+        commit('SET_SHOP_ROUTERS', accessedRouters)
+        commit('SET_IS_GENERATE_SHOP_ROUTES',true)
+        resolve()
+      })
+    },
+    ResetRouter({commit}){
+      return new Promise(resolve=>{
+        resetRouter()
+        commit('SET_IS_GENERATE_ROUTES',false)
+        commit('SET_IS_GENERATE_SHOP_ROUTES',false)
         resolve()
       })
     }

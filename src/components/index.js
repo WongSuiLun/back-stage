@@ -2,6 +2,8 @@ import ExceptionPage from './Exception'
 import GlobalHeader from './GlobalHeader'
 import GlobalFooter from './GlobalFooter'
 import GlobalMenu from './GlobalMenu'
+import ShopMenu from './ShopMenu'
+import ShopHeader from './ShopHeader'
 import GlobalLogo from './GlobalLogo'
 import MultiTab from './MultiTab'
 import TimeSelectTab from './TimeSelectTab'
@@ -30,6 +32,8 @@ export {
   GlobalHeader,
   GlobalFooter,
   GlobalMenu,
+  ShopMenu,
+  ShopHeader,
   GlobalLogo,
   MultiTab,
   TimeSelectTab,

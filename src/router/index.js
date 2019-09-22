@@ -5,7 +5,7 @@ import { constantRouterMap } from './router.config'
 Vue.use(Router)
 
 const createRouter = () => new Router({
-  routes: []
+  routes: constantRouterMap
 })
 
 const router = createRouter()

@@ -1,5 +1,6 @@
 // import Vue from 'vue'
 import router from '@/router'
+import {resetRouter} from '@/router'
 const app = {
   state: {
     sidebar: true,//左边菜单
@@ -39,6 +40,9 @@ const app = {
     },
     SET_COMPANY:(state,company)=>{
       state.company = company
+    },
+    SET_SHOP:(state,shopId) =>{
+      state.shopId = shopId
     }
   },
   actions: {
@@ -54,9 +58,17 @@ const app = {
     setCompany({commit},companyId){
       commit('SET_COMPANY',companyId)
     },
+    //切换店，需要重设路由
+    setShop({commit},shop){
+      return new Promise(resolve => {
+        commit('SET_SHOP',shop.id)
+        resolve()
+      })
+    },
     logout(){
       router.push('login')
-    }
+    },
+    
   }
 }
 

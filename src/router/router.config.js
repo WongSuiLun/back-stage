@@ -1,6 +1,10 @@
 // eslint-disable-next-line
 import { LoginLayout, BasicLayout, RouteView } from '@/layouts'
+import { ShopLayout } from '../layouts'
 
+/**
+ * 公司动态路由
+ */
 export const asyncRouterMap = [
   {
     path: '/',
@@ -39,10 +43,10 @@ export const asyncRouterMap = [
             meta: { title: '系统日志' },
           },
           {
-            path:'/dashboard/shop',
-            name:'shop-choice',
-            component:()=> import('@/views/dashboard/shopChoice/ShopChoice'),
-            meta:{title:'进店'}
+            path: '/dashboard/shop',
+            name: 'shop-choice',
+            component: () => import('@/views/dashboard/shopChoice/ShopChoice'),
+            meta: { title: '进店' }
           }
         ]
       },
@@ -363,6 +367,37 @@ export const asyncRouterMap = [
   },
   {
     path: '*', redirect: '/exception/404'
+  }
+]
+
+/**
+ * 店动态路由
+ */
+export const asyncShopRouterMap = [
+  {
+    path: '/shop',
+    name: 'shop-home',
+    component: ShopLayout,
+    meta: { title: '首页' },
+    redirect: '/shop/dashboard',
+    children: [
+      {
+        path: '/shop/dashboard',
+        name: '/shop/dashboard',
+        redirect: '/shop/dashboard/statistics',
+        component: RouteView,
+        permission: ['dashboard'],
+        meta: { title: '仪表盘', icon: 'form' },
+        children: [
+          {
+            path: '/shop/dashboard/statistics',
+            name: 'statistics',
+            component: () => import('@/views/dashboard/statistics/DataStatistics'),
+            meta: { title: '数据统计', },
+          },
+        ]
+      },
+    ]
   }
 ]
 

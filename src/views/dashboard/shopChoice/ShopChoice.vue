@@ -2,19 +2,16 @@
   <div class="shop-choose">
     <a-card title="选择店" :bordered="false">
       <template slot="extra">
-        <a-input-search
-          placeholder="搜索店"
-          style="width: 200px;margin-right:8px"
-          @search="onSearch"
-        />
+        <a-input-search placeholder="搜索店" style="width: 200px;margin-right:8px" @search="onSearch" />
 
         <a-button type="primary">创建店</a-button>
       </template>
       <a-row :gutter="16">
         <a-col :md="24" :lg="12" :xl="8" v-for="(shop,index) in currentCompanyInfo" :key="index">
-          <a-card  class="shop-card">
+          <a-card class="shop-card">
             <div slot="title">
-                <a-icon type="shop" style="font-size:30px;color:blue;margin-right:8px"/>{{shop.name}}
+              <a-icon type="shop" style="font-size:30px;color:blue;margin-right:8px" />
+              {{shop.name}}
             </div>
             <a-button type="danger" ghost slot="extra" @click="selectShop(shop)">进店</a-button>
             <p
@@ -139,9 +136,13 @@ export default {
       });
     },
     selectShop(shop) {
-      this.$store.dispatch("setCompany", shop.id);
       this.$ls.set("shop", shop);
-      this.$router.push("/shop/dashboard");
+      this.$store.dispatch("ResetRouter").then(res => {
+        this.$store.dispatch('setShop',shop)
+       
+      }).then(res=>{
+         this.$router.push("/shop/dashboard");
+      });
     },
     showDeleteCompanyModal() {
       this.deleteModalVisible = true;
