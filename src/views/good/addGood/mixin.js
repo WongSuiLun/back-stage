@@ -34,7 +34,8 @@ const mixinAddGoodState = {
       //微信分享
       shareTitle: state => state.addGood.shareTitle,
       shareDesc: state => state.addGood.shareDesc,
-      shareImg: state => state.addGood.shareImg
+      shareImg: state => state.addGood.shareImg,
+      shopDetailRenderHtml:state=>state.addGood.shopDetailRenderHtml
     })
   },
 }

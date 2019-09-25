@@ -33,7 +33,7 @@
         <div class="price">
           <div class="price-info">
             <span class="tip">￥</span>
-            <span class="price-num">1200.00</span>
+            <span class="price-num">{{unitPrice}}</span>
           </div>
           <div>
             <base-button type="red">立即购买</base-button>
@@ -62,6 +62,8 @@
           <a-tag color="#f1ad33">游记有奖</a-tag>
           <a-tag color="#f1ad33">点评送积分</a-tag>
         </div>
+      </div>
+      <div v-html="shopDetailRenderHtml" class="render-html">
       </div>
     </div>
   </drop-fixed-box>
@@ -126,6 +128,15 @@ export default {
   }
 };
 </script>
+<style lang="less">
+.render-html{
+  padding: 0 5px;
+  background: #fff;
+  img {
+    max-width:350px;
+  }
+}
+</style>
 <style scoped>
 /* For demo */
 .ant-carousel >>> .slick-slide {

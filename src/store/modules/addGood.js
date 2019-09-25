@@ -34,8 +34,10 @@ const addGoodState = {
         //微信分享
         shareTitle: '',
         shareDesc: '',
-        shareImg: ''
-
+        shareImg: '',
+        
+        //商品详情
+        shopDetailRenderHtml:'1'
     },
     getters: {
         getImgListAttachIdList: state => {

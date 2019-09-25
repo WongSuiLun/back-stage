@@ -383,7 +383,7 @@ export const asyncShopRouterMap = [
     children: [
       {
         path: '/shop/dashboard',
-        name: '/shop/dashboard',
+        name: 'shop-dashboard',
         redirect: '/shop/dashboard/statistics',
         component: RouteView,
         permission: ['dashboard'],
@@ -391,7 +391,7 @@ export const asyncShopRouterMap = [
         children: [
           {
             path: '/shop/dashboard/statistics',
-            name: 'statistics',
+            name: 'shop-statistics',
             component: () => import('@/views/dashboard/statistics/DataStatistics'),
             meta: { title: '数据统计', },
           },

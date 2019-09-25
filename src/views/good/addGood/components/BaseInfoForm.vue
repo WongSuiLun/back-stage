@@ -46,6 +46,7 @@
               rules: [{ required: true, message: 'Username is required!' }],
             }]"
             style="width: 200px"
+            :defaultValue="-1"
           >
             <a-select-option
               v-for="roomType in roomTypeOptions"
@@ -82,7 +83,7 @@
           <a-input-number
             style="width:200px"
             placeholder="商品单价"
-            :step="1.00"
+            :step="0.01"
              :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
             v-decorator="[
             'unitPrice',
@@ -451,7 +452,7 @@ export default {
       tagSet: "", //存储已有的tag列表
       //房间类型Option
       roomTypeOptions:[{
-        value:'-1',
+        value:-1,
         label:'不选择房间类型'
       }],
       //销售渠道选项
@@ -564,12 +565,15 @@ export default {
     handleInstituteChange(value,option){
       getRoomTypesByShop(value).then(res=>{
         console.log(res.data.data)
-        this.roomTypeOptions = res.data.data.map(ele=>{
+        this.roomTypeOptions = [{
+          value:-1,
+          label:'暂不选择'
+        }].concat(res.data.data.map(ele=>{
           return {
             value:ele.store_id,
             label:ele.type_name
           }
-        })
+        }))
       })
     },
     //初始化部门
