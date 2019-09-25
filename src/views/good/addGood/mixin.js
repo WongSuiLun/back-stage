@@ -7,6 +7,7 @@ const mixinAddGoodState = {
       storeNo: state => state.addGood.storeNo,
       storeType: state => state.addGood.storeType,
       roomType: state => state.addGood.roomType,
+      typeId: state => state.addGood.typeId,
       name: state => state.addGood.name,
       name2: state => state.addGood.name2,
       tags: state => state.addGood.tags,

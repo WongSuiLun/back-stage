@@ -16,6 +16,7 @@
               rules: [{ required: true, message: 'Username is required!' }],
             }]"
             style="width: 200px"
+            @change="handleInstituteChange"
           >
             <a-select-option v-for="i in institution" :key="i.id">{{i.name}}</a-select-option>
           </a-select>
@@ -40,16 +41,16 @@
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="房间类型">
           <a-select
             v-decorator="[
-            'type_id',
+            'typeId',
             {
               rules: [{ required: true, message: 'Username is required!' }],
             }]"
             style="width: 200px"
           >
             <a-select-option
-              v-for="i in 25"
-              :key="(i + 9).toString(36) + i"
-            >{{(i + 9).toString(36) + i}}</a-select-option>
+              v-for="roomType in roomTypeOptions"
+              :key="roomType.value"
+            >{{roomType.label}}</a-select-option>
           </a-select>
         </a-form-item>
 
@@ -382,6 +383,7 @@ import {
   addTag,
   addGood
 } from "@/api/addGood";
+import {getRoomTypesByShop} from '@/api/room'
 import { getInstitutions } from "@/api/institutions";
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
@@ -447,6 +449,11 @@ export default {
       tagInputVisible: false,
       tagInputValue: "",
       tagSet: "", //存储已有的tag列表
+      //房间类型Option
+      roomTypeOptions:[{
+        value:'-1',
+        label:'不选择房间类型'
+      }],
       //销售渠道选项
       placeOption: [
         {
@@ -554,6 +561,17 @@ export default {
     }
   },
   methods: {
+    handleInstituteChange(value,option){
+      getRoomTypesByShop(value).then(res=>{
+        console.log(res.data.data)
+        this.roomTypeOptions = res.data.data.map(ele=>{
+          return {
+            value:ele.store_id,
+            label:ele.type_name
+          }
+        })
+      })
+    },
     //初始化部门
     initInstitution() {
       getInstitutions().then(res => {
@@ -585,6 +603,9 @@ export default {
           return {
             storeNo: this.$form.createFormField({
               value: this.storeNo
+            }),
+            typeId:this.$form.createFormField({
+              value: this.typeId
             }),
             name: this.$form.createFormField({
               value: this.name
@@ -875,7 +896,7 @@ export default {
         store_no: this.storeNo,
         name: this.name,
         name2: this.name2,
-        type_id: "",
+        type_id: this.typeId,
         tags: this.tags.map(ele => ele.id),
         is_need_address: 0,
         is_point: 0,

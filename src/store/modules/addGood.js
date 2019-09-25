@@ -3,6 +3,7 @@ const addGoodState = {
     state: {
         storeNo: '',
         storeType: '',
+        typeId:-1,
         roomType: '',
         name: '123',
         name2: '',

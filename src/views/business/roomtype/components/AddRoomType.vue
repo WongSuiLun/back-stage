@@ -50,7 +50,7 @@
 
 <script>
 import { getInstitutions } from "@/api/institutions.js";
-import { addRoomTypes } from "@/api/room";
+import { addRoomTypes,getRoomTypes } from "@/api/room";
 export default {
   data () {
     return {
@@ -61,6 +61,7 @@ export default {
   },
   created(){
       this.initInstitutions()
+
   },
   methods: {
     initInstitutions(){

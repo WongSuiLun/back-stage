@@ -168,12 +168,39 @@ export function addRoomTypes(data, shop_id) {
   return request.post(`${GOOD_BASE_URL}/api/roomtypes`, data, { headers: { 'shop': shop_id } })
 }
 
-// 获取房型
-export function getRoomTypes(shop_id) {
+//获取公司房型
+export function getRoomTypes(){
   return request({
-    url: `${GOOD_BASE_URL}/api/roomtypes/${shop_id}`,
+    url: `${GOOD_BASE_URL}/api/roomtypes`,
+  })
+}
+
+// 获取房型
+export function getRoomTypesByShop(shopId) {
+  return request({
+    url: `${GOOD_BASE_URL}/api/roomtypes/${shopId}`,
     headers: {
-      'shop': shop_id
+      'shop': shopId
     }
+  })
+}
+
+//更新房型 
+export function updateRoomTypesById(shopId,data){
+  return request({
+    url: `${GOOD_BASE_URL}/api/roomtypes`,
+    method:'PATCH',
+    data,
+    headers: {
+      'shop': shopId
+    }
+  })
+}
+
+// 删除指定房型信息
+export function deleteRoomTypesById(typeId){
+  return request({
+    url: `${GOOD_BASE_URL}/api/roomtypes/${typeId}`,
+    method:'DELETE',
   })
 }

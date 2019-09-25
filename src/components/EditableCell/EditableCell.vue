@@ -8,8 +8,10 @@
         :value="value"
         @change="handleChange"
         @pressEnter="check"
+        style="width: 80%"
       /><a-icon
         type="check"
+        style="margin-left:8px"
         class="editable-cell-icon-check"
         @click="check"
       />
@@ -22,6 +24,7 @@
       <a-icon
         type="edit"
         class="editable-cell-icon"
+        style="margin-left:8px"
         @click="edit"
       />
     </div>
@@ -52,4 +55,4 @@ export default {
     },
   },
 };
-</script>s
+</script>

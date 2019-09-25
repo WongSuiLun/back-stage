@@ -8,7 +8,7 @@ const app = {
     token:'',//token凭证
     company:null,//公司ID
     companyName:'',//公司姓名
-    shop:49,//店Id
+    shop:'',//店Id
     // theme: '',
     // layout: '',
     // contentWidth: '',

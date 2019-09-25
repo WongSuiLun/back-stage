@@ -39,7 +39,10 @@ service.interceptors.request.use(config => {
     // config.headers['company'] = 1
   }
   if (!config.headers.hasOwnProperty('shop')) {
-    config.headers['shop'] = store.getters.getShop
+    let shop = Vue.ls.get('shop')
+    if(shop){
+      config.headers['shop'] = store.getters.getShop
+    }
   }
 
   return config
