@@ -1,5 +1,5 @@
 <template>
-  <a-layout class="layout">
+  <a-layout class="layout" id="layout">
     <a-layout id="components-layout-demo-custom-trigger">
       <a-drawer
         v-if="isMobile()"
@@ -10,12 +10,7 @@
         width="240"
         :visible="!collapsed"
       >
-        <a-layout-sider
-          :trigger="null"
-          collapsible
-          width="240"
-          v-model="collapsed"
-        >
+        <a-layout-sider :trigger="null" collapsible width="240" v-model="collapsed">
           <global-logo />
 
           <global-menu />
@@ -30,17 +25,16 @@
       >
         <global-logo />
 
-        <global-menu/>
+        <global-menu />
       </a-layout-sider>
       <a-layout>
-        <global-header
-          :collapsed="collapsed"
-          @toggle="toggle"
-        ></global-header>
+        <global-header :collapsed="collapsed" @toggle="toggle"></global-header>
         <multi-tab></multi-tab>
-        <div class="layout-content">
+        <div class="layout-content" id="layout-content">
           <router-view></router-view>
+         
         </div>
+        
         <a-layout-footer>
           <global-footer />
         </a-layout-footer>
@@ -67,6 +61,12 @@ export default {
     MultiTab
   },
   mixins: [mixinDevice],
+  data() {
+    return {
+      collapsed: false,
+      target:()=>{return document.getElementById('layout')}
+    };
+  },
   computed: {
     ...mapState({
       sidebar: state => state.app.sidebar
@@ -74,11 +74,6 @@ export default {
   },
   created() {
     console.log(this.isMobile());
-  },
-  data() {
-    return {
-      collapsed: false
-    };
   },
   methods: {
     ...mapActions(["setSidebar"]),
@@ -134,6 +129,9 @@ export default {
   .ant-drawer-body {
     padding: 0;
   }
+}
+.ant-layout-sider-children {
+  overflow: auto;
 }
 </style>
 

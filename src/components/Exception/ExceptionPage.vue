@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     handleToHome () {
-      this.$router.push('/dashboard')
+      this.$router.push('/')
     }
   }
 }

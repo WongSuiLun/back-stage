@@ -5,13 +5,15 @@ import router from './router'
 import store from './store'
 
 import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
+import 'ant-design-vue/dist/antd.less'
 import Viser from 'viser-vue'
-
+import Moment from 'moment'
 import '@/styles/index.less'
 import './permission'
 import './mock'
 import Storage from 'vue-ls';
+
+import vcolorpicker from 'vcolorpicker'
 
 const options = {
   namespace: 'ywq__', // key prefix
@@ -20,7 +22,8 @@ const options = {
 };
 
 Vue.config.productionTip = false
-
+Vue.prototype.$moment = Moment
+Vue.use(vcolorpicker)
 Vue.use(Antd)
 Vue.use(Viser)
 Vue.use(Storage,options)

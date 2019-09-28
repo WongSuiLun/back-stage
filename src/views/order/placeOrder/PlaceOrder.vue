@@ -5,9 +5,20 @@
     <a-row>
       <a-col
         :sm="24"
-        :md="16"
+        :md="24"
+        :lg="24"
+        :xl="13"
       >
         <good-select></good-select>
+      </a-col>
+      <a-col
+        :sm="24"
+        :md="24"
+        :lg="24"
+        :xl="11"
+        
+      >
+        <date-price></date-price>
       </a-col>
     </a-row>
     <order-detail></order-detail>
@@ -51,12 +62,13 @@
 </template>
 
 <script>
-import UserSearch from "./UserSearch";
-import UserInfo from "./UserInfo";
-import GoodSelect from "./GoodSelect";
-import OrderDetail from "./OrderDetail";
-import CustomerInfo from "./CustomerInfo";
-import BusOrder from "./BusOrder";
+import UserSearch from "./components/UserSearch";
+import UserInfo from "./components/UserInfo";
+import GoodSelect from "./components/GoodSelect";
+import OrderDetail from "./components/OrderDetail";
+import CustomerInfo from "./components/CustomerInfo";
+import BusOrder from "./components/BusOrder";
+import DatePrice from "./components/DatePrice";
 export default {
   components: {
     UserSearch,
@@ -64,7 +76,8 @@ export default {
     GoodSelect,
     OrderDetail,
     CustomerInfo,
-    BusOrder
+    BusOrder,
+    DatePrice
   },
   data() {
     return {

@@ -1,9 +1,14 @@
 // import Vue from 'vue'
+import router from '@/router'
+import {resetRouter} from '@/router'
 const app = {
   state: {
-    sidebar: true,
-    device: 'desktop',
-    token:'',
+    sidebar: true,//左边菜单
+    device: 'desktop',//设备类型，或者是说根据屏幕适配的设备类型
+    token:'',//token凭证
+    company:null,//公司ID
+    companyName:'',//公司姓名
+    shop:'',//店Id
     // theme: '',
     // layout: '',
     // contentWidth: '',
@@ -17,6 +22,8 @@ const app = {
   },
   getters:{
     getToken: state => state.token,
+    getCompany:state=>state.company,
+    getShop:state=>state.shop,
   },
   mutations: {
     SET_SIDEBAR_TYPE: (state, type) => {
@@ -30,6 +37,12 @@ const app = {
     },
     SET_TOKEN:(state,token) =>{
       state.token = token
+    },
+    SET_COMPANY:(state,company)=>{
+      state.company = company
+    },
+    SET_SHOP:(state,shopId) =>{
+      state.shopId = shopId
     }
   },
   actions: {
@@ -42,9 +55,20 @@ const app = {
     ToggleDevice ({ commit }, device) {
       commit('TOGGLE_DEVICE', device)
     },
+    setCompany({commit},companyId){
+      commit('SET_COMPANY',companyId)
+    },
+    //切换店，需要重设路由
+    setShop({commit},shop){
+      return new Promise(resolve => {
+        commit('SET_SHOP',shop.id)
+        resolve()
+      })
+    },
     logout(){
-      
-    }
+      router.push('login')
+    },
+    
   }
 }
 
