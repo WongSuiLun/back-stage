@@ -4,8 +4,7 @@ const tagState = {
         tagData:[
             {
                 id :0 ,
-                tagName:'标签一',
-                color:'#eee'
+                title:123
             }
         ]
     },
@@ -16,11 +15,14 @@ const tagState = {
     },
     mutations: {
         ADD_TAG:(state,tag)=>{
-            tag ={
-                id:state.tagData[state.tagData.length-1].id+1,  
-                ...tag,
-            }
             state.tagData.push(tag)
+        },
+        INIT_TAG_DATA:(state,tags)=>{
+            state.tagData = tags
+        },
+        DELETE_TAG:(state,tag)=>{
+            let index = state.tagData.findIndex((ele)=>{return ele.id = tag.id})
+            state.tagData.splice(index,1)
         }
     },
     actions: {

@@ -1,12 +1,16 @@
 <template>
   <div>
-    <vue-ueditor-wrap v-model="msg" :config="myConfig"></vue-ueditor-wrap>
+    <vue-ueditor-wrap v-model="msg" :config="myConfig" @ready="ready"></vue-ueditor-wrap>
+    <a-button @click="handleUpdateGoodDesc">保存</a-button>
   </div>
 </template>
 
 <script>
 import VueUeditorWrap from "vue-ueditor-wrap"; // ES6 Module
 import { mixinAddGoodState } from "../mixin";
+import {
+  updateGoodDesc
+} from "@/api/addGood";
 export default {
   components: {
     VueUeditorWrap
@@ -25,12 +29,19 @@ export default {
         initialFrameWidth: "100%",
         // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
         // serverUrl: "http://192.168.101.115:8080/php/controller.php",
-        serverUrl: "http://192.168.101.115:8089/ueditor"
+        serverUrl: "http://192.168.101.115:8089/editor",
         // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
+        header: [
+          {
+            token: "aaa"
+          }
+        ]
       }
     };
   },
-  created() {},
+  created() {
+      this.$store.commit("SET_FORM", { shopDetailRenderHtml: this.msg });
+  },
   watch: {
     msg: {
       handler: function(val) {
@@ -38,7 +49,32 @@ export default {
       }
     }
   },
-  methods: {}
+  methods: {
+    ready(editorInstance) {
+      console.log(`编辑器实例${editorInstance.key}: `, editorInstance);
+      let _this = this
+      // alert(this.$.getters.getToken)
+      console.log(this.$ls.get('Access-Token'))
+      console.log(this.$ls.get('company'))
+      console.log('=================')
+      // console.log(_this.$store.getters.getToken())
+      editorInstance.ready(function() {
+        editorInstance.execCommand("serverparam", {
+          token:_this.$ls.get('Access-Token'),
+          company:_this.$ls.get('company').id
+        });
+      });
+    
+      console.log(editorInstance.queryCommandValue("serverparam"));
+    },
+    handleUpdateGoodDesc(){
+      updateGoodDesc(this.goodId,{
+        desc:this.msg
+      }).then(res=>{
+        console.log(res)
+      })
+    }
+  }
 };
 </script>
 

@@ -4,6 +4,7 @@ import { mapState } from 'vuex'
 const mixinAddGoodState = {
   computed: {
     ...mapState({
+      goodId:state=>state.addGood.goodId,
       storeNo: state => state.addGood.storeNo,
       storeType: state => state.addGood.storeType,
       roomType: state => state.addGood.roomType,

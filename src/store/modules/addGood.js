@@ -1,6 +1,9 @@
 // import Vue from 'vue'
 const addGoodState = {
     state: {
+        
+        goodId:'',
+        isEdit:false,
         storeNo: '',
         storeType: '',
         typeId:-1,
@@ -65,12 +68,20 @@ const addGoodState = {
             }
             return []
 
-        }
+        },
     },
     mutations: {
         SET_FORM: (state, values) => {
             Object.assign(state, values)
         },
+         //设置商品ID
+         SET_GOOD_ID:(state,goodId)=>{
+            state.goodId = goodId
+        },
+        SET_IS_EDIT:(state,isEdit)=>{
+            state.isEdit = isEdit
+        }
+
     },
     actions: {
     }

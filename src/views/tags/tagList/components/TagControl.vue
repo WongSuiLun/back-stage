@@ -3,12 +3,7 @@
     <a-input-search placeholder="搜索标签" style="width: 200px" @search="onSearch" />
     <a-button type="primary" style="margin-left:8px;">多标签操作</a-button>
     <a-button type="primary" style="margin-left:8px;" @click="addTag">新增标签</a-button>
-    <a-modal
-      title="新建标签"
-      :visible="visible"
-      @ok="handleOk"
-      @cancel="handleCancel"
-    >
+    <a-modal title="新建标签" :visible="visible" @ok="handleOk" @cancel="handleCancel">
       <a-form>
         <a-form-item label="标签名" :label-col="{ span: 5 }" :wrapper-col="{ span: 16 }">
           <a-input v-model="tagName" />
@@ -22,6 +17,7 @@
 </template>
 
 <script>
+import { addTag,deleteTag } from "@/api/tag";
 export default {
   components: {},
   data() {
@@ -41,16 +37,17 @@ export default {
     },
     handleOk() {
       let tag = {
-        tagName:this.tagName,
-        color:this.color
-      }
-      alert('tag')
-      this.$store.commit("ADD_TAG",tag);
-      this.visible = false
+        title: this.tagName,
+        // color: this.color
+      };
+      addTag(tag).then(res => {
+        
+        console.log(res)
+        this.$store.commit("ADD_TAG", tag);
+        this.visible = false;
+      });
     },
-    onSearch(){
-
-    }
+    onSearch() {}
   }
 };
 </script>

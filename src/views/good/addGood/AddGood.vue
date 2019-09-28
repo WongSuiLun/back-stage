@@ -1,14 +1,16 @@
 <template>
   <div class="add-good">
-    <div class="step">
-      <wq-step :step-names="stepNames" v-model="step"></wq-step>
-    </div>
-    <base-info-form v-show="step==0" />
-    <!-- <putaway-info-form v-show="step==1" /> -->
-    <edit-date-price v-show="step==1" />
-    <edit-detail v-show="step==2" />
-    <add-good-result v-show="step==3" />
-    <preview-good></preview-good>
+    <a-spin tip="Loading..." :spinning="false">
+      <div class="step">
+        <wq-step :step-names="stepNames" v-model="step"></wq-step>
+      </div>
+      <base-info-form v-show="step==0" />
+      <!-- <putaway-info-form v-show="step==1" /> -->
+      <edit-date-price v-show="step==1" />
+      <edit-detail v-show="step==2" />
+      <!-- <add-good-result v-show="step==3" /> -->
+      <preview-good></preview-good>
+    </a-spin>
   </div>
 </template>
 
@@ -36,8 +38,8 @@ export default {
         { name: "编辑基础信息", finish: true },
         // { name: "编辑上架信息", finish: true },
         { name: "编辑价格日历", finish: true },
-        { name: "编辑详情页面", finish: true },
-        { name: "完成", finish: false }
+        { name: "编辑详情页面", finish: true }
+        // { name: "完成", finish: false }
       ],
       step: 0
     };
@@ -51,6 +53,7 @@ export default {
     //初始化商品,添加编辑信息
     initGood(good) {
       this.$store.commit("SET_FORM", {
+        goodId: good.no,
         storeNo: good.store_no,
         storeType: "",
         roomType: "",
@@ -76,13 +79,13 @@ export default {
   watch: {
     $route: function(newVal) {
       console.log(newVal);
-      let that = this
+      let that = this;
       if (newVal.fullPath == "/good/add") {
         this.$confirm({
           title: "确定执行此操作?",
           content: "请确认已完成之前的编辑操作，否则将覆盖之前的操作。",
           onOk() {
-           that.initGood(newVal.params.good)
+            that.initGood(newVal.params.good);
           },
           onCancel() {}
         });

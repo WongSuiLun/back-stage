@@ -495,7 +495,7 @@ export default {
   computed: {
     uploadHeader() {
       return {
-        company: this.company
+        company: this.$ls.get('company').id
       };
     }
   },
@@ -905,15 +905,20 @@ export default {
         is_need_address: 0,
         is_point: 0,
         is_cash: 0,
-
+        unit_price:this.unitPrice,
         features: this.lightspots,
         book_need_know: this.bookNeedKnow, //预定须知
         back_end: this.place,
         is_regifted: this.transfer,
         is_reviewed: this.comment,
-        "attachs[img]": this.$store.getters.getImgListAttachIdList,
-        "attachs[shopV]": this.$store.getters.getShopVideoAttachIdList,
-        "attachs[mainV]": this.$store.getters.getMainVideoAttachIdList,
+        attachs:{
+          img:this.$store.getters.getImgListAttachIdList,
+          shopV:this.$store.getters.getShopVideoAttachIdList,
+          mainV:this.$store.getters.getMainVideoAttachIdList,
+        },
+        // "attachs[img]": this.$store.getters.getImgListAttachIdList,
+        // "attachs[shopV]": this.$store.getters.getShopVideoAttachIdList,
+        // "attachs[mainV]": this.$store.getters.getMainVideoAttachIdList,
         up_shelves_time: this.upShelvesTime,
         down_shelves_time: this.downShelvesTime,
         people_num: this.peopleNum,
