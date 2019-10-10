@@ -86,7 +86,7 @@ export default {
       const mockData = [];
       for (let i = 0; i < dataList.length; i++) {
         const data = {
-          key: i.toString(),
+          key: dataList[i].no.toString(),
           title: dataList[i].name,
           description: dataList[i].description,
           chosen: false,

@@ -11,14 +11,14 @@ export function login(data){
 
 export function captchas(){
   return request({
-    url:'/chpc/user/public/api/captchas',
+    url:`/${USER_BASE_URL}/user/public/api/captchas`,
     method:'post'
   })
 }
 
 export function authorizations(data){
   return request({
-    url:'/chpc/user/public/api/authorizations',
+    url:`/${USER_BASE_URL}/user/public/api/authorizations`,
     method:'post',
     data
   })
@@ -42,5 +42,12 @@ export function getUserInfo(){
   return  request({
     url:`${USER_BASE_URL}/user/public/api/users/current?include=roles,permissions,client.statistics,credit,authorization.contact`,
     method:'get'
+  })
+}
+
+export function updateToken(){
+  return request({
+    url:`${USER_BASE_URL}/user/public/api/users/current`,
+    method:'post'
   })
 }

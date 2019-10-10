@@ -131,7 +131,12 @@
   </div>
 </template>
 <script>
-import { authorizations, captchas,getContactCompany } from "@/api/auth";
+import {
+  authorizations,
+  captchas,
+  getContactCompany,
+  updateToken
+} from "@/api/auth";
 import Cookies from "js-cookie";
 export default {
   data() {
@@ -141,12 +146,10 @@ export default {
       captchaKey: "",
       rememberMe: true,
       isCaptcha: false,
-      form:  this.$form.createForm(this)
+      form: this.$form.createForm(this)
     };
   },
-  created() {
-   
-  },
+  created() {},
   mounted() {
     this.initCookieAccount();
   },
@@ -183,8 +186,8 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       // this.$router.push({ name: "company-choose" });
-      if(!this.isCaptcha){
-        this.getScrollCaptch()
+      if (!this.isCaptcha) {
+        this.getScrollCaptch();
       }
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -192,18 +195,37 @@ export default {
           values.captchaKey = this.captchaKey;
           authorizations(values)
             .then(res => {
-              console.log(values)
+              console.log(values);
               this.setCookieAcount(values);
               if (res.data) {
                 let token = `${res.data.token_type} ${res.data.access_token}`;
                 let expires_in = res.data.expires_in;
                 console.log(res);
+
                 let permissions = res.data.data;
                 this.$store.commit("SET_TOKEN", token);
                 this.$ls.set("Access-Token", token, expires_in * 1000);
                 this.$ls.set("PERMISSIONS", permissions, expires_in * 1000);
+                //重置token
+                setTimeout(() => {
+                  updateToken().then(response => {
+                    console.log("update-1");
+                    console.log(response);
+                    this.$store.commit("SET_TOKEN", response.data.token);
+                    this.$ls.set(
+                      "Access-Token",
+                      response.data.token,
+                      response.data.expires_in * 1000
+                    );
+                    this.$ls.set(
+                      "PERMISSIONS",
+                      response.data.data,
+                      response.data.expires_in * 1000
+                    );
+                  });
+                }, (expires_in - 5 * 60) * 1000);
+
                 this.$router.push({ name: "company-choose" });
-               
               }
             })
             .catch(err => {
@@ -221,10 +243,10 @@ export default {
     },
     // 初始化cookie中保存账号密码
     initCookieAccount() {
-      console.log(Cookies.get("rememberMe"))
-      console.log(Cookies.get("username"))
+      console.log(Cookies.get("rememberMe"));
+      console.log(Cookies.get("username"));
       if (Cookies.get("rememberMe")) {
-        console.log(Cookies.get("username"))
+        console.log(Cookies.get("username"));
         this.form.setFieldsValue({
           username: Cookies.get("username"),
           password: Cookies.get("password"),
