@@ -18,8 +18,6 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   let token = Vue.ls.get('Access-Token')
   let company = Vue.ls.get('company')
-  console.log(company)
-  console.log(token)
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (token) {
     if (company) {

@@ -5,12 +5,12 @@
         <a-card hoverable>
           <div
             class="tag-cover"
-            :style="{background:item.color,height:'60px'}"
+            :style="{height:'60px'}"
             slot="cover"
-          >{{item.tagName}}</div>
+          >{{item.title}}</div>
           <template class="ant-card-actions" slot="actions">
             <a-icon type="setting" />
-            <a-icon type="edit" @click="editTagList(index)" />
+            <a-icon type="delete" @click="handleDeleteTag(item,index)" />
             <a-icon type="ellipsis" />
           </template>
         </a-card>
@@ -20,20 +20,36 @@
 </template>
 
 <script>
+import { deleteTag,getTags,addTagGoods, } from "@/api/tag";
 export default {
-    props:{
-        data:Array
-    },
-    methods:{
-        editTagList(index){
-            console.log(index)
-        }
+  data(){
+    return {
+      data:[]
     }
+  },
+  created(){
+    this.initData()
+  },
+  methods: {
+    initData(){
+      getTags().then(res=>{
+        this.data= res.data
+        this.$store.commit('INIT_TAG_DATA',this.data)
+      })
+    },
+    handleDeleteTag(tag) {
+      console.log(tag);
+      deleteTag(tag.id).then(res=>{
+         this.$store.commit('DELETE_TAG',tag)
+        this.$message.success('删除成功')
+      })
+    }
+  }
 };
 </script>
 <style scoped>
-.tag-cover{
-  height:60px;
+.tag-cover {
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -250,7 +250,6 @@ export default {
     initData() {
       let defaultQuery = { use_time: 0, page: 1 };
       getOrders(defaultQuery).then(res => {
-        console.log(res);
         this.dataSource = res.data.data;
         this.goodSource = res.data.meta.goods;
         console.log(this.dataSource);

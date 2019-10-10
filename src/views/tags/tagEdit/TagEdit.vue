@@ -1,7 +1,26 @@
 <template>
   <div class="content-warp">
-    <a-select mode="tags" style="width: 80%" @change="handleSelectChange" placeholder="请选择标签">
-      <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">{{(i + 9).toString(36) + i}}</a-select-option>
+    <a-select
+      mode="multiple"
+      style="width: 80%"
+      @change="handleSelectChange"
+      placeholder="请选择标签"
+      :disabled="selectDisabled"
+      :tokenSeparators="[',','，',';','；']"
+
+    >
+    <a-icon slot="suffixIcon" type="meh" />
+      <a-select-opt-group>
+        <span slot="label">
+          <a-icon type="user" />Manager
+        </span>
+        <a-select-option value="jack">Jack</a-select-option>
+        <a-select-option value="lucy">Lucy</a-select-option>
+      </a-select-opt-group>
+      <a-select-opt-group label="Engineer">
+        <a-select-option value="Yiminghe">yiminghe</a-select-option>
+      </a-select-opt-group>
+      <a-select-option v-for="i in tagOptions" :key="i.id.toString()">{{i.title}}</a-select-option>
     </a-select>
     <a-divider></a-divider>
     <a-spin :spinning="spinning">
@@ -9,10 +28,11 @@
         :titles="['未上标签商品', '已上标签商品']"
         :dataSource="mockData"
         showSearch
+        :disabled="transferDisabled"
         :listStyle="{
-      width: ' calc(50% - 28px)',
-      height: '600px',
-    }"
+          width: ' calc(50% - 28px)',
+          height: '600px',
+        }"
         :targetKeys="targetKeys"
         @change="handleChange"
         :render="renderItem"
@@ -25,20 +45,40 @@
 <script>
 import { setTimeout } from "timers";
 import { getGoods } from "@/api/good";
+import {
+  deleteTag,
+  getTags,
+  getTagsGood,
+  addTagGoods,
+  deleteTagGood
+} from "@/api/tag";
 export default {
   data() {
     return {
       mockData: [],
       targetKeys: [],
-      spinning: false
+      tagOptions: [],
+      targetTags: [],
+      spinning: false,
+      selectDisabled: false,
+      transferDisabled: true
     };
   },
   created() {
-    getGoods(1,'all').then(res => {
-      this.setData(res.data.data.data);
-    });
+    this.init();
   },
   methods: {
+    init() {
+      let companyId = this.$ls.get("company").id;
+      getGoods(companyId, "all").then(res => {
+        this.setData(res.data.data.data);
+      });
+      getTags().then(res => {
+        this.tagOptions = res.data;
+        console.log(res);
+        console.log(this.tagOptions);
+      });
+    },
     //设置商品到左边,
     //Todo 如果过滤出含有标签的商品
     setData(dataList) {
@@ -46,7 +86,7 @@ export default {
       const mockData = [];
       for (let i = 0; i < dataList.length; i++) {
         const data = {
-          key: i.toString(),
+          key: dataList[i].no.toString(),
           title: dataList[i].name,
           description: dataList[i].description,
           chosen: false,
@@ -58,13 +98,13 @@ export default {
         mockData.push(data);
       }
       this.mockData = mockData;
-      this.targetKeys = targetKeys;
+      // this.targetKeys = targetKeys;
     },
     renderItem(item) {
       const customLabel = (
         <span class="custom-item">
-          
-          <span style="font-size:16 px;font-weight:700">{item.name}</span> - <span>{item.name2}</span>
+          <span style="font-size:16 px;font-weight:700">{item.name}</span> -{" "}
+          <span>{item.name2}</span>
         </span>
       );
 
@@ -76,17 +116,55 @@ export default {
     handleChange(targetKeys, direction, moveKeys) {
       console.log(targetKeys, direction, moveKeys);
       this.targetKeys = targetKeys;
+      this.transferDisabled = true;
+      this.spinning = true;
+      if (direction == "right") {
+        addTagGoods({
+          type: "goods",
+          labels: this.targetTags,
+          ids: moveKeys
+        }).then(res => {
+          this.$message.success("添加成功");
+          this.transferDisabled = false;
+          this.spinning = false;
+        });
+      }
+      if (direction == "left") {
+        deleteTagGood({ type: "goods", labels: this.targetTags, ids: moveKeys })
+          .then(res => {
+            this.$message.success("删除成功");
+          })
+          .catch(err => {
+            this.$message.error("删除失败");
+          })
+          .then(res => {
+            this.transferDisabled = false;
+            this.spinning = false;
+          });
+      }
     },
     handleSelectChange(value) {
-      console.log(`selected ${value}`);
+      this.targetTags = value;
       this.spinning = true;
-      setTimeout(() => {
+      if(this.targetTags.length == 0){
+        return ;
+      }
+      getTagsGood({ labels: value }).then(res => {
+        this.targetKeys = res.data.map(ele => ele.toString());
+        console.log(res.data);
+        this.selectDisabled = false;
+        this.transferDisabled = false;
         this.spinning = false;
-      }, 1500);
+      });
     },
     //处理搜索
     filterOption(inputValue, option) {
       return option.name.indexOf(inputValue) > -1;
+    }
+  },
+  watch:{
+    '$route':function(newVal){
+      this.init()
     }
   }
 };

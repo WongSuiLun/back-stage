@@ -84,3 +84,17 @@ export function updateDaterules(data,id){
     data
   })
 }
+
+
+/**
+ * 
+ * @param {Number} no 
+ * @param {desc:String} data 
+ */
+export function updateGoodDesc(no,data){
+  return request({
+    url:`${GOOD_BASE_URL}/api/goods/desc/${no}`,
+    method:'post',
+    data
+  })
+}

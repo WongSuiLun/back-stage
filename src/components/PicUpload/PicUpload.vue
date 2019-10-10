@@ -120,7 +120,6 @@ export default {
       }
     },
     drag() {
-      console.log("drag");
     },
     handleDragStart($event, img, index) {
       this.onDrapIndex = index;
@@ -143,7 +142,6 @@ export default {
     },
     clickUpload() {
       this.$refs["input-img"].click();
-      console.log(this.$refs);
     },
     imgInputChange(e) {
       let _this = this;
