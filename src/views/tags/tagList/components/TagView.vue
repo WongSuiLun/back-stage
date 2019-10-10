@@ -38,6 +38,7 @@ export default {
       })
     },
     handleDeleteTag(tag) {
+      let that = this
        this.$confirm({
         title: 'Are you sure delete this tag?',
         content: 'delete this tag',
@@ -46,8 +47,8 @@ export default {
         cancelText: 'No',
         onOk() {
           deleteTag(tag.id).then(res=>{
-            this.$store.commit('DELETE_TAG',tag)
-            this.$message.success('删除成功')
+            that.$store.commit('DELETE_TAG',tag)
+            that.$message.success('删除成功')
           })
         },
         onCancel() {
