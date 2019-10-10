@@ -9,7 +9,7 @@
       :tokenSeparators="[',','，',';','；']"
 
     >
-    <a-icon slot="suffixIcon" type="meh" />
+    <a-icon slot="suffixIcon" type="meh" />   
       <a-select-option v-for="i in tagOptions" :key="i.id.toString()">{{i.title}}</a-select-option>
     </a-select>
     <a-divider></a-divider>

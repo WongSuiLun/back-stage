@@ -38,11 +38,23 @@ export default {
       })
     },
     handleDeleteTag(tag) {
-      console.log(tag);
-      deleteTag(tag.id).then(res=>{
-         this.$store.commit('DELETE_TAG',tag)
-        this.$message.success('删除成功')
-      })
+       this.$confirm({
+        title: 'Are you sure delete this tag?',
+        content: 'delete this tag',
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk() {
+          deleteTag(tag.id).then(res=>{
+            this.$store.commit('DELETE_TAG',tag)
+            this.$message.success('删除成功')
+          })
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+      
     }
   }
 };
