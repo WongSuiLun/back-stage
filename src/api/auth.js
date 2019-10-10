@@ -11,14 +11,14 @@ export function login(data){
 
 export function captchas(){
   return request({
-    url:'/chpc/user/public/api/captchas',
+    url:`/chpc/user/public/api/captchas`,
     method:'post'
   })
 }
 
 export function authorizations(data){
   return request({
-    url:'/chpc/user/public/api/authorizations',
+    url:`/chpc/user/public/api/authorizations`,
     method:'post',
     data
   })
