@@ -46,7 +46,7 @@ export default {
         okType: 'danger',
         cancelText: 'No',
         onOk() {
-          deleteTag(tag.id).then(res=>{
+          deleteTag({title:tag.title}).then(res=>{
             that.$store.commit('DELETE_TAG',tag)
             that.$message.success('删除成功')
           })

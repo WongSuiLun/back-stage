@@ -9,10 +9,11 @@ export function addTag(data) {
     })
 }
 
-export function deleteTag(id) {
+export function deleteTag(params) {
     return request({
-        url: `${USER_BASE_URL}/label/public/api/labels/${id}`,
+        url: `${USER_BASE_URL}/label/public/api/labels`,
         method: 'delete',
+        params:params
     })
 }
 

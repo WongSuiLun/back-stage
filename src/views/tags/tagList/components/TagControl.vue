@@ -42,7 +42,7 @@ export default {
       };
       addTag(tag).then(res => {
         this.$store.commit("ADD_TAG", tag);
-        this.$message.error('添加成功')
+        this.$message.success('添加成功')
         this.tagName = ''
         this.visible = false;
       }).catch(err=>{
