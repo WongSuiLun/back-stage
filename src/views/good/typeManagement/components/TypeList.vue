@@ -228,6 +228,7 @@ export default {
         updateGoodType(this.updateId,data).then(res => {
           this.$message.success("添加成功");
           this.initData();
+          this.resetForm()
           this.newGoodTypeDrawerVisible = false;
         });
       } else {
@@ -244,6 +245,7 @@ export default {
           this.$message.success("添加成功");
           this.initData();
           this.newGoodTypeDrawerVisible = false;
+          this.resetForm()
         });
       }
     },
