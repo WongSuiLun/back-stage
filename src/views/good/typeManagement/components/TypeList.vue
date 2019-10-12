@@ -3,7 +3,7 @@
     <div style="margin-bottom:10px">
       <a-button type="primary" @click="showDrawer">新增商品类型</a-button>
       <a-drawer
-        title="新增商品类目"
+        :title="drawerTitle"
         placement="right"
         :width="420"
         :closable="false"
@@ -32,7 +32,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="16">
-            <a-col :span="24">
+            <a-col :span="24" v-if="!isUpload">
               <a-form-item label="父级类目">
                 <a-select style="width: 100%" v-model="parentId">
                   <a-select-option key="0" value="0">无（将作为父级类目）</a-select-option>
@@ -65,8 +65,11 @@
                     <div class="ant-upload-text">Upload</div>
                   </div>
                 </a-upload>
-                {{image}}
-                {{image_id}}
+                <a-button
+                  type="danger"
+                  @click="deleteImagePic"
+                  :disabled="deleteImageButtonDisable"
+                >删除图片</a-button>
               </a-form-item>
             </a-col>
           </a-row>
@@ -94,7 +97,7 @@
         <img :src="record.image" style="width:100px;height:100px" />
       </template>
       <template slot="operation" slot-scope="text, record">
-        <a-button type="link">编辑</a-button>
+        <a-button type="link" @click="onEdit(record)">编辑</a-button>
         <a-popconfirm title="Sure to delete?" @confirm="() => onDelete(record.id)">
           <a href="javascript:;">删除</a>
         </a-popconfirm>
@@ -134,7 +137,13 @@ import {
   getInstitutionType,
   addInsitutions
 } from "@/api/institutions";
-import { getGoodTypeList, addGoodType, deleteGoodType } from "@/api/good";
+import { deleteAttach, addAttach } from "@/api/attach";
+import {
+  getGoodTypeList,
+  addGoodType,
+  deleteGoodType,
+  updateGoodType
+} from "@/api/good";
 export default {
   data() {
     return {
@@ -154,7 +163,10 @@ export default {
       company_no: "",
       parent: "",
       image: "",
-      image_id: ""
+      image_id: "",
+      drawerTitle: "新增商品类目",
+      isUpload: false,
+      updateId: -1
     };
   },
   created() {
@@ -165,6 +177,12 @@ export default {
       return {
         company: this.$ls.get("company").id
       };
+    },
+    deleteImageButtonDisable() {
+      if (this.image_id) {
+        return false;
+      }
+      return true;
     }
   },
   methods: {
@@ -184,21 +202,50 @@ export default {
     },
     onClose() {
       this.newGoodTypeDrawerVisible = false;
+      this.isUpload = false;
+      this.drawerTitle = "新增商品类目";
+      this.resetForm();
     },
+
+    resetForm() {
+      this.typeName = "";
+      this.shop_id = "";
+      this.parent = "";
+      this.imageUrl = "";
+      this.image = "";
+      this.image_id = "";
+    },
+
     //处理提交按钮
     handleAddGoodType() {
-      let data = {
-        name: this.typeName,
-        shop_id: this.shop_id,
-        company_no: this.$ls.get("company").id,
-        parent: this.parentId,
-        image: this.image,
-        image_id: this.image_id
-      };
-      addGoodType(data).then(res => {
-        console.log(res);
-        this.$message.success("添加成功");
-      });
+      if (this.isUpload) {
+        let data = {
+          name: this.typeName,
+          image: this.image,
+          company_no: this.$ls.get("company").id,
+          image_id: this.image_id
+        };
+        updateGoodType(this.updateId,data).then(res => {
+          this.$message.success("添加成功");
+          this.initData();
+          this.newGoodTypeDrawerVisible = false;
+        });
+      } else {
+        let data = {
+          name: this.typeName,
+          shop_id: this.shop_id,
+          company_no: this.$ls.get("company").id,
+          parent: this.parentId,
+          image: this.image,
+          image_id: this.image_id
+        };
+        addGoodType(data).then(res => {
+          console.log(res);
+          this.$message.success("添加成功");
+          this.initData();
+          this.newGoodTypeDrawerVisible = false;
+        });
+      }
     },
 
     uploadAddData() {
@@ -231,6 +278,29 @@ export default {
         this.image = info.file.response.data.file_url;
         this.image_id = info.file.response.data.attach_id;
       }
+    },
+
+    //删除绑定的图片
+    deleteImagePic() {
+      if (this.image_id) {
+        deleteAttach(this.image_id).then(res => {
+          this.imageUrl = "";
+          this.image = "";
+          this.image_id = "";
+          this.$message.success("刪除成功");
+        });
+      }
+    },
+
+    onEdit(typeObject) {
+      this.drawerTitle = `编辑(id:${typeObject.id},名称：${typeObject.name})`;
+      this.newGoodTypeDrawerVisible = true;
+      this.isUpload = true;
+      this.updateId = typeObject.id;
+      this.imageUrl = typeObject.image;
+      this.image = typeObject.image;
+      this.image_id = typeObject.image_id;
+      this.typeName = typeObject.name;
     },
     onDelete(id) {
       deleteGoodType(id).then(res => {

@@ -378,12 +378,14 @@ import { mapGetters, mapState } from "vuex";
 import { mixinGobalState } from "@/utils/mixin";
 import { mixinAddGoodState } from "../mixin";
 import {
-  deleteAttach,
-  addAttach,
   getTags,
   addTag,
   addGood
 } from "@/api/addGood";
+import {
+  deleteAttach,
+  addAttach,
+} from "@/api/attach";
 import {getRoomTypesByShop} from '@/api/room'
 import { getInstitutions } from "@/api/institutions";
 import { videoPlayer } from "vue-video-player";

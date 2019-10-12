@@ -65,10 +65,11 @@ export function addGoodType(data){
   })
 }
 
-export function updateGoodType(id){
+export function updateGoodType(id,data){
   return request({
     url:`${GOOD_BASE_URL}/api/classification/${id}`,
-    method:'post'
+    method:'post',
+    data
   })
 }
 export function deleteGoodType(id){
