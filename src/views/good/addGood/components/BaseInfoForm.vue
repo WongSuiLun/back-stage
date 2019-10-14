@@ -13,16 +13,27 @@
             v-decorator="[
             'storeNo',
             {
-              rules: [{ required: true, message: 'Username is required!' }],
+              rules: [{ required: true, message: '部门是必选的！' }],
             }]"
             style="width: 200px"
             @change="handleInstituteChange"
           >
-            <a-select-option v-for="i in institution" :key="i.id">{{i.name}}</a-select-option>
+            <a-select-option
+              v-for="i in institution"
+              :key="`store—no-${i.id}`"
+              :value="i.value.toString()"
+            >{{i.label}}</a-select-option>
           </a-select>
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="商品类目">
+          <a-select v-model="goodType" @change="handleGoodTypeChange" style="width: 200px">
+            <a-select-option
+              v-for="type in goodTypeOptions"
+              :key="`type-${type.id}`"
+              :value="type.id"
+            >{{type.name}}</a-select-option>
+          </a-select>
           <a-select
             v-decorator="[
             'storeType',
@@ -32,9 +43,9 @@
             style="width: 200px"
           >
             <a-select-option
-              v-for="i in 25"
-              :key="(i + 9).toString(36) + i"
-            >{{(i + 9).toString(36) + i}}</a-select-option>
+              v-for="subType in subGoodTypeOptions"
+              :key="subType.id"
+            >{{subType.name}}</a-select-option>
           </a-select>
         </a-form-item>
 
@@ -46,7 +57,7 @@
               rules: [{ required: true, message: 'Username is required!' }],
             }]"
             style="width: 200px"
-            :defaultValue="-1"
+            :initialValue="-1"
           >
             <a-select-option
               v-for="roomType in roomTypeOptions"
@@ -84,7 +95,7 @@
             style="width:200px"
             placeholder="商品单价"
             :step="0.01"
-             :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+            :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
             v-decorator="[
             'unitPrice',
             {
@@ -146,7 +157,7 @@
           label="商品图片"
           help="建议尺寸：360*270像素，你可以拖拽图片调整顺序，为提升买家的购物体验，图片建议小于500K，最多上传10张"
         >
-          <PicUpload
+          <!-- <PicUpload
             v-model="imgList"
             :max="8"
             ref="picUpload"
@@ -154,7 +165,26 @@
             @change="handleGoodImgListChange"
             @create="handleGoodImgListCreate"
             @delete="handleGoodImgListDelete"
-          ></PicUpload>
+          ></PicUpload>-->
+          <a-upload
+            listType="picture-card"
+            :fileList="fileList"
+            :data="uploadAddData"
+            :headers="uploadHeader"
+            :multiple="false"
+            :action="uploadUrl"
+            @preview="handlePreview"
+            @change="handleChange"
+            :remove="handleImageRemove"
+          >
+            <div v-if="fileList.length < 8">
+              <a-icon type="plus" />
+              <div class="ant-upload-text">上传图片</div>
+            </div>
+          </a-upload>
+          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+            <img alt="example" style="width: 100%" :src="previewImage" />
+          </a-modal>
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="主图视频">
@@ -235,7 +265,7 @@
                   :playsinline="true"
                   customEventName="customstatechangedeventname"
                 ></video-player>
-                <a-button type="danger">删除视频</a-button>
+                <a-button type="danger" @click="deleteShopVedio">删除视频</a-button>
               </div>
             </a-col>
             <a-col :span="0">
@@ -253,9 +283,9 @@
             v-decorator="[
             'bookNeedKnow',
             {
-              rules: [{ required: true, message: 'Username is required!' }],
+              rules: [{ required: true, message: '预订须知是必须的！例子：（）' }],
             }]"
-            placeholder="Autosize height with minimum and maximum number of lines"
+            placeholder="预订须知是必须的！例子：（）"
             :autosize="{ minRows: 2, maxRows: 6 }"
           />
         </a-form-item>
@@ -278,14 +308,9 @@
         </a-form-item>
 
         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="允许评论">
-          <a-select
-            v-decorator="[
+          <a-select v-decorator="[
             'comment',
-            {
-              rules: [{ required: true, message: 'Username is required!' }],
-            }]"
-            style="width: 200px"
-          >
+           ]" style="width: 200px">
             <a-select-option
               v-for="option in commentOption"
               :value="option.value"
@@ -365,7 +390,8 @@
         </a-form>-->
 
         <a-row type="flex" justify="center">
-          <a-button @click="handleNextStep">下一步</a-button>
+          <a-button @click="handleNextStep" v-if="!isUpload">添加商品</a-button>
+          <a-button @click="handleUpload" v-else>保存商品修改</a-button>
         </a-row>
       </div>
     </div>
@@ -377,16 +403,10 @@ import { PicUpload, RadioBox } from "@/components";
 import { mapGetters, mapState } from "vuex";
 import { mixinGobalState } from "@/utils/mixin";
 import { mixinAddGoodState } from "../mixin";
-import {
-  getTags,
-  addTag,
-  addGood
-} from "@/api/addGood";
-import {
-  deleteAttach,
-  addAttach,
-} from "@/api/attach";
-import {getRoomTypesByShop} from '@/api/room'
+import { getTags, addTag, addGood, updateGood } from "@/api/addGood";
+import { deleteAttach, addAttach } from "@/api/attach";
+import { getGoodTypeList, getGood } from "@/api/good";
+import { getRoomTypesByShop } from "@/api/room";
 import { getInstitutions } from "@/api/institutions";
 import { videoPlayer } from "vue-video-player";
 require("video.js/dist/video-js.css");
@@ -414,49 +434,32 @@ export default {
         xs: { span: 24 },
         sm: { span: 12 }
       },
-      institution: [], //部门
+      institution: [
+        {
+          value: 22,
+          name: "不选择房间类型"
+        }
+      ], //部门
+      goodType: "", //类目一级选项
+      goodTypeOptions: [], //类目
+      subGoodTypeOptions: [], //二级类目
       imgList: [],
       imgListData: [],
       activeGoodType: "",
       form: {},
       wechatShareForm: {},
       uploadUrl: "http://192.168.101.115:8089/api/attach",
-      isMainVideoUpload: false, //商品视频是否上传
-      mainPlayerOptions: {
-        // videojs options
-        muted: true,
-        language: "cn",
-        language: "zh-CN",
-        playbackRates: [0.7, 1.0, 1.5, 2.0],
-        sources: [
-          {
-            type: "video/mp4",
-            src: ""
-          }
-        ]
-      },
-      isShopVideoUpload: false, //商品视频是否上传
-      shopPlayerOptions: {
-        // videojs options
-        muted: true,
-        language: "cn",
-        language: "zh-CN",
-        playbackRates: [0.7, 1.0, 1.5, 2.0],
-        sources: [
-          {
-            type: "video/mp4",
-            src: ""
-          }
-        ]
-      },
+
       tagInputVisible: false,
       tagInputValue: "",
       tagSet: "", //存储已有的tag列表
       //房间类型Option
-      roomTypeOptions:[{
-        value:-1,
-        label:'不选择房间类型'
-      }],
+      roomTypeOptions: [
+        {
+          value: -1,
+          label: "不选择房间类型"
+        }
+      ],
       //销售渠道选项
       placeOption: [
         {
@@ -484,27 +487,73 @@ export default {
       ],
       //亮点中间值
       tempLightsports: [""],
-      // upShelvesStyle: 0,
-      // bookableType: 0,
+      upShelvesStyle: 0,
+      bookableType: 0,
       //radio样式
       radioStyle: {
         display: "block",
         height: "30px",
         lineHeight: "30px"
-      }
+      },
+      //上传图片的组件
+      previewVisible: false,
+      previewImage: "",
+      fileList: []
     };
   },
   computed: {
     uploadHeader() {
       return {
-        company: this.$ls.get('company').id
+        company: this.$ls.get("company").id
+      };
+    },
+    isShopVideoUpload() {
+      return this.goodShopVideo && this.goodShopVideo.id;
+    },
+    isMainVideoUpload() {
+      return this.goodMainVideo && this.goodMainVideo.id;
+    },
+    mainPlayerOptions() {
+      let src = "";
+      if (this.goodMainVideo && this.goodMainVideo.hasOwnProperty("src")) {
+        src = this.goodMainVideo.src;
+      }
+      return {
+        // videojs options
+        muted: true,
+        language: "cn",
+        language: "zh-CN",
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [
+          {
+            type: "video/mp4",
+            src: src
+          }
+        ]
+      };
+    },
+    shopPlayerOptions() {
+      let src = "";
+      if (this.goodShopVideo && this.goodShopVideo.hasOwnProperty("src")) {
+        src = this.goodShopVideo.src;
+      }
+      return {
+        // videojs options
+        muted: true,
+        language: "cn",
+        language: "zh-CN",
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [
+          {
+            type: "video/mp4",
+            src: src
+          }
+        ]
       };
     }
   },
   created() {
-    this.initForm();
-    this.initTagData();
-    this.initInstitution();
+    this.init();
   },
   mounted() {
     this.$store.commit("SET_FORM", {
@@ -524,9 +573,52 @@ export default {
   },
 
   watch: {
-    imgList(val) {},
-    imgListData() {
-      this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
+    upShelvesTime(val) {
+      if (val==null||val == "") {
+        this.upShelvesStyle = 1;
+      }   else {
+        if (this.downShelvesTime) {
+          this.upShelvesStyle = 2;
+        }else{
+          this.upShelvesStyle = 0;
+        }
+        
+      }
+    },
+    bookableTime(val){
+      if(val){
+        this.bookableType = 1
+      }else{
+        this.bookableType = 0
+      }
+    },
+    goodId(val) {
+      this.initForm();
+      var goodTypeOptions = this.goodTypeOptions;
+      f: for (var i = 0; i < goodTypeOptions.length; i++) {
+        if (goodTypeOptions[i].hasOwnProperty("children")) {
+          let subGoodType = goodTypeOptions[i].children;
+          for (var j = 0; j < subGoodType.length; j++) {
+            if (subGoodType[j].id == this.storeType) {
+              this.goodType = goodTypeOptions[i].id;
+              this.subGoodTypeOptions = subGoodType;
+              setTimeout(() => {
+                this.form.setFieldsValue({
+                  storeType: this.storeType
+                });
+              }, 100);
+
+              break f;
+            }
+          }
+        }
+      }
+      this.fileList = this.goodImgList;
+      this.imgList = this.goodImgList;
+      this.imgListData = this.goodImgList;
+    },
+    lightspots(val) {
+      this.tempLightsports = val;
     },
     upShelvesStyle(val) {
       if (val == 0) {
@@ -564,30 +656,82 @@ export default {
     }
   },
   methods: {
-    handleInstituteChange(value,option){
-      getRoomTypesByShop(value).then(res=>{
-        console.log(res.data.data)
-        this.roomTypeOptions = [{
-          value:-1,
-          label:'暂不选择'
-        }].concat(res.data.data.map(ele=>{
-          return {
-            value:ele.store_id,
-            label:ele.type_name
+    init: async function() {
+      this.$store.commit("SET_FORM", {
+        loadding: true
+      });
+      this.initForm();
+      this.initTagData()
+        .then(() => {
+          this.initInstitution();
+        })
+        .then(() => {
+          this.initGoodType();
+        })
+        .then(() => {
+          this.$store.commit("SET_FORM", {
+            loadding: false
+          });
+        });
+    },
+    handleInstituteChange(value, option) {
+      this.$store.commit("SET_FORM", {
+        loadding: true
+      });
+      getRoomTypesByShop(value).then(res => {
+        this.$store.commit("SET_FORM", {
+          loadding: false
+        });
+        this.roomTypeOptions = [
+          {
+            value: -1,
+            label: "暂不选择"
           }
-        }))
-      })
+        ].concat(
+          res.data.data.map(ele => {
+            return {
+              value: ele.store_id,
+              label: ele.type_name
+            };
+          })
+        );
+      });
+    },
+    //初始化类目
+    initGoodType: async function() {
+      getGoodTypeList().then(res => {
+        this.goodTypeOptions = res.data.data;
+        this.goodType = this.goodTypeOptions[0].id;
+
+        if (
+          this.goodTypeOptions[0].hasOwnProperty("children") &&
+          this.goodTypeOptions[0].children.length > 0
+        ) {
+          this.subGoodTypeOptions = this.goodTypeOptions[0].children;
+          this.form.setFieldsValue({
+            storeType: this.goodTypeOptions[0].children[0].id
+          });
+        } else {
+          this.subGoodTypeOptions = [];
+          this.form.setFieldsValue({
+            storeType: ""
+          });
+        }
+      });
     },
     //初始化部门
-    initInstitution() {
+    initInstitution: async function() {
       getInstitutions().then(res => {
-        this.institution = res.data.data;
+        this.institution = res.data.data.map(ele => {
+          return {
+            value: ele.id,
+            label: ele.name
+          };
+        });
       });
     },
     onShelvesStyle(date, dateString) {
-      // this.upShelvesStyle = 2;
       this.$store.commit("SET_FORM", {
-        upShelvesStyle:2,
         upShelvesTime: dateString[0],
         downShelvesTime: dateString[1]
       });
@@ -595,7 +739,6 @@ export default {
     onBookableDateChange(date, dateString) {
       // this.bookableType = 1;
       this.$store.commit("SET_FORM", {
-        bookableType:1,
         bookableTime: dateString[0],
         endBookableTime: dateString[1]
       });
@@ -610,7 +753,7 @@ export default {
             storeNo: this.$form.createFormField({
               value: this.storeNo
             }),
-            typeId:this.$form.createFormField({
+            typeId: this.$form.createFormField({
               value: this.typeId
             }),
             name: this.$form.createFormField({
@@ -634,8 +777,8 @@ export default {
             goodShopVideo: this.$form.createFormField({
               value: this.goodShopVideo
             }),
-            bookingInfo: this.$form.createFormField({
-              value: this.bookingInfo
+            bookNeedKnow: this.$form.createFormField({
+              value: this.bookNeedKnow
             }),
             transfer: this.$form.createFormField({
               value: this.transfer
@@ -646,18 +789,18 @@ export default {
             place: this.$form.createFormField({
               value: this.place
             }),
-            upShelvesStyle: this.$form.createFormField({
-              value: this.upShelvesStyle
-            }),
+            // upShelvesStyle: this.$form.createFormField({
+            //   value: this.upShelvesStyle
+            // }),
             upShelvesTime: this.$form.createFormField({
               value: this.upShelvesTime
             }),
             downShelvesTime: this.$form.createFormField({
               value: this.downShelvesTime
             }),
-            bookableType: this.$form.createFormField({
-              value: this.bookableType
-            }),
+            // bookableType: this.$form.createFormField({
+            //   value: this.bookableType
+            // }),
             bookableTime: this.$form.createFormField({
               value: this.bookableTime
             }),
@@ -667,7 +810,7 @@ export default {
             peopleNum: this.$form.createFormField({
               value: this.peopleNum
             }),
-             unitPrice: this.$form.createFormField({
+            unitPrice: this.$form.createFormField({
               value: this.unitPrice
             })
           };
@@ -685,6 +828,9 @@ export default {
       let data = new FormData();
       data.append("module", "goods");
       data.append("file", file);
+      this.$store.commit("SET_FORM", {
+        loadding: true
+      });
       addAttach(data)
         .then(res => {
           this.imgListData.push(res.data.data);
@@ -695,6 +841,11 @@ export default {
           this.$refs.picUpload.deleteImg(index);
           this.$delete(this.imgList, index);
           this.$delete(this.imgListData, index);
+        })
+        .then(() => {
+          this.$store.commit("SET_FORM", {
+            loadding: true
+          });
         });
       // this.$store.commit("SET_FORM", { goodImgList: val });
     },
@@ -705,7 +856,6 @@ export default {
       this.$store.commit("SET_FORM", { goodImgList: this.imgListData });
     },
     handleGoodImgListDelete(index) {
-      console.log(this.imgListData);
       if (
         this.imgListData[index] &&
         this.imgListData[index].hasOwnProperty("attach_id")
@@ -722,8 +872,22 @@ export default {
       this.previewImage = file.url || file.thumbUrl;
       this.previewVisible = true;
     },
-    handleChange({ fileList }) {
-      this.fileList = fileList;
+    handleImageRemove(file) {
+      let attachId;
+      if (file.hasOwnProperty("response")) {
+        attachId = file.response.data.attach_id;
+      } else if (file.hasOwnProperty("attach_id")) {
+        attachId = file.attach_id;
+      }
+      deleteAttach(attachId).then(res => {
+        console.log(res);
+      });
+    },
+    handleChange(info) {
+      this.fileList = [...info.fileList];
+      this.$store.commit("SET_FORM", {
+        goodImgList: this.fileList
+      });
     },
     handleMainUploadChange(info) {
       if (info.file.status === "uploading") {
@@ -731,13 +895,6 @@ export default {
       }
       if (info.file.status === "done") {
         // Get this url from response in real world.
-        this.isMainVideoUpload = info.file.response.data.file_url;
-        this.mainPlayerOptions.sources = [
-          {
-            type: "video/mp4",
-            src: info.file.response.data.file_url
-          }
-        ];
         this.$store.commit("SET_FORM", {
           goodMainVideo: {
             id: info.file.response.data.attach_id,
@@ -749,9 +906,15 @@ export default {
     },
     deleteMainVideo() {
       deleteAttach(this.goodMainVideo.id).then(res => {
-        this.isMainVideoUpload = false;
         this.$store.commit("SET_FORM", {
           goodMainVideo: null
+        });
+      });
+    },
+    deleteShopVedio() {
+      deleteAttach(this.goodShopVideo.id).then(res => {
+        this.$store.commit("SET_FORM", {
+          goodShopVideo: null
         });
       });
     },
@@ -761,13 +924,6 @@ export default {
       }
       if (info.file.status === "done") {
         // Get this url from response in real world.
-        this.isShopVideoUpload = true;
-        this.shopPlayerOptions.sources = [
-          {
-            type: "video/mp4",
-            src: info.file.response.data.file_url
-          }
-        ];
         this.$store.commit("SET_FORM", {
           goodShopVideo: {
             id: info.file.response.data.attach_id,
@@ -818,7 +974,6 @@ export default {
     },
     handleClose(removedTag) {
       const tags = this.tags.filter(tag => tag !== removedTag);
-      console.log(tags);
       this.tags = tags;
     },
 
@@ -835,7 +990,6 @@ export default {
 
     handleTagClose(tag, index) {
       let tags = this.tags;
-      console.log(tags);
       tags.splice(index, 1);
 
       this.$store.commit("SET_FORM", { tags: tags });
@@ -863,13 +1017,12 @@ export default {
           tags: [...tags, { id, name: inputValue }]
         });
       }
-      console.log(tags);
       this.tagInputVisible = false;
       this.tagInputValue = "";
     },
 
-    initTagData() {
-      getTags().then(res => {
+    initTagData: async function() {
+      await getTags().then(res => {
         this.tagSet = res.data.data;
       });
     },
@@ -903,20 +1056,21 @@ export default {
         name: this.name,
         name2: this.name2,
         type_id: this.typeId,
+        type: this.storeType,
         tags: this.tags.map(ele => ele.id),
         is_need_address: 0,
         is_point: 0,
         is_cash: 0,
-        unit_price:this.unitPrice,
+        unit_price: this.unitPrice,
         features: this.lightspots,
         book_need_know: this.bookNeedKnow, //预定须知
         back_end: this.place,
         is_regifted: this.transfer,
         is_reviewed: this.comment,
-        attachs:{
-          img:this.$store.getters.getImgListAttachIdList,
-          shopV:this.$store.getters.getShopVideoAttachIdList,
-          mainV:this.$store.getters.getMainVideoAttachIdList,
+        attachs: {
+          img: this.$store.getters.getImgListAttachIdList,
+          shopV: this.$store.getters.getShopVideoAttachIdList,
+          mainV: this.$store.getters.getMainVideoAttachIdList
         },
         // "attachs[img]": this.$store.getters.getImgListAttachIdList,
         // "attachs[shopV]": this.$store.getters.getShopVideoAttachIdList,
@@ -948,6 +1102,78 @@ export default {
             content: "添加失败"
           });
         });
+    },
+    handleUpload() {
+      updateGood(this.goodId, {
+        store_no: this.storeNo,
+        name: this.name,
+        name2: this.name2,
+        type_id: this.typeId,
+        type: this.storeType,
+        tags: [], //todo
+        is_need_address: 0,
+        is_point: 0,
+        is_cash: 0,
+        unit_price: this.unitPrice,
+        features: this.lightspots,
+        book_need_know: this.bookNeedKnow, //预定须知
+        back_end: this.place,
+        is_regifted: this.transfer,
+        is_reviewed: this.comment,
+        attachs: {
+          img: this.$store.getters.getImgListAttachIdList,
+          shopV: this.$store.getters.getShopVideoAttachIdList,
+          mainV: this.$store.getters.getMainVideoAttachIdList
+        },
+        // "attachs[img]": this.$store.getters.getImgListAttachIdList,
+        // "attachs[shopV]": this.$store.getters.getShopVideoAttachIdList,
+        // "attachs[mainV]": this.$store.getters.getMainVideoAttachIdList,
+        up_shelves_time: this.upShelvesTime,
+        down_shelves_time: this.downShelvesTime,
+        people_num: this.peopleNum,
+        bookable_time: this.bookableTime,
+        end_bookable_time: this.endBookableTime
+
+        // storeNo:state => state.addGood.storeNo,
+        // storeType:state => state.addGood.storeType,
+        // roomType:state => state.addGood.roomType,
+        // name:state => state.addGood.name,
+        // name2:state => state.addGood.name2,
+        // tags:state => state.addGood.tags,
+        // lightspots:state => state.addGood.lightspots,
+        // goodImgList:state => state.addGood.goodImgList,
+        // goodMainVideo:state => state.addGood.goodMainVideo,
+        // goodShopVideo:state => state.addGood.goodShopVideo,
+        // bookingInfo:state => state.addGood.bookingInfo,
+        // transfer:state => state.addGood.transfer,
+        // comment:state => state.addGood.comment,
+        // place:state => state.addGood.place,
+      })
+        .then(res => {
+          alert("編輯成功");
+        })
+        .catch(err => {
+          this.$message.error({
+            content: "添加失败"
+          });
+        });
+    },
+    //商品类目联动
+    handleGoodTypeChange(value) {
+      this.goodTypeOptions.forEach(ele => {
+        if (value == ele.id) {
+          this.subGoodTypeOptions = ele.children;
+          if (ele.hasOwnProperty("children") && ele.children.length > 0) {
+            this.form.setFieldsValue({
+              storeType: ele.children[0].id
+            });
+          } else {
+            this.form.setFieldsValue({
+              storeType: ""
+            });
+          }
+        }
+      });
     }
   }
 };

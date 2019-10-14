@@ -47,6 +47,14 @@ export function addGood(data){
   })
 }
 
+export function updateGood(no,data){
+  return request({
+    url:`${GOOD_BASE_URL}/api/goods/step1/${no}`,
+    method:'post',
+    data
+  })
+}
+
 export function getDaterules(){
   return request({
     url:`${GOOD_BASE_URL}/api/daterules`,
