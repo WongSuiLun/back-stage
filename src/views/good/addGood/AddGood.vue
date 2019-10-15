@@ -23,7 +23,7 @@ import EditDetail from "./components/EditDetail";
 import { mixinAddGoodState } from "./mixin";
 import AddGoodResult from "./components/AddGoodResult";
 import { WqStep } from "@/components";
-import { getGood } from "@/api/good";
+import { getGood,getHtml } from "@/api/good";
 export default {
   mixins: [mixinAddGoodState],
   components: {
@@ -51,6 +51,7 @@ export default {
     if (this.$route.params.good) {
       this.initGood(this.$route.params.good);
     }
+   
   },
   methods: {
     //初始化商品,添加编辑信息
@@ -64,6 +65,7 @@ export default {
         });
         console.log(res);
         let goodDetail = res.data.data;
+        this.handlerGoodHtml(goodDetail.attachs,goodDetail.domain)
         this.$store.commit("SET_FORM", {
           isUpload: true,
           goodId: goodDetail.no,
@@ -104,6 +106,10 @@ export default {
           unitPrice: goodDetail.unit_price,
           upShelvesTime:goodDetail.up_shelves_time,
           downShelvesTime:goodDetail.down_shelves_time,
+          bookableTime:goodDetail.bookable_time,
+          endBookableTime:goodDetail.end_bookable_time,
+          ignoreDateSelect:goodDetail.is_need_date,
+          refundPolicy:goodDetail.is_return,
           //  upShelvesStyle: good.up,
           // //上架时间
           // upShelvesTime: state => state.addGood.upShelvesTime,
@@ -168,6 +174,22 @@ export default {
           // shopDetailRenderHtml:state=>state.addGood.shopDetailRenderHtml
         });
       });
+    },
+    handlerGoodHtml(attachs,domain){
+      let targetAttach = attachs.filter(attach => {
+        return attach.type == 'html';
+      });
+      if (
+        targetAttach.length > 0
+      ) {
+        let vObject = targetAttach[0];
+        let  src= domain + vObject.path
+        getHtml(src).then(res=>{
+          this.$store.commit('SET_FORM',{
+            shopDetailRenderHtml:res.data
+          })
+        })
+      }
     },
     findAttachByType(typeName, attachs, domain) {
       let targetAttach = attachs.filter(attach => {

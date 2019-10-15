@@ -345,7 +345,7 @@
               <a-radio :style="radioStyle" :value="1">暂不售卖,放入仓库</a-radio>
               <a-radio :style="radioStyle" :value="2">
                 <span class="text">设定在</span>
-                <a-range-picker @change="onShelvesStyle" />
+                <a-range-picker @change="onShelvesStyle" v-model="shelvesTime"  />
                 <span class="text">内售卖</span>
               </a-radio>
             </a-radio-group>
@@ -357,7 +357,7 @@
               <a-radio :style="radioStyle" :value="0">长期</a-radio>
               <a-radio :style="radioStyle" :value="1">
                 <span class="text">设定在</span>
-                <a-range-picker @change="onBookableDateChange" />
+                <a-range-picker @change="onBookableDateChange"  v-model="bookableRangeTime"/>
                 <span class="text">内预定有效</span>
               </a-radio>
             </a-radio-group>
@@ -371,6 +371,24 @@
               rules: [{ required: true, message: 'Username is required!' }],
             }]"
           />
+        </a-form-item>
+         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="使用时间选择">
+          <div class="form-item">
+            <a-radio-group v-model="upShelvesStyle" v-decorator="[
+            'ignoreDateSelect']">
+              <a-radio :style="radioStyle" :value="0">使用</a-radio>
+              <a-radio :style="radioStyle" :value="1">不使用</a-radio>
+            </a-radio-group>
+          </div>
+        </a-form-item>
+         <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="退款政策">
+          <div class="form-item">
+            <a-radio-group v-model="upShelvesStyle" v-decorator="[
+            'refundPolicy']">
+              <a-radio :style="radioStyle" :value="0">允许退款</a-radio>
+              <a-radio :style="radioStyle" :value="1">不允许退款</a-radio>
+            </a-radio-group>
+          </div>
         </a-form-item>
       </div>
       <!-- <div class="content-item">微信分享</div> -->
@@ -460,6 +478,8 @@ export default {
           label: "不选择房间类型"
         }
       ],
+      shelvesTime:[],
+      bookableRangeTime:[],
       //销售渠道选项
       placeOption: [
         {
@@ -555,23 +575,6 @@ export default {
   created() {
     this.init();
   },
-  mounted() {
-    this.$store.commit("SET_FORM", {
-      upShelvesTime: this.$moment(new Date())
-        .format("L")
-        .split("/")
-        .join("-"),
-      downShelvesTime: ""
-    });
-    this.$store.commit("SET_FORM", {
-      bookableTime: this.$moment(new Date())
-        .format("L")
-        .split("/")
-        .join("-"),
-      endBookableTime: ""
-    });
-  },
-
   watch: {
     upShelvesTime(val) {
       if (val==null||val == "") {
@@ -579,6 +582,7 @@ export default {
       }   else {
         if (this.downShelvesTime) {
           this.upShelvesStyle = 2;
+          this.shelvesTime = [this.$moment(this.upShelvesStyle),this.$moment(this.downShelvesTime)]
         }else{
           this.upShelvesStyle = 0;
         }
@@ -588,6 +592,7 @@ export default {
     bookableTime(val){
       if(val){
         this.bookableType = 1
+        this.bookableRangeTime = [this.$moment(this.bookableTime),this.$moment(this.endBookableTime)]
       }else{
         this.bookableType = 0
       }
@@ -812,6 +817,12 @@ export default {
             }),
             unitPrice: this.$form.createFormField({
               value: this.unitPrice
+            }),
+            ignoreDateSelect: this.$form.createFormField({
+              value: this.ignoreDateSelect
+            }),
+            refundPolicy: this.$form.createFormField({
+              value: this.refundPolicy
             })
           };
         },
@@ -1079,7 +1090,9 @@ export default {
         down_shelves_time: this.downShelvesTime,
         people_num: this.peopleNum,
         bookable_time: this.bookableTime,
-        end_bookable_time: this.endBookableTime
+        end_bookable_time: this.endBookableTime,
+        is_need_date:this.ignoreDateSelect,
+        is_return:this.refundPolicy,
 
         // storeNo:state => state.addGood.storeNo,
         // storeType:state => state.addGood.storeType,
@@ -1132,7 +1145,9 @@ export default {
         down_shelves_time: this.downShelvesTime,
         people_num: this.peopleNum,
         bookable_time: this.bookableTime,
-        end_bookable_time: this.endBookableTime
+        end_bookable_time: this.endBookableTime,
+        is_need_date:this.ignoreDateSelect,
+        is_return:this.refundPolicy,
 
         // storeNo:state => state.addGood.storeNo,
         // storeType:state => state.addGood.storeType,

@@ -78,3 +78,10 @@ export function deleteGoodType(id){
     method:'delete'
   })
 }
+
+export function getHtml(url){
+  return request({
+    url,
+    method:'get'
+  })
+}

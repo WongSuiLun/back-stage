@@ -8,7 +8,7 @@ const addGoodState = {
         storeType: '',
         typeId: -1,
         roomType: '',
-        name: '123',
+        name: '',
         name2: '',
         unitPrice: 1,//商品单价
         tags: [
@@ -33,6 +33,8 @@ const addGoodState = {
         bookableTime: '',
         endBookableTime: '',
         peopleNum: 1,
+        ignoreDateSelect:0,
+        refundPolicy:0,
 
         //微信分享
         shareTitle: '',
@@ -111,14 +113,13 @@ const addGoodState = {
                 comment: '',
                 place: '',
                 bookNeedKnow: '',
-                upShelvesStyle: 0,//上架类型
                 upShelvesTime: '',//上架时间
                 downShelvesTime: '',//下架时间
-                bookableType: 0,
                 bookableTime: '',
                 endBookableTime: '',
                 peopleNum: 1,
-
+                ignoreDateSelect:0,
+                refundPolicy:0,
                 //微信分享
                 shareTitle: '',
                 shareDesc: '',

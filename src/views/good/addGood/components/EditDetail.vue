@@ -40,12 +40,17 @@ export default {
     };
   },
   created() {
-      this.$store.commit("SET_FORM", { shopDetailRenderHtml: this.msg });
+      // this.$store.commit("SET_FORM", { shopDetailRenderHtml: this.msg });
   },
   watch: {
     msg: {
       handler: function(val) {
         this.$store.commit("SET_FORM", { shopDetailRenderHtml: val });
+      }
+    },
+    shopDetailRenderHtml:{
+      handler: function(val) {
+        this.msg = val
       }
     }
   },

@@ -34,6 +34,9 @@ const mixinAddGoodState = {
       bookableTime: state => state.addGood.bookableTime,
       endBookableTime: state => state.addGood.endBookableTime,
       peopleNum: state => state.addGood.peopleNum,
+      ignoreDateSelect:state => state.addGood.ignoreDateSelect,
+      refundPolicy: state => state.addGood.refundPolicy,
+
       //微信分享
       shareTitle: state => state.addGood.shareTitle,
       shareDesc: state => state.addGood.shareDesc,

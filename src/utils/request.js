@@ -67,7 +67,6 @@ service.interceptors.response.use(
           okText: '确认',
           cancelText: '取消',
           onOk(){
-
             store.dispatch('logout')
           },
         });
