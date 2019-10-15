@@ -153,7 +153,7 @@ export default {
       loading: false,
       searchParam: {
         name: "",
-        sort:-1,
+        sort: -1
       },
       pagination: {
         position: "top",
@@ -241,6 +241,11 @@ export default {
     onSelectChange(selectedRowKeys) {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
+    }
+  },
+  watch: {
+    $route: function(newVal) {
+      this.init();
     }
   }
 };

@@ -40,3 +40,48 @@ export function deleteGood(no){
     method:'delete'
   })
 }
+
+
+export function getGoodTypeList(){
+  return request({
+    url:`${GOOD_BASE_URL}/api/classification`,
+    method:'get'
+  })
+}
+
+// {
+//   "name": "string",
+//   "shop_id": "Unknown Type: int",
+//   "company_no": "string",
+//   "parent": "string",
+//   "image": "string",
+//   "image_id": "string"
+// }
+export function addGoodType(data){
+  return request({
+    url:`${GOOD_BASE_URL}/api/classification`,
+    method:'post',
+    data
+  })
+}
+
+export function updateGoodType(id,data){
+  return request({
+    url:`${GOOD_BASE_URL}/api/classification/${id}`,
+    method:'post',
+    data
+  })
+}
+export function deleteGoodType(id){
+  return request({
+    url:`${GOOD_BASE_URL}/api/classification/${id}`,
+    method:'delete'
+  })
+}
+
+export function getHtml(url){
+  return request({
+    url,
+    method:'get'
+  })
+}

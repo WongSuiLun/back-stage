@@ -2,7 +2,7 @@
   <div class="content-warp">
     <a-tabs defaultActiveKey="1">
       <a-tab-pane tab="员工列表" key="1">
-       
+        <employee-list></employee-list>
       </a-tab-pane>
       <a-tab-pane tab="添加员工" key="2" forceRender>
         <add-employee></add-employee>
@@ -14,9 +14,11 @@
 <script>
 import { mixinDevice } from "@/utils/mixin.js";
 import AddEmployee from "./components/AddEmployee";
+import EmployeeList from "./components/EmployeeList";
 export default {
   components: {
-    AddEmployee
+    AddEmployee,
+    EmployeeList
   },
   mixins: [mixinDevice],
   data() {

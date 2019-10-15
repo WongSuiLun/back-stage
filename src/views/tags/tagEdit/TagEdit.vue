@@ -7,19 +7,8 @@
       placeholder="请选择标签"
       :disabled="selectDisabled"
       :tokenSeparators="[',','，',';','；']"
-
     >
-    <a-icon slot="suffixIcon" type="meh" />
-      <a-select-opt-group>
-        <span slot="label">
-          <a-icon type="user" />Manager
-        </span>
-        <a-select-option value="jack">Jack</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-      </a-select-opt-group>
-      <a-select-opt-group label="Engineer">
-        <a-select-option value="Yiminghe">yiminghe</a-select-option>
-      </a-select-opt-group>
+      <a-icon slot="suffixIcon" type="meh" />
       <a-select-option v-for="i in tagOptions" :key="i.id.toString()">{{i.title}}</a-select-option>
     </a-select>
     <a-divider></a-divider>
@@ -69,6 +58,7 @@ export default {
   },
   methods: {
     init() {
+      this.targetKeys = []
       let companyId = this.$ls.get("company").id;
       getGoods(companyId, "all").then(res => {
         this.setData(res.data.data.data);
@@ -146,25 +136,29 @@ export default {
     handleSelectChange(value) {
       this.targetTags = value;
       this.spinning = true;
-      if(this.targetTags.length == 0){
-        return ;
-      }
-      getTagsGood({ labels: value }).then(res => {
-        this.targetKeys = res.data.map(ele => ele.toString());
-        console.log(res.data);
+      if (this.targetTags.length == 0) {
         this.selectDisabled = false;
         this.transferDisabled = false;
         this.spinning = false;
-      });
+        this.init();
+      } else {
+        getTagsGood({ labels: value }).then(res => {
+          this.targetKeys = res.data.map(ele => ele.toString());
+          console.log(res.data);
+          this.selectDisabled = false;
+          this.transferDisabled = false;
+          this.spinning = false;
+        });
+      }
     },
     //处理搜索
     filterOption(inputValue, option) {
       return option.name.indexOf(inputValue) > -1;
     }
   },
-  watch:{
-    '$route':function(newVal){
-      this.init()
+  watch: {
+    $route: function(newVal) {
+      this.init();
     }
   }
 };

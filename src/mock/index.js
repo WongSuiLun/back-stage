@@ -5,6 +5,7 @@ if(process.env.NODE_ENV !== 'production'){
 
   require('./services/auth')
   require('./services/statistics')
+  require('./services/staff')
   
   Mock.setup({
     timeout: 800 // setter delay time

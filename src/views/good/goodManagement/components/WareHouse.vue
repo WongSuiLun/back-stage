@@ -264,7 +264,13 @@ export default {
             );
         })
     }
+  },
+  watch: {
+    $route: function(newVal) {
+      this.init();
+    }
   }
+  
 };
 </script>
 <style scoped>

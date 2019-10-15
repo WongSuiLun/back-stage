@@ -19,8 +19,8 @@
           draggable="true"
           :key="index"
         >
-          <img :src="img.src" alt="user image" @mouseenter="img.hover = true">
-          <div class="img-action" v-show="img.hover" @mouseleave="img.hover = false">
+          <img :src="img.file_url" alt="user image" @mouseenter="handleImageHover(img)">
+          <div class="img-action" v-show="img.hover" @mouseleave="handleImageLeave(img)">
             <a @click="preview(img.src)" title="预览图片">
               <a-icon type="eye"/>
             </a>
@@ -81,11 +81,16 @@ export default {
       let imgValue = val.map(element => {
         return element.file;
       });
-      this.$emit("input", imgValue);
-      this.$emit("change",imgValue)
+      this.$emit("input", val);
+      this.$emit("change",val)
     },
     value(val){
-      // console.log(val)
+      val.forEach(element => {
+        element.hover = false
+        element.leftShow = false
+        element.rightShow = false
+      });
+      this.imgList = val
     }
   },
   methods: {
@@ -143,6 +148,12 @@ export default {
     clickUpload() {
       this.$refs["input-img"].click();
     },
+    handleImageHover(img){
+      img.hover = true
+    },
+    handleImageLeave(img){
+      img.hover = false
+    },
     imgInputChange(e) {
       let _this = this;
       var files = e.target.files[0];
@@ -153,6 +164,7 @@ export default {
       reader.onloadend = function() {
         _this.imgList.push({
           src: this.result,
+          file_url:this.result,
           file:files,
           hover: false,
           leftShow: false,

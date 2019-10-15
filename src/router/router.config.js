@@ -168,6 +168,12 @@ export const asyncRouterMap = [
             name: 'comment-management',
             component: () => import('@/views/good/comment/CommentManagement'),
             meta: { title: '评论管理' }
+          },
+          {
+            path: '/good/type/management',
+            name: 'type-management',
+            component: () => import('@/views/good/typeManagement/TypeManagement'),
+            meta: { title: '类型管理' }
           }
         ]
       },

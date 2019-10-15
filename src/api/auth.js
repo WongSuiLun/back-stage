@@ -11,14 +11,14 @@ export function login(data){
 
 export function captchas(){
   return request({
-    url:`/${USER_BASE_URL}/user/public/api/captchas`,
+    url:`${USER_BASE_URL}/user/public/api/captchas`,
     method:'post'
   })
 }
 
 export function authorizations(data){
   return request({
-    url:`/${USER_BASE_URL}/user/public/api/authorizations`,
+    url:`${USER_BASE_URL}/user/public/api/authorizations`,
     method:'post',
     data
   })

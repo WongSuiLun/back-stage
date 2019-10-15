@@ -118,12 +118,14 @@ export default {
     };
   },
   created() {
-    getInstitutionType().then(res => {
-      this.data=res.data.data
-    });
-    
+    this.init()
   },
   methods: {
+    init(){
+      getInstitutionType().then(res => {
+      this.data=res.data.data
+    });
+    },
     showDrawer() {
       this.newInstituteDrawerVisible = true;
     },
@@ -139,6 +141,8 @@ export default {
         this.typeTitle = ''
         this.sign = ''
         this.newInstituteDrawerVisible = false
+        this.$message.success('添加成功')
+        this.init()
       })
     },
     handleChange(value, key, column) {

@@ -41,10 +41,12 @@ export default {
         // color: this.color
       };
       addTag(tag).then(res => {
-        
-        console.log(res)
         this.$store.commit("ADD_TAG", tag);
+        this.$message.success('添加成功')
+        this.tagName = ''
         this.visible = false;
+      }).catch(err=>{
+        this.$message.error('添加失败')
       });
     },
     onSearch() {}

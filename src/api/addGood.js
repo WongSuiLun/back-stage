@@ -1,20 +1,20 @@
 import request from '@/utils/request'
 import { GOOD_BASE_URL } from '../constant'
 
-export function deleteAttach(id) {
-  return request({
-    url: `${GOOD_BASE_URL}/api/attach/${id}`,
-    method: 'delete',
-  })
-}
+// export function deleteAttach(id) {
+//   return request({
+//     url: `${GOOD_BASE_URL}/api/attach/${id}`,
+//     method: 'delete',
+//   })
+// }
 
-export function addAttach(data){
-  return request({
-    url: `${GOOD_BASE_URL}/api/attach`,
-    method: 'post',
-    data,
-  })
-}
+// export function addAttach(data){
+//   return request({
+//     url: `${GOOD_BASE_URL}/api/attach`,
+//     method: 'post',
+//     data,
+//   })
+// }
 
 export function getDistrict(){
   return request({
@@ -42,6 +42,14 @@ export function addTag(data){
 export function addGood(data){
   return request({
     url:`${GOOD_BASE_URL}/api/goods/step1`,
+    method:'post',
+    data
+  })
+}
+
+export function updateGood(no,data){
+  return request({
+    url:`${GOOD_BASE_URL}/api/goods/step1/${no}`,
     method:'post',
     data
   })
