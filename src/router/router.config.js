@@ -322,6 +322,34 @@ export const asyncRouterMap = [
         ]
       },
       {
+        path: '/lottery',
+        name: 'lottery',
+        redirect: '/lottery/list',
+        meta: {
+          title: '抽奖',
+          icon: 'euro'
+        },
+        component: RouteView,
+        children: [
+        {
+          path: '/lottery/list',
+          name: 'lottery-list',
+          component: () => import('@/views/lottery/lotteryList/LotteryList'),
+          meta: {
+            title: '抽奖列表'
+          }
+        },
+        {
+          path: '/lottery/add',
+          name: 'lottery-add',
+          component: () => import('@/views/lottery/addLottery/AddLottery'),
+          meta: {
+            title: '添加抽奖'
+          }
+        }
+        ]
+      },
+      {
         path: '/tag',
         name: 'tag',
         redirect: '/tag/list',
